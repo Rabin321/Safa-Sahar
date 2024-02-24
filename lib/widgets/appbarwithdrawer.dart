@@ -1,5 +1,6 @@
 import 'package:finalyear/screens/hamdrawerpages/mapview/mapviewpage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AppBarWithDrawer extends StatefulWidget {
   final String title;
@@ -36,26 +37,26 @@ class _MyHomePageState extends State<AppBarWithDrawer> {
                   children: [
                     Text(
                       widget.title,
-                      style: const TextStyle(
-                        fontSize: 24,
-                        color: Color.fromRGBO(138, 201, 38, 1),
+                      style: TextStyle(
+                        fontSize: 22.sp,
+                        color: const Color.fromRGBO(138, 201, 38, 1),
                         fontFamily: 'Outfit',
                         fontWeight: FontWeight.w600,
-                        height: 0.04,
+                        height: 0.04.h,
                         letterSpacing: 0.15,
                       ),
                     ),
                   ],
                 ),
               ),
-              const Row(
+              Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   CircleAvatar(
                     backgroundColor: Colors.transparent,
-                    radius: 25,
+                    radius: 15.r,
                     backgroundImage:
-                        AssetImage('assets/images/google_logo.png'),
+                        const AssetImage('assets/images/google_logo.png'),
                   ),
                 ],
               ),
@@ -70,31 +71,27 @@ class _MyHomePageState extends State<AppBarWithDrawer> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Drawer items
-              const SizedBox(
-                height: 100,
-              ),
-              ListTile(
-                leading: const CircleAvatar(
-                  backgroundImage: AssetImage(
-                      'assets/images/Eco.png'), // Replace with your actual photo path
-                  // Adjust the radius as needed
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 70.h),
+                child: ListTile(
+                  leading: const CircleAvatar(
+                    backgroundImage: AssetImage(
+                        'assets/images/Eco.png'), // Replace with your actual photo path
+                    // Adjust the radius as needed
+                  ),
+                  title: Text(
+                    'SAFA SAHAR',
+                    style: TextStyle(
+                        color: Color.fromRGBO(0, 62, 31, 2),
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  trailing: IconButton(
+                      icon: const Icon(Icons.close),
+                      onPressed: () {
+                        scaffoldKey.currentState?.closeDrawer();
+                      }),
                 ),
-                title: const Text(
-                  'SAFA SAHAR',
-                  style: TextStyle(
-                      color: Color.fromRGBO(0, 62, 31, 2),
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold),
-                ),
-                trailing: IconButton(
-                    icon: const Icon(Icons.close),
-                    onPressed: () {
-                      scaffoldKey.currentState?.closeDrawer();
-                    }),
-              ),
-              const SizedBox(
-                height: 80,
               ),
               ListTile(
                 textColor: Colors.white,

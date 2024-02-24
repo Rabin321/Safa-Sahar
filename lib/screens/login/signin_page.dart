@@ -1,6 +1,7 @@
 import 'package:finalyear/screens/signup/signup.dart'; // Import the SignUp page
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../components/constants.dart';
 import '../../widgets/my_text_field.dart';
 import '../../widgets/my_password_field.dart';
@@ -27,24 +28,30 @@ class _SignInPageState extends State<SignInPage> {
             SliverFillRemaining(
               hasScrollBody: false,
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
+                padding: EdgeInsets.symmetric(horizontal: 18.w),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const SizedBox(height: 50),
-                    const Image(
-                      image: AssetImage(
-                        'assets/images/Eco.png',
+                    // const SizedBox(height: 50),
+                    Padding(
+                      padding: EdgeInsets.only(top: 10.h),
+                      child: Image(
+                        image: const AssetImage(
+                          'assets/images/Eco.png',
+                        ),
+                        height: 100.h,
                       ),
-                      height: 100.0,
                     ),
-                    const Text('SAFA SAHAR',
-                        style: TextStyle(
-                          fontSize: 32,
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                        )),
-                    const SizedBox(height: 100),
+                    Padding(
+                      padding: EdgeInsets.only(bottom: 80.h),
+                      child: Text('SAFA SAHAR',
+                          style: TextStyle(
+                            fontSize: 28.sp,
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                          )),
+                    ),
+
                     MyTextField(
                       hintText: 'Enter Email',
                       inputType: TextInputType.text,
@@ -52,7 +59,7 @@ class _SignInPageState extends State<SignInPage> {
                       formKey: _formKey, isEditable: true,
                       onChanged: (value) {}, // Fixed typo here
                     ),
-                    const SizedBox(height: 20),
+                    // const SizedBox(height: 20),
                     MyPasswordField(
                       isPasswordVisible: isPasswordVisible,
                       onTap: () {
@@ -61,9 +68,14 @@ class _SignInPageState extends State<SignInPage> {
                         });
                       },
                     ),
-                    const SizedBox(height: 20),
-                    const Text('Forgot Password?'),
-                    const SizedBox(height: 20),
+
+                    Padding(
+                      padding: EdgeInsets.only(top: 15.h, bottom: 25.h),
+                      child: const Text(
+                        'Forgot Password?',
+                        style: TextStyle(color: Colors.red),
+                      ),
+                    ),
                     MyTextButton(
                       buttonName: 'Sign In',
                       bgColor: Colors.green,
@@ -110,31 +122,32 @@ class _SignInPageState extends State<SignInPage> {
                       // },
                       onPressed: () {},
                     ),
-                    const SizedBox(height: 20),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text(
-                          "New here? ",
-                          style: kBodyText,
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              CupertinoPageRoute(
-                                builder: (context) => const SignUp(),
-                              ),
-                            );
-                          },
-                          child: Text(
-                            'Register',
-                            style: kBodyText.copyWith(
-                              color: Colors.black87,
+
+                    Padding(
+                      padding: EdgeInsets.only(top: 20.h),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text(
+                            "New here? ",
+                            style: kBodyText,
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                CupertinoPageRoute(
+                                  builder: (context) => const SignUp(),
+                                ),
+                              );
+                            },
+                            child: Text(
+                              'Register',
+                              style: kBodyText.copyWith(color: Colors.red),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ],
                 ),

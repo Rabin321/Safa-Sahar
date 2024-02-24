@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../components/constants.dart';
 
 class MyTextButton extends StatelessWidget {
@@ -20,11 +21,11 @@ class MyTextButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 60,
+      height: 50.h,
       width: double.infinity,
       decoration: BoxDecoration(
         color: bgColor,
-        borderRadius: BorderRadius.circular(18),
+        borderRadius: BorderRadius.circular(18.r),
       ),
       child: TextButton(
         style: ButtonStyle(
@@ -35,7 +36,7 @@ class MyTextButton extends StatelessWidget {
         onPressed: onPressed, // Assigning the onPressed callback
         child: Text(
           buttonName,
-          style: kButtonText.copyWith(color: textColor),
+          style: kButtonText.copyWith(color: textColor, fontSize: 16.sp),
         ),
       ),
     );

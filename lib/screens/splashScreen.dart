@@ -1,52 +1,54 @@
 import 'package:finalyear/screens/homepage/homepage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:finalyear/screens/screen.dart';
 
-class Splash extends StatefulWidget {
-  const Splash({super.key});
-  @override
-  State<Splash> createState() => _SplashState();
-}
-
-class _SplashState extends State<Splash> {
-  @override
-  void initState() {
-    super.initState();
-    _navigatetohome();
-  }
-
-  _navigatetohome() async {
-    await Future.delayed(const Duration(seconds: 5));
-    // ignore: use_build_context_synchronously
-    Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => const HomePage()));
-  }
+class Splash extends StatelessWidget {
+  const Splash({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    _navigateToHome(context); // Call the navigation method when building the widget
     return Scaffold(
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SizedBox(
-              height: 300,
-              width: 300,
-              child: Image.asset("assets/images/splash.png"),
-            ),
-            const Column(
-              children: [
-                Text(
-                  '© Copyright Safa Sahar 2023',
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.black,
-                  ),
-                ),
-              ],
-            ),
+            _buildSplashImage(),
+            _buildCopyrightText(),
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildSplashImage() {
+    return SizedBox(
+      height: 300.h,
+      width: 300.w,
+      child: Image.asset("assets/images/splash.png"),
+    );
+  }
+
+  Widget _buildCopyrightText() {
+    return Column(
+      children: [
+        Text(
+          '© Copyright Safa Sahar 2023',
+          style: TextStyle(
+            fontSize: ScreenUtil().setSp(13),
+            color: Colors.black,
+          ),
+        ),
+      ],
+    );
+  }
+
+  void _navigateToHome(BuildContext context) async {
+    await Future.delayed(const Duration(seconds: 5));
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => const HomePage()),
     );
   }
 }

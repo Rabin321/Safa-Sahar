@@ -2,6 +2,7 @@ import 'package:finalyear/screens/login/signin_page.dart';
 import 'package:finalyear/screens/signup/widgets/methods.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../widgets/widget.dart';
 import '../../components/constants.dart';
 
@@ -44,31 +45,34 @@ class _SignUpState extends State<SignUp> {
             SliverFillRemaining(
               hasScrollBody: false,
               child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20,
+                padding: EdgeInsets.symmetric(
+                  horizontal: 18.w,
                 ),
                 child: Column(
                   children: [
                     Flexible(
                       child: Column(
                         children: [
-                          const Image(
-                            image: AssetImage(
-                              'assets/images/Eco.png',
+                          Padding(
+                            padding: EdgeInsets.only(top: 10.h),
+                            child: Image(
+                              image: const AssetImage(
+                                'assets/images/Eco.png',
+                              ),
+                              height: 100.h,
                             ),
-                            height: 100.0,
                           ),
-                          const Text('SAFA SAHAR',
+                          Text('SAFA SAHAR',
                               style: TextStyle(
-                                  fontSize: 32,
+                                  fontSize: 28.sp,
                                   color: Colors.black,
                                   fontWeight: FontWeight.bold)),
-                          const Text(
-                            "Register",
-                            style: kHeadline,
-                          ),
-                          const SizedBox(
-                            height: 20,
+                          // const Text(
+                          //   "Register",
+                          //   style: kHeadline,
+                          // ),
+                          SizedBox(
+                            height: 18.h,
                           ),
                           Form(
                             key: _formKey,
@@ -112,7 +116,7 @@ class _SignUpState extends State<SignUp> {
                                   inputType: TextInputType.text,
                                   formKey: _formKey,
                                   validator: (name) => name!.isEmpty
-                                      ? 'Please enter your full name'
+                                      ? 'Please enter your house no'
                                       : null,
                                   isEditable: false,
                                   onChanged: (value) {},
@@ -128,7 +132,7 @@ class _SignUpState extends State<SignUp> {
                                   inputType: TextInputType.text,
                                   formKey: _formKey,
                                   validator: (name) => name!.isEmpty
-                                      ? 'Please enter your full name'
+                                      ? 'Please enter your ward no'
                                       : null,
                                   isEditable: false,
                                   onChanged: (value) {},
@@ -167,9 +171,7 @@ class _SignUpState extends State<SignUp> {
                           child: Text.rich(
                             TextSpan(
                               text: "Sign In",
-                              style: kBodyText.copyWith(
-                                color: Colors.black,
-                              ),
+                              style: kBodyText.copyWith(color: Colors.red),
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () {
                                   // Navigate to RegisterPage
@@ -184,11 +186,8 @@ class _SignUpState extends State<SignUp> {
                         ),
                       ],
                     ),
-                    const SizedBox(
-                      height: 20,
-                    ),
                     Container(
-                      margin: const EdgeInsets.only(bottom: 10.0),
+                      margin: EdgeInsets.only(bottom: 10.h, top: 10.h),
                       child: MyTextButton(
                         buttonName: 'Register',
                         bgColor: Colors.blueGrey,

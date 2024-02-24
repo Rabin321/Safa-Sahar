@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 Widget buildActiveUsersWidget(String activeUsersText, int totalUsers) {
   return Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+    padding: EdgeInsets.symmetric(horizontal: 14.w),
     child: Container(
-      height: 40,
+      height: 35.h,
       decoration: BoxDecoration(
         color: const Color(0xFFD9D9D9),
-        borderRadius: BorderRadius.circular(15),
+        borderRadius: BorderRadius.circular(45.r),
       ),
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: EdgeInsets.all(10.w),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [

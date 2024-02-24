@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../components/constants.dart';
 
 class MyPasswordField extends StatelessWidget {
@@ -14,42 +15,42 @@ class MyPasswordField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10),
+      padding: EdgeInsets.symmetric(vertical: 8.h),
       child: TextFormField(
         style: kBodyText.copyWith(
-          color: Colors.black,
-        ),
+            // color: Colors.black,
+            ),
         obscureText: isPasswordVisible,
         keyboardType: TextInputType.text,
         decoration: InputDecoration(
           filled: true,
-          fillColor: kTextFieldFill,
+          fillColor: Colors.white,
           suffixIcon: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            padding: EdgeInsets.symmetric(horizontal: 8.0.w),
             child: IconButton(
               splashColor: Colors.transparent,
               highlightColor: Colors.transparent,
               onPressed: onTap,
               icon: Icon(
                 isPasswordVisible ? Icons.visibility : Icons.visibility_off,
-                color: Colors.black,
+                // color: Colors.black,
               ),
             ),
           ),
-          contentPadding: const EdgeInsets.all(20),
+          contentPadding: EdgeInsets.all(16.h),
           hintText: 'Password',
           hintStyle: kBodyText,
           enabledBorder: OutlineInputBorder(
-            borderSide: const BorderSide(
-              color: Colors.grey,
-              width: 1,
+            borderSide: BorderSide(
+              color: const Color.fromRGBO(82, 183, 136, 2),
+              width: 1.5.w,
             ),
             borderRadius: BorderRadius.circular(18),
           ),
           focusedBorder: OutlineInputBorder(
-            borderSide: const BorderSide(
-              color: Colors.black,
-              width: 1,
+            borderSide: BorderSide(
+              color: const Color.fromRGBO(82, 183, 136, 2),
+              width: 1.5.w,
             ),
             borderRadius: BorderRadius.circular(18),
           ),

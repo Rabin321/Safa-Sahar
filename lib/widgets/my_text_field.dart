@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class MyTextField extends StatelessWidget {
   const MyTextField({
@@ -28,7 +29,7 @@ class MyTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10),
+      padding: EdgeInsets.symmetric(vertical: 10.h),
       child: Stack(
         alignment: Alignment.centerRight,
         children: [
@@ -42,22 +43,22 @@ class MyTextField extends StatelessWidget {
             decoration: InputDecoration(
               fillColor: Colors.white,
               filled: true,
-              contentPadding: const EdgeInsets.all(20),
+              contentPadding: EdgeInsets.all(16.h),
               hintText: hintText,
-              hintStyle: const TextStyle(color: Colors.black87, fontSize: 12),
+              hintStyle: TextStyle(color: Colors.black87, fontSize: 14.sp),
               enabledBorder: OutlineInputBorder(
-                borderSide: const BorderSide(
-                  color: Color.fromRGBO(82, 183, 136, 2),
-                  width: 1.5,
+                borderSide: BorderSide(
+                  color: const Color.fromRGBO(82, 183, 136, 2),
+                  width: 1.5.w,
                 ),
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(12.r),
               ),
               focusedBorder: OutlineInputBorder(
-                borderSide: const BorderSide(
-                  color: Color.fromRGBO(82, 183, 136, 2),
-                  width: 1.5,
+                borderSide: BorderSide(
+                  color: const Color.fromRGBO(82, 183, 136, 2),
+                  width: 1.5.w,
                 ),
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(12.r),
               ),
               suffixIcon: showDropdownIcon
                   ? IconButton(
