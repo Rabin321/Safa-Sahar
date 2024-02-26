@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../screen.dart';
-import '../../widgets/widget.dart';
+import '../../../widgets/widget.dart';
 
 class WelcomePage extends StatelessWidget {
   const WelcomePage({super.key});

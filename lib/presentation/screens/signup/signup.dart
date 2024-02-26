@@ -1,10 +1,10 @@
-import 'package:finalyear/screens/login/signin_page.dart';
-import 'package:finalyear/screens/signup/widgets/methods.dart';
+import 'package:finalyear/presentation/screens/login/signin_page.dart';
+import 'package:finalyear/presentation/screens/signup/widgets/methods.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../widgets/widget.dart';
-import '../../components/constants.dart';
+import '../../../widgets/widget.dart';
+import '../../../components/constants.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});

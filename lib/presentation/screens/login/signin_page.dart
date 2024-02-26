@@ -1,11 +1,11 @@
-import 'package:finalyear/screens/signup/signup.dart'; // Import the SignUp page
+import 'package:finalyear/presentation/screens/signup/signup.dart'; // Import the SignUp page
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../components/constants.dart';
-import '../../widgets/my_text_field.dart';
-import '../../widgets/my_password_field.dart';
-import '../../widgets/my_text_button.dart';
+import '../../../components/constants.dart';
+import '../../../widgets/my_text_field.dart';
+import '../../../widgets/my_password_field.dart';
+import '../../../widgets/my_text_button.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({Key? key}) : super(key: key);

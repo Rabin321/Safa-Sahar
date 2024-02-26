@@ -1,4 +1,4 @@
-import 'package:finalyear/screens/adminside/admindashboard/ui/admindashboard.dart';
+import 'package:finalyear/presentation/screens/adminside/admindashboard/ui/admindashboard.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 

@@ -39,7 +39,7 @@ dependencies:
   flutter_polyline_points: ^2.0.0
   location: ^5.0.3
   permission_handler: ^11.3.0
-  provider: any
+  provider: ^6.1.1
   encrypt: any
   random_string: ^2.3.1
   # The following adds the Cupertino Icons font to your application.

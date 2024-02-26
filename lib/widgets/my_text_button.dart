@@ -21,7 +21,7 @@ class MyTextButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 50.h,
+      height: 45.h,
       width: double.infinity,
       decoration: BoxDecoration(
         color: bgColor,
