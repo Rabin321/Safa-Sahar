@@ -1,5 +1,5 @@
 import 'package:finalyear/components/constants.dart';
-import 'package:finalyear/screens/adminside/admindashboard/widgets/dustbinnumber.dart';
+import 'package:finalyear/presentation/screens/adminside/admindashboard/widgets/dustbinnumber.dart';
 //import 'package:finalyear/googlemapapi/googlemap.dart';
 import 'package:finalyear/widgets/appbarwithdrawer.dart';
 import 'package:flutter/material.dart';

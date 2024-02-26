@@ -1,5 +1,7 @@
-import 'package:finalyear/screens/adminside/addstaff/ui/addstaff.dart';
-import 'package:finalyear/screens/adminside/admindashboard/ui/admindashboard.dart';
+import 'package:finalyear/presentation/screens/adminside/addDustbin/addDustbin.dart';
+import 'package:finalyear/presentation/screens/adminside/addstaff/ui/addstaff.dart';
+import 'package:finalyear/presentation/screens/adminside/adminNotification/adminNotification.dart';
+import 'package:finalyear/presentation/screens/adminside/admindashboard/ui/admindashboard.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -20,9 +22,9 @@ class _HomePageState extends State<HomePage> {
   //different pages to navigate
   final List<Widget> _children = [
     const AdminDashboard(),
-    const Center(child: Text("People")),
-    AdminAddStaff(),
-    const Center(child: Text("Notifications")),
+    const AdminAddDustbin(),
+    const AdminAddStaff(),
+    const AdminNotificationPage(),
   ];
 
   @override

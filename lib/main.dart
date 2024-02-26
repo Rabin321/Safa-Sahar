@@ -1,5 +1,5 @@
-import 'package:finalyear/screens/homepage/homepage.dart';
-import 'package:finalyear/screens/splashScreen.dart';
+import 'package:finalyear/presentation/screens/homepage/homepage.dart';
+import 'package:finalyear/presentation/screens/splashScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 

@@ -1,4 +1,4 @@
-import 'package:finalyear/screens/hamdrawerpages/mapview/mapviewpage.dart';
+import 'package:finalyear/presentation/screens/hamdrawerpages/mapview/mapviewpage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 

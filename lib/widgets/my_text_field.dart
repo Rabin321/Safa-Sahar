@@ -73,3 +73,62 @@ class MyTextField extends StatelessWidget {
     );
   }
 }
+
+class MyTextField2 extends StatelessWidget {
+  const MyTextField2({
+    super.key,
+    required this.hintText,
+    required this.inputType,
+    this.controller,
+    this.validator,
+    required this.formKey,
+    required Null Function(dynamic value)
+        onChanged, // Optional parameter to control visibility of dropdown icon
+  });
+
+  final String hintText;
+  final TextInputType inputType;
+  final TextEditingController? controller;
+  final String? Function(String?)? validator;
+  final GlobalKey<FormState> formKey;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 10.h),
+      child: Stack(
+        alignment: Alignment.centerRight,
+        children: [
+          TextFormField(
+            controller: controller,
+            keyboardType: inputType,
+            validator: validator,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            textInputAction: TextInputAction.next,
+            decoration: InputDecoration(
+              fillColor: Colors.white,
+              filled: true,
+              contentPadding: EdgeInsets.all(16.h),
+              hintText: hintText,
+              hintStyle: TextStyle(color: Colors.black87, fontSize: 14.sp),
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: const Color.fromRGBO(82, 183, 136, 2),
+                  width: 1.5.w,
+                ),
+                borderRadius: BorderRadius.circular(12.r),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: const Color.fromRGBO(82, 183, 136, 2),
+                  width: 1.5.w,
+                ),
+                borderRadius: BorderRadius.circular(12.r),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}

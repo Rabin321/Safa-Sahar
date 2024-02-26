@@ -1,10 +1,11 @@
 import 'package:finalyear/components/constants.dart';
-import 'package:finalyear/screens/adminside/addstaff/ui/staffform.dart';
-import 'package:finalyear/screens/signup/widgets/methods.dart';
+import 'package:finalyear/presentation/screens/adminside/addstaff/ui/staffform.dart';
+import 'package:finalyear/presentation/screens/signup/widgets/methods.dart';
 import 'package:finalyear/widgets/appbarwithdrawer.dart';
-import 'package:finalyear/widgets/my_text_button.dart';
 import 'package:finalyear/widgets/my_text_field.dart';
 import 'package:flutter/material.dart';
+
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 final TextEditingController _locationController2 = TextEditingController();
@@ -26,11 +27,15 @@ class AdminAddStaff extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Align(
-              alignment: Alignment.center,
-              child: Text(
-                "STAFFS",
-                style: kBodyText2.copyWith(color: const Color(0xFF365307)),
+            Padding(
+              padding: EdgeInsets.only(top: 10.h, bottom: 16.h),
+              child: Align(
+                alignment: Alignment.center,
+                child: Text(
+                  "STAFFS",
+                  style: kBodyText2.copyWith(
+                      color: const Color(0xFF365307), letterSpacing: 1),
+                ),
               ),
             ),
             buildLocationSelectionWidget(
@@ -40,11 +45,12 @@ class AdminAddStaff extends StatelessWidget {
               formKey: GlobalKey<FormState>(),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              padding: EdgeInsets.symmetric(horizontal: 15.h),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   DataTable(
+                      columnSpacing: 80.w,
                       columns: const [
                         DataColumn(label: Text('ID')),
                         DataColumn(label: Text('Name')),
@@ -57,10 +63,29 @@ class AdminAddStaff extends StatelessWidget {
                                 DataCell(Text(staff['number'])),
                               ]))
                           .toList()),
-                  const SizedBox(height: 10),
-                  const Text("Add staff to this ward", style: kBodyText),
-                  const SizedBox(height: 15),
-                  const StaffForm(),
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 10.h),
+                    child: const Text("Add staff to this ward", style: subhead),
+                  ),
+                  CustomAddTextfield(
+                    name: "Name",
+                    hintTextName: "Name...",
+                    validatorText: "Please enter a valid name",
+                  ),
+                  CustomAddTextfield(
+                    name: "Location",
+                    hintTextName: "Location...",
+                    validatorText: "Please enter a valid location",
+                  ),
+                  CustomAddTextfield(
+                    name: "Number",
+                    hintTextName: "Number...",
+                    validatorText: "Please enter a valid number",
+                  ),
+                  CustomAddButton(
+                    name: "Add",
+                    onPressed: () {},
+                  )
                 ],
               ),
             )
@@ -78,23 +103,24 @@ Widget buildLocationSelectionWidget({
   required GlobalKey<FormState> formKey,
 }) {
   return Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+    padding: EdgeInsets.symmetric(horizontal: 15.h),
     child: Column(
       children: [
         Container(
-          height: 215,
+          height: 195.h,
           width: double.infinity,
-          decoration: const BoxDecoration(
-              color: Color.fromRGBO(82, 183, 136, 0.5),
-              borderRadius: BorderRadius.all(Radius.circular(12))),
+          decoration: BoxDecoration(
+              color: const Color.fromRGBO(82, 183, 136, 0.5),
+              borderRadius: BorderRadius.all(Radius.circular(12.r))),
           child: Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: EdgeInsets.all(8.h),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
+                Text(
                   "Select Location:",
-                  style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+                  style:
+                      TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
                 ),
                 MyTextField(
                   hintText: 'Location...',
@@ -110,9 +136,10 @@ Widget buildLocationSelectionWidget({
                   isEditable: false,
                   onChanged: (value) {},
                 ),
-                const Text(
+                Text(
                   "Select Ward:",
-                  style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+                  style:
+                      TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
                 ),
                 MyTextField(
                   hintText: 'WardNo...',
@@ -130,14 +157,14 @@ Widget buildLocationSelectionWidget({
             ),
           ),
         ),
-        const SizedBox(
-          height: 10,
+        SizedBox(
+          height: 10.h,
         ),
         const Row(
           children: [
             Text(
               "Staff Details",
-              style: kBodyText,
+              style: subhead,
             )
           ],
         ),

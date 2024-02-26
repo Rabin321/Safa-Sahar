@@ -1,7 +1,7 @@
-import 'package:finalyear/screens/homepage/homepage.dart';
+import 'package:finalyear/presentation/screens/homepage/homepage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:finalyear/screens/screen.dart';
+import 'package:finalyear/presentation/screens/screen.dart';
 
 class Splash extends StatelessWidget {
   const Splash({Key? key}) : super(key: key);

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 const String googleApiKey = "AIzaSyD9GUN6NoQ_ldV5gTWSsKsfAjwJ61Xbq7Q";
 
@@ -23,3 +24,9 @@ const kButtonText = TextStyle(
 
 const kBodyText2 =
     TextStyle(fontSize: 18, fontWeight: FontWeight.w500, color: Colors.black87);
+
+const subhead = TextStyle(
+  color: Colors.black,
+  fontSize: 18,
+  fontWeight: FontWeight.w600,
+);
