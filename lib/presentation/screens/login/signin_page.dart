@@ -1,3 +1,4 @@
+import 'package:finalyear/presentation/screens/forgotPassword/forgotPassword.dart';
 import 'package:finalyear/presentation/screens/signup/signup.dart'; // Import the SignUp page
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -71,9 +72,20 @@ class _SignInPageState extends State<SignInPage> {
 
                     Padding(
                       padding: EdgeInsets.only(top: 15.h, bottom: 25.h),
-                      child: const Text(
-                        'Forgot Password?',
-                        style: TextStyle(color: Colors.red),
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            CupertinoPageRoute(
+                              builder: (context) =>
+                                  const ForgotPasswordScreen(),
+                            ),
+                          );
+                        },
+                        child: const Text(
+                          'Forgot Password?',
+                          style: TextStyle(color: Colors.red),
+                        ),
                       ),
                     ),
                     MyTextButton(
