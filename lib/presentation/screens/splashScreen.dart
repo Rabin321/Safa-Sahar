@@ -8,7 +8,8 @@ class Splash extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    _navigateToHome(context); // Call the navigation method when building the widget
+    _navigateToHome(
+        context); // Call the navigation method when building the widget
     return Scaffold(
       body: Center(
         child: Column(

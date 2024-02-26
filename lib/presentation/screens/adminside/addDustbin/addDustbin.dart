@@ -1,5 +1,6 @@
 import 'package:finalyear/components/constants.dart';
 import 'package:finalyear/presentation/screens/adminside/addstaff/ui/staffform.dart';
+import 'package:finalyear/presentation/screens/adminside/admindashboard/ui/admindashboard.dart';
 import 'package:finalyear/presentation/screens/signup/widgets/methods.dart';
 import 'package:finalyear/widgets/appbarwithdrawer.dart';
 import 'package:finalyear/widgets/my_text_field.dart';
@@ -79,9 +80,10 @@ class AdminAddDustbin extends StatelessWidget {
                     hintTextName: "Location...",
                     validatorText: "Please enter a valid location",
                   ),
-                   CustomAddButton(name: "Add", onPressed: (){
-
-                  },)
+                  CustomAddButton(
+                    name: "Add",
+                    onPressed: () {},
+                  )
                 ],
               ),
             )

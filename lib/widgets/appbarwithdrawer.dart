@@ -1,3 +1,5 @@
+import 'package:finalyear/presentation/screens/adminside/addDustbin/addDustbin.dart';
+import 'package:finalyear/presentation/screens/adminside/adminNotification/adminNotification.dart';
 import 'package:finalyear/presentation/screens/hamdrawerpages/mapview/mapviewpage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -27,6 +29,9 @@ class _MyHomePageState extends State<AppBarWithDrawer> {
     return Scaffold(
         key: scaffoldKey,
         appBar: AppBar(
+          iconTheme: const IconThemeData(
+            color: const Color.fromRGBO(138, 201, 38, 1),
+          ),
           backgroundColor: const Color.fromRGBO(0, 62, 31, 0.9),
           title: Row(
             mainAxisAlignment: MainAxisAlignment.end,
@@ -161,7 +166,7 @@ class _MyHomePageState extends State<AppBarWithDrawer> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const MapViewPage()),
+                        builder: (context) => const AdminAddDustbin()),
                   );
                   // Handle Home Click
                 },
@@ -180,7 +185,7 @@ class _MyHomePageState extends State<AppBarWithDrawer> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const MapViewPage()),
+                        builder: (context) => const AdminNotificationPage()),
                   );
                   // Handle Home Click
                 },
