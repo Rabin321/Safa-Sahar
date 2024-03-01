@@ -1,8 +1,12 @@
+import 'package:finalyear/domain/signin/signinApi/signinModel/login_model.dart';
+import 'package:finalyear/domain/signin/signinApi/signinRepository/login_repository.dart';
 import 'package:finalyear/presentation/screens/forgotPassword/forgotPassword.dart';
+import 'package:finalyear/presentation/screens/homepage/homepage.dart';
 import 'package:finalyear/presentation/screens/signup/signup.dart'; // Import the SignUp page
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:motion_toast/motion_toast.dart';
 import '../../../components/constants.dart';
 import '../../../widgets/my_text_field.dart';
 import '../../../widgets/my_password_field.dart';
@@ -19,6 +23,38 @@ class _SignInPageState extends State<SignInPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool isPasswordVisible = true;
   final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  _loginUser() async {
+    try {
+      LoginRepository loginRepository = LoginRepository();
+      bool isLogin = await loginRepository.login(LoginModel(
+          email: _emailController.text, password: _passwordController.text));
+
+      if (isLogin) {
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => const HomePage()));
+
+        // AuthController.login();
+      } else {
+        MotionToast.error(
+                description:
+                    const Text("Either email or password is incorrect."))
+            .show(context);
+      }
+    } catch (e) {
+      MotionToast.error(
+        description: Text("Error:${e.toString()}"),
+      ).show(context);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,11 +93,13 @@ class _SignInPageState extends State<SignInPage> {
                       hintText: 'Enter Email',
                       inputType: TextInputType.text,
                       controller: _emailController,
-                      formKey: _formKey, isEditable: true,
+                      formKey: _formKey,
+                      isEditable: true,
                       onChanged: (value) {}, // Fixed typo here
                     ),
                     // const SizedBox(height: 20),
                     MyPasswordField(
+                      controller: _passwordController,
                       isPasswordVisible: isPasswordVisible,
                       onTap: () {
                         setState(() {
@@ -132,7 +170,17 @@ class _SignInPageState extends State<SignInPage> {
                       //     );
                       //   }
                       // },
-                      onPressed: () {},
+                      onPressed: () {
+                        // if (_formKey.currentState!.validate()) {
+                        //   // Validation succeeded, proceed with registration
+                        //   _loginUser();
+                        // } else {
+                        //   print("Validation error");
+                        //   // Validation failed, do not proceed
+                        //   // You can optionally display an error message to the user
+                        // }
+                        _loginUser();
+                      },
                     ),
 
                     Padding(

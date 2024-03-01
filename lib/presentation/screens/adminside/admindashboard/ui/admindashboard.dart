@@ -2,7 +2,8 @@ import 'package:finalyear/components/constants.dart';
 import 'package:finalyear/presentation/screens/adminside/admindashboard/widgets/activeuser_widget.dart';
 import 'package:finalyear/presentation/screens/adminside/admindashboard/widgets/buildchart.dart';
 import 'package:finalyear/presentation/screens/adminside/admindashboard/widgets/dustbinnumber.dart';
-import 'package:finalyear/widgets/appbarwithdrawer.dart';
+import 'package:finalyear/widgets/appBarWithDrawer/admin_appbarWithDrawer.dart';
+import 'package:finalyear/widgets/appBarWithDrawer/user_appbarWithDrawer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:responsive_grid_list/responsive_grid_list.dart';
@@ -12,7 +13,8 @@ class AdminDashboard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppBarWithDrawer(
+    // return AdminAppBarWithDrawer(
+    return AdminAppBarWithDrawer(
       title: 'ADMIN',
       body: SingleChildScrollView(
         child: Column(

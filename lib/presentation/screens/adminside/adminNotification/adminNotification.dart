@@ -1,7 +1,7 @@
 import 'package:finalyear/components/constants.dart';
 import 'package:finalyear/presentation/screens/adminside/addstaff/ui/staffform.dart';
 import 'package:finalyear/presentation/screens/signup/widgets/methods.dart';
-import 'package:finalyear/widgets/appbarwithdrawer.dart';
+import 'package:finalyear/widgets/appBarWithDrawer/admin_appbarWithDrawer.dart';
 import 'package:finalyear/widgets/my_text_field.dart';
 import 'package:flutter/material.dart';
 
@@ -21,7 +21,7 @@ class AdminNotificationPage extends StatelessWidget {
       // add more staff data as needed
     ];
     double screenHeight = MediaQuery.of(context).size.height;
-    return AppBarWithDrawer(
+    return AdminAppBarWithDrawer(
       title: 'ADMIN',
       body: SingleChildScrollView(
         child: Column(

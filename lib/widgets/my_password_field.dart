@@ -6,8 +6,10 @@ class MyPasswordField extends StatelessWidget {
   const MyPasswordField({
     required this.isPasswordVisible,
     required this.onTap,
+    required this.controller,
     String? errorText,
   });
+  final TextEditingController controller;
 
   final bool isPasswordVisible;
   final VoidCallback onTap;
