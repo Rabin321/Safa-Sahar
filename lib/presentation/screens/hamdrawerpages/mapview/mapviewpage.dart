@@ -1,7 +1,7 @@
 import 'package:finalyear/components/constants.dart';
 import 'package:finalyear/presentation/screens/adminside/admindashboard/widgets/dustbinnumber.dart';
 //import 'package:finalyear/googlemapapi/googlemap.dart';
-import 'package:finalyear/widgets/appbarwithdrawer.dart';
+import 'package:finalyear/widgets/appBarWithDrawer/admin_appbarWithDrawer.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_grid_list/responsive_grid_list.dart';
 
@@ -15,7 +15,7 @@ class MapViewPage extends StatefulWidget {
 class _MapViewPageState extends State<MapViewPage> {
   @override
   Widget build(BuildContext context) {
-    return AppBarWithDrawer(
+    return AdminAppBarWithDrawer(
       title: 'ADMIN',
       body: SingleChildScrollView(
         child: Column(

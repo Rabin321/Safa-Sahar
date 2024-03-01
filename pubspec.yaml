@@ -48,6 +48,17 @@ dependencies:
   http: ^1.2.0
   modal_progress_hud_nsn: ^0.5.1
   flutter_screenutil: ^5.8.4
+  dio: ^5.4.1
+  # json_serializer: ^0.2.0
+  analyzer: ^6.4.1
+  freezed: ^2.4.7
+  retrofit_generator: ^8.1.0
+  build_runner: ^2.4.8
+  dartz: ^0.10.1
+  json_annotation: ^4.8.1
+  retrofit: ^4.1.0
+  json_serializable: ^6.7.1
+  motion_toast: ^2.8.0
 
 dev_dependencies:
   flutter_test:

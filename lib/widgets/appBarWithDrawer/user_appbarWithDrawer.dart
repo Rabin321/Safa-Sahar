@@ -4,20 +4,20 @@ import 'package:finalyear/presentation/screens/hamdrawerpages/mapview/mapviewpag
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class AppBarWithDrawer extends StatefulWidget {
+class UserAppBarWithDrawer extends StatefulWidget {
   final String title;
   final Widget body;
-  const AppBarWithDrawer({
+  const UserAppBarWithDrawer({
     super.key,
     required this.title,
     required this.body,
   });
 
   @override
-  State<AppBarWithDrawer> createState() => _MyHomePageState();
+  State<UserAppBarWithDrawer> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<AppBarWithDrawer> {
+class _MyHomePageState extends State<UserAppBarWithDrawer> {
   final listTextStyle = const TextStyle(
     color: Colors.black,
     fontWeight: FontWeight.w500,
@@ -100,17 +100,12 @@ class _MyHomePageState extends State<AppBarWithDrawer> {
               ),
               ListTile(
                 textColor: Colors.white,
-                leading: const Icon(Icons.location_on),
+                leading: const Icon(Icons.payment),
                 title: Text(
-                  'Map View',
+                  'Payment',
                   style: listTextStyle,
                 ),
                 onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const MapViewPage()),
-                  );
                   // Handle Home Click
                 },
               ),
@@ -119,17 +114,12 @@ class _MyHomePageState extends State<AppBarWithDrawer> {
               ),
               ListTile(
                 textColor: Colors.white,
-                leading: const Icon(Icons.person),
+                leading: const Icon(Icons.report),
                 title: Text(
-                  'Profile',
+                  'Report',
                   style: listTextStyle,
                 ),
                 onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const MapViewPage()),
-                  );
                   // Handle Home Click
                 },
               ),
@@ -138,57 +128,24 @@ class _MyHomePageState extends State<AppBarWithDrawer> {
               ),
               ListTile(
                 textColor: Colors.white,
-                leading: const Icon(Icons.group),
+                leading: const Icon(Icons.delete),
                 title: Text(
-                  'Users',
+                  'View Bin',
                   style: listTextStyle,
                 ),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const MapViewPage()),
-                  );
-                  // Handle Home Click
-                },
+                onTap: () {},
               ),
               const Divider(
                 color: Colors.green,
               ),
               ListTile(
                 textColor: Colors.white,
-                leading: const Icon(Icons.delete_outline),
+                leading: const Icon(Icons.question_mark_outlined),
                 title: Text(
-                  'Dustbin',
+                  'About Us',
                   style: listTextStyle,
                 ),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const AdminAddDustbin()),
-                  );
-                  // Handle Home Click
-                },
-              ),
-              const Divider(
-                color: Colors.green,
-              ),
-              ListTile(
-                textColor: Colors.white,
-                leading: const Icon(Icons.notifications),
-                title: Text(
-                  'Notifications',
-                  style: listTextStyle,
-                ),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const AdminNotificationPage()),
-                  );
-                  // Handle Home Click
-                },
+                onTap: () {},
               ),
               const Divider(
                 color: Colors.green,

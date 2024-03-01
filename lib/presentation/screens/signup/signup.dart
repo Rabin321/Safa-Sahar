@@ -1,8 +1,11 @@
+import 'package:finalyear/domain/signup/signUp_repository.dart/signUP_repository.dart';
+import 'package:finalyear/domain/signup/signupModel/signUpModel.dart';
 import 'package:finalyear/presentation/screens/login/signin_page.dart';
 import 'package:finalyear/presentation/screens/signup/widgets/methods.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:motion_toast/motion_toast.dart';
 import '../../../widgets/widget.dart';
 import '../../../components/constants.dart';
 
@@ -34,6 +37,30 @@ class _SignUpState extends State<SignUp> {
     _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
+  }
+
+  _registerUser() async {
+    try {
+      UserRepository userRepository = UserRepository();
+      bool isRegister = await userRepository.register(SignUpModel(
+        name: _fullNameController.text,
+        email: _emailController.text,
+        password: _passwordController.text,
+      ));
+
+      if (isRegister) {
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const SignInPage()));
+        // AuthController.login();
+      } else {
+        MotionToast.error(description: const Text("Something went wrong"))
+            .show(context);
+      }
+    } catch (e) {
+      MotionToast.error(
+        description: Text("Error:${e.toString()}"),
+      ).show(context);
+    }
   }
 
   @override
@@ -147,6 +174,7 @@ class _SignUpState extends State<SignUp> {
                                   onChanged: (value) {},
                                 ),
                                 MyPasswordField(
+                                  controller: _passwordController,
                                   isPasswordVisible: passwordVisibility,
                                   onTap: () {
                                     setState(() {
@@ -193,7 +221,14 @@ class _SignUpState extends State<SignUp> {
                         bgColor: Colors.blueGrey,
                         textColor: Colors.black87,
                         onPressed: () {
-                          _formKey.currentState!.validate();
+                          if (_formKey.currentState!.validate()) {
+                            // Validation succeeded, proceed with registration
+                            _registerUser();
+                          } else {
+                            print("Validation error");
+                            // Validation failed, do not proceed
+                            // You can optionally display an error message to the user
+                          }
                         },
                       ),
                     )
