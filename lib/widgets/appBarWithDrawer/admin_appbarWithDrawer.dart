@@ -1,8 +1,10 @@
 import 'package:finalyear/presentation/screens/adminside/addDustbin/addDustbin.dart';
 import 'package:finalyear/presentation/screens/adminside/adminNotification/adminNotification.dart';
 import 'package:finalyear/presentation/screens/hamdrawerpages/mapview/mapviewpage.dart';
+import 'package:finalyear/presentation/screens/login/signin_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AdminAppBarWithDrawer extends StatefulWidget {
   final String title;
@@ -100,9 +102,9 @@ class _MyHomePageState extends State<AdminAppBarWithDrawer> {
               ),
               ListTile(
                 textColor: Colors.white,
-                leading: const Icon(Icons.location_on),
+                leading: const Icon(Icons.people),
                 title: Text(
-                  'Map View',
+                  'Users',
                   style: listTextStyle,
                 ),
                 onTap: () {
@@ -138,9 +140,9 @@ class _MyHomePageState extends State<AdminAppBarWithDrawer> {
               ),
               ListTile(
                 textColor: Colors.white,
-                leading: const Icon(Icons.group),
+                leading: const Icon(Icons.location_on),
                 title: Text(
-                  'Users',
+                  'Map View',
                   style: listTextStyle,
                 ),
                 onTap: () {
@@ -157,9 +159,9 @@ class _MyHomePageState extends State<AdminAppBarWithDrawer> {
               ),
               ListTile(
                 textColor: Colors.white,
-                leading: const Icon(Icons.delete_outline),
+                leading: const Icon(Icons.settings),
                 title: Text(
-                  'Dustbin',
+                  'Settings',
                   style: listTextStyle,
                 ),
                 onTap: () {
@@ -176,18 +178,23 @@ class _MyHomePageState extends State<AdminAppBarWithDrawer> {
               ),
               ListTile(
                 textColor: Colors.white,
-                leading: const Icon(Icons.notifications),
+                leading: const Icon(Icons.logout),
                 title: Text(
-                  'Notifications',
+                  'Logout',
                   style: listTextStyle,
                 ),
-                onTap: () {
-                  Navigator.push(
+                onTap: () async {
+                  // Clear user session (remove token from shared_preferences)
+                  SharedPreferences prefs =
+                      await SharedPreferences.getInstance();
+                  await prefs.remove('token');
+                  print("token removed");
+
+                  // Navigate to the login screen
+                  Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(
-                        builder: (context) => const AdminNotificationPage()),
+                    MaterialPageRoute(builder: (context) => SignInPage()),
                   );
-                  // Handle Home Click
                 },
               ),
               const Divider(
