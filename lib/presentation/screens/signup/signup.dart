@@ -34,6 +34,8 @@ class _SignUpState extends State<SignUp> {
   void dispose() {
     _fullNameController.dispose();
     _locationController.dispose();
+    _housenoController.dispose();
+    _wardnoController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
@@ -191,15 +193,16 @@ class _SignUpState extends State<SignUp> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Text(
+                        Text(
                           "Already have an account? ",
-                          style: kBodyText,
+                          style: kBodyText.copyWith(fontSize: 15.sp),
                         ),
                         GestureDetector(
                           child: Text.rich(
                             TextSpan(
                               text: "Sign In",
-                              style: kBodyText.copyWith(color: Colors.red),
+                              style: kBodyText.copyWith(
+                                  color: Colors.red, fontSize: 15.sp),
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () {
                                   // Navigate to RegisterPage
@@ -218,7 +221,7 @@ class _SignUpState extends State<SignUp> {
                       margin: EdgeInsets.only(bottom: 10.h, top: 10.h),
                       child: MyTextButton(
                         buttonName: 'Register',
-                        bgColor: Colors.blueGrey,
+                        bgColor: Colors.green,
                         textColor: Colors.black87,
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {

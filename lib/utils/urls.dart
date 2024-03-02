@@ -4,4 +4,4 @@ const registerUrl = '/register';
 const loginUrl = '/login';
 const otpVerifyUrl = 'otp/verify/';
 
-const forgotPasswordUrl = 'forgot-password/';
+const forgotPasswordUrl = '/forget-password';
