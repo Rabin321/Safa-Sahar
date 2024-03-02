@@ -120,9 +120,12 @@ class _SignInPageState extends State<SignInPage> {
                             ),
                           );
                         },
-                        child: const Text(
+                        child: Text(
                           'Forgot Password?',
-                          style: TextStyle(color: Colors.red),
+                          style: TextStyle(
+                              color: Colors.red,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 15.sp),
                         ),
                       ),
                     ),
@@ -188,9 +191,9 @@ class _SignInPageState extends State<SignInPage> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Text(
+                          Text(
                             "New here? ",
-                            style: kBodyText,
+                            style: kBodyText.copyWith(fontSize: 15.sp),
                           ),
                           GestureDetector(
                             onTap: () {
@@ -203,7 +206,8 @@ class _SignInPageState extends State<SignInPage> {
                             },
                             child: Text(
                               'Register',
-                              style: kBodyText.copyWith(color: Colors.red),
+                              style: kBodyText.copyWith(
+                                  color: Colors.red, fontSize: 15.sp),
                             ),
                           ),
                         ],

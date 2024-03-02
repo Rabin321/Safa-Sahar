@@ -1,7 +1,10 @@
+import 'package:finalyear/domain/signin/signinApi/signinRepository/login_repository.dart';
+import 'package:finalyear/presentation/screens/login/signin_page.dart';
 import 'package:finalyear/widgets/inputField.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:motion_toast/motion_toast.dart';
 
 import 'package:provider/provider.dart';
 
@@ -25,7 +28,29 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
 
   final _formKey = GlobalKey<FormState>();
   final textControllerEmail = TextEditingController();
-  final textControllerPassword = TextEditingController();
+
+  _forgotPassword() async {
+    try {
+      LoginRepository loginRepository = LoginRepository();
+      bool isForgot =
+          await loginRepository.forgotPassword(textControllerEmail.text);
+
+      if (isForgot) {
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) {
+          return SignInPage();
+        }));
+      } else {
+        MotionToast.error(
+                description: const Text("Please provide a valid email"))
+            .show(context);
+      }
+    } catch (e) {
+      MotionToast.error(
+        description: Text("Error:${e.toString()}"),
+      ).show(context);
+    }
+  }
 
   void languageDropdownChanged(String? value) {
     if (value is String) {
@@ -34,28 +59,6 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
       });
     }
   }
-
-  // _forgotPassword() async {
-  //   try {
-  //     LoginRepository loginRepository = LoginRepository();
-  //     bool isForgot =
-  //         await loginRepository.forgotPassword(textControllerEmail.text);
-
-  //     if (isForgot) {
-  //       Navigator.push(context, MaterialPageRoute(builder: (context) {
-  //         return const SignInScreen();
-  //       }));
-  //     } else {
-  //       MotionToast.error(
-  //               description: const Text("Please provide a valid email"))
-  //           .show(context);
-  //     }
-  //   } catch (e) {
-  //     MotionToast.error(
-  //       description: Text("Error:${e.toString()}"),
-  //     ).show(context);
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -132,7 +135,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   height: 20.h,
                 ),
                 Text(
-                  "Some description",
+                  "Enter the email address associated with your account and we will send you a link to reset your password.",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontFamily: 'Poppins',
@@ -211,7 +214,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                       });
 
                       if (_formKey.currentState!.validate()) {
-                        // _forgotPassword();
+                        _forgotPassword();
                       } else {
                         setState(() {
                           isLoading = false;
@@ -222,10 +225,10 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.green,
-                    minimumSize: Size.fromHeight(40.h),
+                    minimumSize: Size.fromHeight(20.h),
                     padding: EdgeInsets.symmetric(
-                      horizontal: 30.w,
-                      vertical: 20.h,
+                      horizontal: 20.w,
+                      vertical: 12.h,
                     ),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(22.r),
@@ -233,7 +236,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   ),
                 ),
                 SizedBox(
-                  height: 40.h,
+                  height: 30.h,
                 ),
               ],
             ),

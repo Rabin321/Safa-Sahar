@@ -47,14 +47,14 @@ class MyPasswordField extends StatelessWidget {
               color: const Color.fromRGBO(82, 183, 136, 2),
               width: 1.5.w,
             ),
-            borderRadius: BorderRadius.circular(18),
+            borderRadius: BorderRadius.circular(12.r),
           ),
           focusedBorder: OutlineInputBorder(
             borderSide: BorderSide(
               color: const Color.fromRGBO(82, 183, 136, 2),
               width: 1.5.w,
             ),
-            borderRadius: BorderRadius.circular(18),
+            borderRadius: BorderRadius.circular(12.r),
           ),
         ),
       ),
