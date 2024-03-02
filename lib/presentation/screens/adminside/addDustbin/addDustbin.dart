@@ -51,8 +51,10 @@ class AdminAddDustbin extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  DataTable(
-                      columnSpacing: 40.w,
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: DataTable(
+                      columnSpacing: 50.w,
                       columns: const [
                         DataColumn(label: Text('Dustbin ID')),
                         DataColumn(label: Text('Fill Percentage')),
@@ -64,7 +66,9 @@ class AdminAddDustbin extends StatelessWidget {
                                 DataCell(Text(staff['fillPercentage'])),
                                 DataCell(Text(staff['assignedStaff'])),
                               ]))
-                          .toList()),
+                          .toList(),
+                    ),
+                  ),
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 5.h),
                     child:
@@ -106,7 +110,7 @@ Widget buildLocationSelectionWidget({
     child: Column(
       children: [
         Container(
-          height: 195.h,
+          // height: 195.h,
           width: double.infinity,
           decoration: BoxDecoration(
               color: const Color.fromRGBO(82, 183, 136, 0.5),
@@ -116,11 +120,7 @@ Widget buildLocationSelectionWidget({
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  "Select Location:",
-                  style:
-                      TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
-                ),
+                Text("Select Location:", style: kHeadline),
                 MyTextField(
                   hintText: 'Location...',
                   controller: locationController,
@@ -135,11 +135,7 @@ Widget buildLocationSelectionWidget({
                   isEditable: false,
                   onChanged: (value) {},
                 ),
-                Text(
-                  "Select Ward:",
-                  style:
-                      TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
-                ),
+                Text("Select Ward:", style: kHeadline),
                 MyTextField(
                   hintText: 'WardNo...',
                   controller: wardnoController,

@@ -41,6 +41,8 @@ class _SignInPageState extends State<SignInPage> {
       if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
         // Show error message if email or password is empty
         MotionToast.error(
+           height: 50.h,
+          animationDuration: const Duration(milliseconds: 300),
           description: const Text("Please provide both email and password."),
         ).show(context);
         return; // Exit the function if validation fails
@@ -62,6 +64,8 @@ class _SignInPageState extends State<SignInPage> {
       } else {
         // If login fails, display an appropriate error message
         MotionToast.error(
+           height: 50.h,
+          animationDuration: const Duration(milliseconds: 300),
           description: const Text("Invalid email or password."),
         ).show(context);
       }
@@ -69,6 +73,8 @@ class _SignInPageState extends State<SignInPage> {
       // Handle any unexpected errors that occur during the login process
       print("Error during login: $e");
       MotionToast.error(
+         height: 50.h,
+        animationDuration: const Duration(milliseconds: 300),
         description:
             const Text("An unexpected error occurred. Please try again later."),
       ).show(context);
@@ -104,12 +110,7 @@ class _SignInPageState extends State<SignInPage> {
                       ),
                       Padding(
                         padding: EdgeInsets.only(bottom: 80.h),
-                        child: Text('SAFA SAHAR',
-                            style: TextStyle(
-                              fontSize: 28.sp,
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
-                            )),
+                        child: Text('SAFA SAHAR', style: kHeadline),
                       ),
 
                       MyTextField(
@@ -145,10 +146,9 @@ class _SignInPageState extends State<SignInPage> {
                           },
                           child: Text(
                             'Forgot Password?',
-                            style: TextStyle(
-                                color: Colors.red,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 15.sp),
+                            style: kBodyText.copyWith(
+                              color: Colors.red,
+                            ),
                           ),
                         ),
                       ),
@@ -214,10 +214,7 @@ class _SignInPageState extends State<SignInPage> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text(
-                              "New here? ",
-                              style: kBodyText.copyWith(fontSize: 15.sp),
-                            ),
+                            Text("New here? ", style: kBodyText),
                             GestureDetector(
                               onTap: () {
                                 Navigator.push(
@@ -230,7 +227,8 @@ class _SignInPageState extends State<SignInPage> {
                               child: Text(
                                 'Register',
                                 style: kBodyText.copyWith(
-                                    color: Colors.red, fontSize: 15.sp),
+                                  color: Colors.red,
+                                ),
                               ),
                             ),
                           ],

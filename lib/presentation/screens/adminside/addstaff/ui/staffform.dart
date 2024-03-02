@@ -121,10 +121,7 @@ class _CustomAddTextfieldState extends State<CustomAddTextfield> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            widget.name!,
-            style: kBodyText.copyWith(fontSize: 15.sp),
-          ),
+          Text(widget.name!, style: kBodyText),
           MyTextField(
             hintText: widget.hintTextName,
             inputType: TextInputType.text,
