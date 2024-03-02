@@ -29,44 +29,47 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: _children[_selectedIndex],
-      bottomNavigationBar: BottomNavigationBar(
-          backgroundColor: const Color(0xFF52B788),
-          fixedColor: Colors.black,
-          currentIndex: _selectedIndex,
-          onTap: _navigatorBottomNavBar,
-          type: BottomNavigationBarType.fixed,
-          items: const [
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.home,
-                size: 30,
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        body: _children[_selectedIndex],
+        bottomNavigationBar: BottomNavigationBar(
+            backgroundColor: const Color(0xFF52B788),
+            fixedColor: Colors.black,
+            currentIndex: _selectedIndex,
+            onTap: _navigatorBottomNavBar,
+            type: BottomNavigationBarType.fixed,
+            items: const [
+              BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.home,
+                  size: 30,
+                ),
+                label: "Home",
               ),
-              label: "Home",
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.delete_outline,
-                size: 30,
+              BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.delete_outline,
+                  size: 30,
+                ),
+                label: "Dustbin",
               ),
-              label: "Dustbin",
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.people,
-                size: 30,
+              BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.people,
+                  size: 30,
+                ),
+                label: "People",
               ),
-              label: "People",
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.notifications,
-                size: 30,
+              BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.notifications,
+                  size: 30,
+                ),
+                label: "Notifications",
               ),
-              label: "Notifications",
-            ),
-          ]),
+            ]),
+      ),
     );
   }
 }

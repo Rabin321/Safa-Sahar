@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
-import 'package:finalyear/domain/signin/loginREsponse/loginResponse.dart';
 import 'package:finalyear/domain/signin/signinApi/signinModel/login_model.dart';
 import 'package:finalyear/domain/signup/http_services.dart';
 import 'package:finalyear/utils/urls.dart';
@@ -44,6 +43,9 @@ import 'package:flutter/foundation.dart';
 //     return isLogin;
 //   }
 
+import 'package:dio/dio.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 class LoginApi {
   Future<bool> login(LoginModel user) async {
     bool isLogin = false;
@@ -74,6 +76,8 @@ class LoginApi {
             print("Token is $token");
 
             if (token != null) {
+              // Save token using shared_preferences
+              await saveToken(token);
               isLogin = true;
             }
           } else {
@@ -93,6 +97,12 @@ class LoginApi {
     }
 
     return isLogin;
+  }
+
+  Future<void> saveToken(String token) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('token', token);
+    print('Token saved successfully: $token');
   }
 
   Future<bool> forgotPassword(String email) async {
