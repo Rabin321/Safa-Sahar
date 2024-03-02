@@ -7,18 +7,20 @@ const String googleApiKey = "AIzaSyD9GUN6NoQ_ldV5gTWSsKsfAjwJ61Xbq7Q";
 const kBackgroundColor = Color(0xff191720);
 const kTextFieldFill = Color(0xff1E1C24);
 // TextStyles
-const kHeadline = TextStyle(
+var kHeadline = TextStyle(
   color: Colors.black87,
-  fontSize: 16,
+  fontSize: 16.sp,
   fontWeight: FontWeight.w500,
 );
 
-const kBodyText =
-    TextStyle(color: Colors.black87, fontSize: 15, fontWeight: FontWeight.w500);
+var kBodyText = TextStyle(
+    color: Colors.black87, fontSize: 15.sp, fontWeight: FontWeight.w500);
 
-const kButtonText = TextStyle(
+var kBodyText3 = TextStyle(
+    color: Colors.black87, fontSize: 14.sp, fontWeight: FontWeight.w500);
+var kButtonText = TextStyle(
   color: Colors.black87,
-  fontSize: 16,
+  fontSize: 16.sp,
   fontWeight: FontWeight.bold,
 );
 

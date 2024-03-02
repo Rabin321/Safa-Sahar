@@ -36,7 +36,9 @@ class MyTextButton extends StatelessWidget {
         onPressed: onPressed, // Assigning the onPressed callback
         child: Text(
           buttonName,
-          style: kButtonText.copyWith(color: textColor, fontSize: 16.sp),
+          style: kBodyText.copyWith(
+            color: textColor,
+          ),
         ),
       ),
     );

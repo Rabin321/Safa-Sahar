@@ -1,3 +1,4 @@
+import 'package:finalyear/components/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -45,7 +46,7 @@ class MyTextField extends StatelessWidget {
               filled: true,
               contentPadding: EdgeInsets.all(16.h),
               hintText: hintText,
-              hintStyle: TextStyle(color: Colors.black87, fontSize: 14.sp),
+              hintStyle: kBodyText,
               enabledBorder: OutlineInputBorder(
                 borderSide: BorderSide(
                   color: const Color.fromRGBO(82, 183, 136, 2),

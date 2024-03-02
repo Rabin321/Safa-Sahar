@@ -55,11 +55,16 @@ class _SignUpState extends State<SignUp> {
             MaterialPageRoute(builder: (context) => const SignInPage()));
         // AuthController.login();
       } else {
-        MotionToast.error(description: const Text("Something went wrong"))
+        MotionToast.error(
+                height: 50.h,
+                animationDuration: const Duration(milliseconds: 300),
+                description: const Text("Something went wrong"))
             .show(context);
       }
     } catch (e) {
       MotionToast.error(
+        height: 50.h,
+        animationDuration: const Duration(milliseconds: 300),
         description: Text("Error:${e.toString()}"),
       ).show(context);
     }
@@ -91,11 +96,10 @@ class _SignUpState extends State<SignUp> {
                               height: 100.h,
                             ),
                           ),
-                          Text('SAFA SAHAR',
-                              style: TextStyle(
-                                  fontSize: 28.sp,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold)),
+                          Text(
+                            'SAFA SAHAR',
+                            style: kHeadline,
+                          ),
                           // const Text(
                           //   "Register",
                           //   style: kHeadline,
@@ -195,14 +199,15 @@ class _SignUpState extends State<SignUp> {
                       children: [
                         Text(
                           "Already have an account? ",
-                          style: kBodyText.copyWith(fontSize: 15.sp),
+                          style: kBodyText,
                         ),
                         GestureDetector(
                           child: Text.rich(
                             TextSpan(
                               text: "Sign In",
                               style: kBodyText.copyWith(
-                                  color: Colors.red, fontSize: 15.sp),
+                                color: Colors.red,
+                              ),
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () {
                                   // Navigate to RegisterPage

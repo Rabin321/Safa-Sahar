@@ -44,7 +44,7 @@ class AdminDashboard extends StatelessWidget {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 6.h),
               child: SizedBox(
-                height: 150.h,
+                height: 165.h,
                 width: double.infinity,
                 child: ResponsiveGridList(
                     horizontalGridSpacing: 10.w,
@@ -66,7 +66,7 @@ class AdminDashboard extends StatelessWidget {
               padding:
                   EdgeInsets.symmetric(horizontal: 16.w).copyWith(top: 5.h),
               child: Container(
-                height: 160.h,
+                height: 200.h,
                 width: double.infinity,
                 decoration: BoxDecoration(
                   color: Colors.white,
@@ -81,11 +81,7 @@ class AdminDashboard extends StatelessWidget {
                       children: [
                         Padding(
                           padding: EdgeInsets.only(top: 6.h),
-                          child: Text(
-                            "STAFFS",
-                            style: TextStyle(
-                                fontSize: 14.sp, fontWeight: FontWeight.w500),
-                          ),
+                          child: Text("STAFFS", style: kBodyText),
                         ),
                       ],
                     ),
@@ -101,6 +97,9 @@ class AdminDashboard extends StatelessWidget {
                   ],
                 ),
               ),
+            ),
+            SizedBox(
+              height: 10.h,
             )
           ],
         ),

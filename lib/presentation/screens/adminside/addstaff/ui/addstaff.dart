@@ -107,7 +107,7 @@ Widget buildLocationSelectionWidget({
     child: Column(
       children: [
         Container(
-          height: 195.h,
+          // height: 195.h,
           width: double.infinity,
           decoration: BoxDecoration(
               color: const Color.fromRGBO(82, 183, 136, 0.5),
@@ -117,11 +117,7 @@ Widget buildLocationSelectionWidget({
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  "Select Location:",
-                  style:
-                      TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
-                ),
+                Text("Select Location:", style: kHeadline),
                 MyTextField(
                   hintText: 'Location...',
                   controller: locationController,
@@ -136,11 +132,7 @@ Widget buildLocationSelectionWidget({
                   isEditable: false,
                   onChanged: (value) {},
                 ),
-                Text(
-                  "Select Ward:",
-                  style:
-                      TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
-                ),
+                Text("Select Ward:", style: kHeadline),
                 MyTextField(
                   hintText: 'WardNo...',
                   controller: wardnoController,

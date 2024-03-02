@@ -42,11 +42,15 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
         }));
       } else {
         MotionToast.error(
+                height: 50.h,
+                animationDuration: const Duration(milliseconds: 300),
                 description: const Text("Please provide a valid email"))
             .show(context);
       }
     } catch (e) {
       MotionToast.error(
+        height: 50.h,
+        animationDuration: const Duration(milliseconds: 300),
         description: Text("Error:${e.toString()}"),
       ).show(context);
     }
