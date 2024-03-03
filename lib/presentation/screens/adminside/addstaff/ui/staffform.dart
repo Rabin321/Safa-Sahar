@@ -88,7 +88,6 @@
 // }
 
 import 'package:finalyear/components/constants.dart';
-import 'package:finalyear/presentation/screens/signup/widgets/methods.dart';
 import 'package:finalyear/widgets/my_text_button.dart';
 import 'package:finalyear/widgets/my_text_field.dart';
 import 'package:flutter/material.dart';
@@ -100,11 +99,12 @@ class CustomAddTextfield extends StatefulWidget {
   final String validatorText;
 
   CustomAddTextfield({
-    Key? key,
+    super.key,
     required this.name,
     required this.hintTextName,
     required this.validatorText,
-  }) : super(key: key);
+    required controller,
+  });
 
   @override
   _CustomAddTextfieldState createState() => _CustomAddTextfieldState();
@@ -121,7 +121,7 @@ class _CustomAddTextfieldState extends State<CustomAddTextfield> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(widget.name!, style: kBodyText),
+          Text(widget.name, style: kBodyText),
           MyTextField(
             hintText: widget.hintTextName,
             inputType: TextInputType.text,
@@ -137,7 +137,7 @@ class _CustomAddTextfieldState extends State<CustomAddTextfield> {
   }
 }
 
-class CustomAddButton extends StatelessWidget {
+class CustomAddButton extends StatefulWidget {
   final String name;
   final Function onPressed;
   const CustomAddButton({
@@ -147,12 +147,20 @@ class CustomAddButton extends StatelessWidget {
   });
 
   @override
+  State<CustomAddButton> createState() => _CustomAddButtonState();
+}
+
+class _CustomAddButtonState extends State<CustomAddButton> {
+  @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 10.h),
       child: MyTextButton(
-        buttonName: name,
-        onPressed: () => onPressed,
+        buttonName: widget.name,
+        onPressed: () {
+          // Call the onPressed function when the button is pressed
+          widget.onPressed();
+        },
         bgColor: const Color(0xFF0D9752),
         textColor: Colors.black,
       ),

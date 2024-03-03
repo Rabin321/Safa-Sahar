@@ -1,6 +1,5 @@
 import 'package:finalyear/components/constants.dart';
 import 'package:finalyear/presentation/screens/adminside/addstaff/ui/staffform.dart';
-import 'package:finalyear/presentation/screens/adminside/admindashboard/ui/admindashboard.dart';
 import 'package:finalyear/presentation/screens/signup/widgets/methods.dart';
 import 'package:finalyear/widgets/appBarWithDrawer/admin_appbarWithDrawer.dart';
 import 'package:finalyear/widgets/my_text_field.dart';
@@ -21,7 +20,6 @@ class AdminAddDustbin extends StatelessWidget {
       {'did': '2', 'fillPercentage': '40%', 'assignedStaff': 'Rohan'},
       // add more staff data as needed
     ];
-    double screenHeight = MediaQuery.of(context).size.height;
     return AdminAppBarWithDrawer(
       title: 'ADMIN',
       body: SingleChildScrollView(
@@ -78,11 +76,13 @@ class AdminAddDustbin extends StatelessWidget {
                     name: "Dustbin ID",
                     hintTextName: "Dustbin id...",
                     validatorText: "Please enter a valid dustbin id",
+                    controller: null,
                   ),
                   CustomAddTextfield(
                     name: "Location",
                     hintTextName: "Location...",
                     validatorText: "Please enter a valid location",
+                    controller: null,
                   ),
                   CustomAddButton(
                     name: "Add",

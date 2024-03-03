@@ -1,26 +1,43 @@
 import 'package:finalyear/components/constants.dart';
+import 'package:finalyear/presentation/screens/adminside/addstaff/model/contents.dart';
 import 'package:finalyear/presentation/screens/adminside/addstaff/ui/staffform.dart';
 import 'package:finalyear/presentation/screens/signup/widgets/methods.dart';
 import 'package:finalyear/widgets/appBarWithDrawer/admin_appbarWithDrawer.dart';
-import 'package:finalyear/widgets/my_text_field.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-final TextEditingController _locationController2 = TextEditingController();
-
-class AdminAddStaff extends StatelessWidget {
+class AdminAddStaff extends StatefulWidget {
   const AdminAddStaff({super.key});
 
   @override
+  State<AdminAddStaff> createState() => _AdminAddStaffState();
+}
+
+class _AdminAddStaffState extends State<AdminAddStaff> {
+  TextEditingController locationController = TextEditingController();
+  TextEditingController nameController = TextEditingController();
+  TextEditingController numberController = TextEditingController();
+  List<AddStaff> addstaff = List.empty(growable: true);
+  int selectedIndex = -1;
+  @override
   Widget build(BuildContext context) {
-    List<Map<String, dynamic>> staffData = [
-      {'id': '1', 'name': 'John Doe', 'number': '1234567890'},
-      {'id': '2', 'name': 'Jane Smith', 'number': '9876543210'},
-      // add more staff data as needed
-    ];
-    double screenHeight = MediaQuery.of(context).size.height;
+    // List<Map<String, dynamic>> staffData = [
+    //   {
+    //     'id': '1',
+    //     'name': 'John Doe',
+    //     'number': '1234567890',
+    //     'location': 'Maitdevi'
+    //   },
+    //   {
+    //     'id': '2',
+    //     'name': 'Jane Smith',
+    //     'number': '9876543210',
+    //     'location': 'Maitidevi'
+    //   },
+    //   // add more staff data as needed
+    // ];
+    //double screenHeight = MediaQuery.of(context).size.height;
     return AdminAppBarWithDrawer(
       title: 'ADMIN',
       body: SingleChildScrollView(
@@ -49,47 +66,208 @@ class AdminAddStaff extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  DataTable(
-                      columnSpacing: 80.w,
-                      columns: const [
-                        DataColumn(label: Text('ID')),
-                        DataColumn(label: Text('Name')),
-                        DataColumn(label: Text('Number')),
-                      ],
-                      rows: staffData
-                          .map((staff) => DataRow(cells: [
-                                DataCell(Text(staff['id'])),
-                                DataCell(Text(staff['name'])),
-                                DataCell(Text(staff['number'])),
-                              ]))
-                          .toList()),
+                  const SizedBox(height: 20),
+                  addstaff.isEmpty
+                      ? Text(
+                          'No details yet.. add first',
+                          style: kBodyText,
+                        )
+                      : Container(
+                          height: 100,
+                          width: double.infinity,
+                          child: Expanded(
+                            child: ListView.builder(
+                                itemCount: addstaff.length,
+                                itemBuilder: (context, index) => getRow(index)),
+                          ),
+                        ),
+                  // SingleChildScrollView(
+                  //   scrollDirection: Axis.horizontal,
+                  //   child: DataTable(
+                  //       dataTextStyle: const TextStyle(
+                  //           fontSize: 16, fontWeight: FontWeight.w400),
+                  //       columnSpacing: 50.w,
+                  //       columns: const [
+                  //         DataColumn(
+                  //             label: Text(
+                  //           'ID',
+                  //           style: kBodyText2,
+                  //         )),
+                  //         DataColumn(
+                  //             label: Text(
+                  //           'Name',
+                  //           style: kBodyText2,
+                  //         )),
+                  //         DataColumn(
+                  //             label: Text(
+                  //           'Number',
+                  //           style: kBodyText2,
+                  //         )),
+                  //         DataColumn(
+                  //             label: Text(
+                  //           'Location',
+                  //           style: kBodyText2,
+                  //         )),
+                  //         DataColumn(
+                  //             label: Text(
+                  //           'Actions',
+                  //           style: kBodyText2,
+                  //         )),
+                  //       ],
+                  //       rows: staffData
+                  //           .map((staff) => DataRow(cells: [
+                  //                 DataCell(Text(staff['id'])),
+                  //                 DataCell(Text(staff['name'])),
+                  //                 DataCell(Text(staff['number'])),
+                  //                 DataCell(Text(staff['location'])),
+                  //                 DataCell(Row(
+                  //                   children: [
+                  //                     IconButton(
+                  //                       icon: const Icon(
+                  //                         Icons.edit,
+                  //                         color: Colors.green,
+                  //                       ),
+                  //                       onPressed: () {
+                  //                         // Handle edit action
+                  //                       },
+                  //                     ),
+                  //                     IconButton(
+                  //                       icon: const Icon(
+                  //                         Icons.delete,
+                  //                         color: Colors.red,
+                  //                       ),
+                  //                       onPressed: () {
+                  //                         // Handle delete action
+                  //                       },
+                  //                     ),
+                  //                   ],
+                  //                 ))
+                  //               ]))
+                  //           .toList()),
+                  // ),
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 10.h),
                     child: const Text("Add staff to this ward", style: subhead),
                   ),
-                  CustomAddTextfield(
-                    name: "Name",
-                    hintTextName: "Name...",
-                    validatorText: "Please enter a valid name",
+                  TextField(
+                      controller: nameController,
+                      decoration: kTextFieldDecoration.copyWith(
+                        hintText: 'Name...',
+                      )),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Location',
+                        style: kBodyText,
+                      ),
+                      TextFormField(
+                        controller: locationController,
+                        decoration: kTextFieldDecoration.copyWith(
+                            hintText: 'Location...',
+                            suffixIcon: IconButton(
+                              icon: const Icon(Icons.arrow_drop_down),
+                              onPressed: () {
+                                location(context, locationController);
+                              },
+                            )),
+                        readOnly: false,
+                      ),
+                    ],
                   ),
-                  CustomAddTextfield(
-                    name: "Location",
-                    hintTextName: "Location...",
-                    validatorText: "Please enter a valid location",
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Number',
+                        style: kBodyText,
+                      ),
+                      TextFormField(
+                        controller: numberController,
+                        keyboardType: TextInputType.number,
+                        maxLength: 10,
+                        decoration: kTextFieldDecoration.copyWith(
+                            hintText: "Number..."),
+                        validator: Validator.requiredValidator,
+                      ),
+                    ],
                   ),
-                  CustomAddTextfield(
-                    name: "Number",
-                    hintTextName: "Number...",
-                    validatorText: "Please enter a valid number",
-                  ),
+
                   CustomAddButton(
                     name: "Add",
-                    onPressed: () {},
-                  )
+                    onPressed: () {
+                      String name = nameController.text.trim();
+                      String location = locationController.text.trim();
+                      String number = numberController.text.trim();
+                      if (name.isNotEmpty &&
+                          location.isNotEmpty &&
+                          number.isNotEmpty) {
+                        setState(() {
+                          nameController.text = '';
+                          locationController.text = '';
+                          numberController.text = '';
+                          addstaff.add(AddStaff(
+                              name: name, location: location, number: number));
+                        });
+                      }
+                    },
+                  ),
                 ],
               ),
             )
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget getRow(int index) {
+    return Card(
+      child: ListTile(
+        leading: CircleAvatar(
+          backgroundColor: index % 2 == 0 ? Colors.green : Colors.lightGreen,
+          foregroundColor: Colors.white,
+          child: Text(
+            addstaff[index].name[0],
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          ),
+        ),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(addstaff[index].name),
+            Text(addstaff[index].location),
+            Text(addstaff[index].number),
+          ],
+        ),
+        trailing: SizedBox(
+          width: 70,
+          child: Row(
+            children: [
+              InkWell(
+                onTap: () {
+                  //
+                  nameController.text = addstaff[index].name;
+                  locationController.text = addstaff[index].location;
+                  numberController.text = addstaff[index].number;
+                  setState(() {
+                    selectedIndex = index;
+                  });
+                  //
+                },
+                child: const Icon(Icons.edit),
+              ),
+              InkWell(
+                  onTap: (() {
+                    //
+                    setState(() {
+                      addstaff.removeAt(index);
+                    });
+                    //
+                  }),
+                  child: const Icon(Icons.delete))
+            ],
+          ),
         ),
       ),
     );
@@ -107,7 +285,6 @@ Widget buildLocationSelectionWidget({
     child: Column(
       children: [
         Container(
-          // height: 195.h,
           width: double.infinity,
           decoration: BoxDecoration(
               color: const Color.fromRGBO(82, 183, 136, 0.5),
@@ -118,32 +295,30 @@ Widget buildLocationSelectionWidget({
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text("Select Location:", style: kHeadline),
-                MyTextField(
-                  hintText: 'Location...',
+                TextField(
                   controller: locationController,
-                  inputType: TextInputType.text,
-                  onDropdownPressed: () {
-                    location(context, locationController);
-                  },
-                  formKey: formKey,
-                  showDropdownIcon: true,
-                  validator: (name) =>
-                      name!.isEmpty ? 'Please enter your location' : null,
-                  isEditable: false,
-                  onChanged: (value) {},
+                  decoration: kTextFieldDecoration.copyWith(
+                      hintText: 'Location...',
+                      suffixIcon: IconButton(
+                        icon: const Icon(Icons.arrow_drop_down),
+                        onPressed: () {
+                          location(context, locationController);
+                        },
+                      )),
+                  readOnly: true,
                 ),
                 Text("Select Ward:", style: kHeadline),
-                MyTextField(
-                  hintText: 'WardNo...',
+                TextField(
                   controller: wardnoController,
-                  inputType: TextInputType.text,
-                  onDropdownPressed: () {
-                    wardno(context, wardnoController);
-                  },
-                  formKey: formKey,
-                  showDropdownIcon: true,
-                  isEditable: false,
-                  onChanged: (value) {},
+                  decoration: kTextFieldDecoration.copyWith(
+                      hintText: 'Wardno...',
+                      suffixIcon: IconButton(
+                        icon: const Icon(Icons.arrow_drop_down),
+                        onPressed: () {
+                          wardno(context, locationController);
+                        },
+                      )),
+                  readOnly: true,
                 ),
               ],
             ),

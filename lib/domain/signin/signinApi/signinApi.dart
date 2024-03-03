@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:finalyear/domain/signin/signinApi/signinModel/login_model.dart';
 import 'package:finalyear/domain/signup/http_services.dart';
@@ -43,7 +41,6 @@ import 'package:flutter/foundation.dart';
 //     return isLogin;
 //   }
 
-import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginApi {

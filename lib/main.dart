@@ -1,4 +1,3 @@
-import 'package:finalyear/presentation/screens/homepage/homepage.dart';
 import 'package:finalyear/presentation/screens/splashScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -24,7 +23,7 @@ class MyApp extends StatelessWidget {
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
         // home: const HomePage(),
-        home:  Splash(),
+        home: const Splash(),
       ),
     );
   }
