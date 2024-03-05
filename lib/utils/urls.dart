@@ -5,3 +5,4 @@ const loginUrl = '/login';
 const otpVerifyUrl = 'otp/verify/';
 
 const forgotPasswordUrl = '/forget-password';
+const addStaff = '/add-staff';
