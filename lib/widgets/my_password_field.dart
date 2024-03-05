@@ -81,7 +81,7 @@ class MyPasswordField extends StatelessWidget {
       padding: EdgeInsets.symmetric(vertical: 8.h),
       child: TextFormField(
         key: key, // Assign the provided key
-        style: kBodyText.copyWith(),
+        style: kBodyText,
         obscureText: isPasswordVisible, // Invert obscureText value
         keyboardType: TextInputType.text,
         decoration: InputDecoration(

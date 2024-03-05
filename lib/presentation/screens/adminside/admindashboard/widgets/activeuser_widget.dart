@@ -17,12 +17,12 @@ Widget buildActiveUsersWidget(String activeUsersText, int totalUsers) {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(activeUsersText,
-                style: kBodyText3.copyWith(
+                style: kBodyText.copyWith(
                   color: Color(0xFF003E1F),
                   fontWeight: FontWeight.w500,
                 )),
             Text("TOTAL: $totalUsers",
-                style: kBodyText3.copyWith(
+                style: kBodyText.copyWith(
                   color: Color(0xFF003E1F),
                   fontWeight: FontWeight.w500,
                 ))

@@ -3,6 +3,7 @@ import 'package:finalyear/presentation/screens/adminside/addstaff/model/contents
 import 'package:finalyear/presentation/screens/adminside/addstaff/ui/staffform.dart';
 import 'package:finalyear/presentation/screens/signup/widgets/methods.dart';
 import 'package:finalyear/widgets/appBarWithDrawer/admin_appbarWithDrawer.dart';
+import 'package:finalyear/widgets/my_text_field.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -152,8 +153,7 @@ class _AdminAddStaffState extends State<AdminAddStaff> {
                   TextField(
                       controller: nameController,
                       decoration: kTextFieldDecoration.copyWith(
-                        hintText: 'Name...',
-                      )),
+                          hintText: 'Name...', hintStyle: kBodyText)),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -165,6 +165,7 @@ class _AdminAddStaffState extends State<AdminAddStaff> {
                         controller: locationController,
                         decoration: kTextFieldDecoration.copyWith(
                             hintText: 'Location...',
+                            hintStyle: kBodyText,
                             suffixIcon: IconButton(
                               icon: const Icon(Icons.arrow_drop_down),
                               onPressed: () {
@@ -187,7 +188,7 @@ class _AdminAddStaffState extends State<AdminAddStaff> {
                         keyboardType: TextInputType.number,
                         maxLength: 10,
                         decoration: kTextFieldDecoration.copyWith(
-                            hintText: "Number..."),
+                            hintText: "Number...", hintStyle: kBodyText),
                         validator: Validator.requiredValidator,
                       ),
                     ],
@@ -295,30 +296,32 @@ Widget buildLocationSelectionWidget({
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text("Select Location:", style: kHeadline),
-                TextField(
+                MyTextField(
+                  hintText: 'Location...',
                   controller: locationController,
-                  decoration: kTextFieldDecoration.copyWith(
-                      hintText: 'Location...',
-                      suffixIcon: IconButton(
-                        icon: const Icon(Icons.arrow_drop_down),
-                        onPressed: () {
-                          location(context, locationController);
-                        },
-                      )),
-                  readOnly: true,
+                  inputType: TextInputType.text,
+                  onDropdownPressed: () {
+                    location(context, locationController);
+                  },
+                  formKey: formKey,
+                  showDropdownIcon: true,
+                  validator: (name) =>
+                      name!.isEmpty ? 'Please enter your location' : null,
+                  isEditable: false,
+                  onChanged: (value) {},
                 ),
                 Text("Select Ward:", style: kHeadline),
-                TextField(
+                MyTextField(
+                  hintText: 'WardNo...',
                   controller: wardnoController,
-                  decoration: kTextFieldDecoration.copyWith(
-                      hintText: 'Wardno...',
-                      suffixIcon: IconButton(
-                        icon: const Icon(Icons.arrow_drop_down),
-                        onPressed: () {
-                          wardno(context, locationController);
-                        },
-                      )),
-                  readOnly: true,
+                  inputType: TextInputType.text,
+                  onDropdownPressed: () {
+                    wardno(context, wardnoController);
+                  },
+                  formKey: formKey,
+                  showDropdownIcon: true,
+                  isEditable: false,
+                  onChanged: (value) {},
                 ),
               ],
             ),

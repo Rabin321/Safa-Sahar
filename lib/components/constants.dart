@@ -17,7 +17,7 @@ var kBodyText = TextStyle(
     color: Colors.black87, fontSize: 12.sp, fontWeight: FontWeight.w500);
 
 var kBodyText3 = TextStyle(
-    color: Colors.black87, fontSize: 14.sp, fontWeight: FontWeight.w500);
+    color: Colors.black87, fontSize: 16.sp, fontWeight: FontWeight.w500);
 var kButtonText = TextStyle(
   color: Colors.black87,
   fontSize: 12.sp,
