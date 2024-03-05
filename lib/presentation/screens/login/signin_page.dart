@@ -41,7 +41,7 @@ class _SignInPageState extends State<SignInPage> {
       if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
         // Show error message if email or password is empty
         MotionToast.error(
-           height: 50.h,
+          height: 50.h,
           animationDuration: const Duration(milliseconds: 300),
           description: const Text("Please provide both email and password."),
         ).show(context);
@@ -64,7 +64,7 @@ class _SignInPageState extends State<SignInPage> {
       } else {
         // If login fails, display an appropriate error message
         MotionToast.error(
-           height: 50.h,
+          height: 50.h,
           animationDuration: const Duration(milliseconds: 300),
           description: const Text("Invalid email or password."),
         ).show(context);
@@ -73,7 +73,7 @@ class _SignInPageState extends State<SignInPage> {
       // Handle any unexpected errors that occur during the login process
       print("Error during login: $e");
       MotionToast.error(
-         height: 50.h,
+        height: 50.h,
         animationDuration: const Duration(milliseconds: 300),
         description:
             const Text("An unexpected error occurred. Please try again later."),

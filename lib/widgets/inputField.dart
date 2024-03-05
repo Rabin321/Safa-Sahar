@@ -40,7 +40,7 @@ class _InputFieldState extends State<InputField> {
         ),
         hintStyle: TextStyle(
           fontFamily: 'Poppins',
-          fontSize: 16.sp,
+          fontSize: 14.sp,
           color: const Color(0xFF333333),
         ),
         errorStyle: TextStyle(

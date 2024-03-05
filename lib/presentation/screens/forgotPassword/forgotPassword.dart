@@ -1,12 +1,15 @@
+import 'package:dio/dio.dart';
+import 'package:dio/dio.dart';
+import 'package:finalyear/components/constants.dart';
 import 'package:finalyear/domain/signin/signinApi/signinRepository/login_repository.dart';
 import 'package:finalyear/presentation/screens/login/signin_page.dart';
 import 'package:finalyear/widgets/inputField.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:motion_toast/motion_toast.dart';
+import 'package:http/http.dart' as http;
 
-import 'package:provider/provider.dart';
+import 'package:motion_toast/motion_toast.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
   const ForgotPasswordScreen({Key? key}) : super(key: key);
@@ -64,6 +67,40 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     }
   }
 
+  // Future<void> _forgotPassword() async {
+  //   setState(() {
+  //     isLoading = true;
+  //   });
+
+  //   final String email = textControllerEmail.text;
+
+  //   final Uri url = Uri.parse('http://192.168.1.74:5000/api/forget-password/');
+  //   final Map<String, String> body = {'email': email};
+
+  //   try {
+  //     final http.Response response = await http.post(
+  //       url,
+  //       body: body,
+  //     );
+
+  //     if (response.statusCode == 200) {
+  //       // Password reset email sent successfully
+  //       // You can navigate to another screen or show a success message
+  //       print('Password reset email sent successfully');
+  //     } else {
+  //       // Handle other status codes (e.g., 400 for bad request)
+  //       print('Errorelse: ${response.statusCode}');
+  //     }
+  //   } catch (error) {
+  //     // Handle any errors that occur during the HTTP request
+  //     print('Errocatchr: $error');
+  //   }
+
+  //   setState(() {
+  //     isLoading = false;
+  //   });
+  // }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -107,15 +144,8 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 SizedBox(
                   height: 20.h,
                 ),
-                Text(
-                  "Forgot Password",
-                  style: TextStyle(
-                    fontSize: 28.sp,
-                    fontFamily: 'Poppins',
-                    fontWeight: FontWeight.w600,
-                    color: Colors.black,
-                  ),
-                ),
+                Text("Forgot Password",
+                    style: kHeadline.copyWith(fontSize: 20.sp)),
                 SizedBox(
                   height: 20.h,
                 ),
@@ -128,13 +158,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 SizedBox(
                   height: 20.h,
                 ),
-                Text(
-                  "Did you forgot your password?",
-                  style: TextStyle(
-                      fontFamily: 'Poppins',
-                      fontSize: 20.sp,
-                      color: Colors.black),
-                ),
+                Text("Did you forgot your password?", style: subhead),
                 SizedBox(
                   height: 20.h,
                 ),
@@ -174,43 +198,6 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   height: 10.h,
                 ),
                 ElevatedButton(
-                  child: isLoading
-                      ? Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(
-                              "Submit",
-                              style: TextStyle(
-                                  fontFamily: 'Poppins',
-                                  fontSize: 18.sp,
-                                  fontWeight: FontWeight.w600,
-                                  letterSpacing: 1.2.sp),
-                              textAlign: TextAlign.center,
-                            ),
-                            SizedBox(width: 20.w),
-                            SizedBox(
-                              width: 20.w,
-                              height: 20.w,
-                              child: Semantics(
-                                label: "Loading",
-                                child: const CircularProgressIndicator(
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                          ],
-                        )
-                      : Text(
-                          "Submit",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontFamily: 'Poppins',
-                              fontSize: 18.sp,
-                              fontWeight: FontWeight.w600,
-                              letterSpacing: 1.2.sp),
-                          textAlign: TextAlign.center,
-                        ),
                   onPressed: () async {
                     if (!isLoading) {
                       setState(() {
@@ -238,6 +225,39 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                       borderRadius: BorderRadius.circular(22.r),
                     ),
                   ),
+                  child: isLoading
+                      ? Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Submit",
+                              style: kBodyText,
+                              textAlign: TextAlign.center,
+                            ),
+                            SizedBox(width: 20.w),
+                            SizedBox(
+                              width: 20.w,
+                              height: 20.w,
+                              child: Semantics(
+                                label: "Loading",
+                                child: const CircularProgressIndicator(
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          ],
+                        )
+                      : Text(
+                          "Submit",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontFamily: 'Poppins',
+                              fontSize: 18.sp,
+                              fontWeight: FontWeight.w600,
+                              letterSpacing: 1.2.sp),
+                          textAlign: TextAlign.center,
+                        ),
                 ),
                 SizedBox(
                   height: 30.h,
