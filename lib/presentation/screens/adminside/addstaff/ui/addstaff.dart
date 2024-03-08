@@ -1,9 +1,12 @@
+import 'package:dio/dio.dart';
 import 'package:finalyear/components/constants.dart';
 import 'package:finalyear/domain/addStaff/addStaffModel/addStaffModel.dart';
 import 'package:finalyear/domain/addStaff/addStaffRepository/addStaffRepository.dart';
+import 'package:finalyear/domain/signup/http_services.dart';
 import 'package:finalyear/presentation/screens/adminside/addstaff/model/contents.dart';
 import 'package:finalyear/presentation/screens/adminside/addstaff/ui/staffform.dart';
 import 'package:finalyear/presentation/screens/signup/widgets/methods.dart';
+import 'package:finalyear/utils/urls.dart';
 import 'package:finalyear/widgets/appBarWithDrawer/admin_appbarWithDrawer.dart';
 import 'package:finalyear/widgets/my_text_field.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +22,8 @@ class AdminAddStaff extends StatefulWidget {
 }
 
 class _AdminAddStaffState extends State<AdminAddStaff> {
+  List<AddStaff> addstaff = []; // Define addstaff list here
+
   TextEditingController locationController = TextEditingController();
   TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
@@ -33,6 +38,40 @@ class _AdminAddStaffState extends State<AdminAddStaff> {
 
   int selectedIndex = -1;
   @override
+  void initState() {
+    super.initState();
+    // Fetch staff members when the widget initializes
+    fetchStaffMembers();
+  }
+
+// Method to fetch staff members
+  Future<List<AddStaffModel>> fetchStaffMembers() async {
+    List<AddStaffModel> staffMembers = [];
+    var url = baseUrl + getUser;
+    var dio = HttpServices().getDioInstance();
+
+    // Assuming you have a parameter or query to filter by isStaff = 1
+    var queryParams = {
+      'isStaff': 1,
+    };
+
+    try {
+      Response response = await dio.get(url, queryParameters: queryParams);
+      if (response.statusCode == 200) {
+        var responseData = response.data;
+        for (var item in responseData) {
+          staffMembers.add(AddStaffModel.fromJson(item));
+        }
+      } else {
+        debugPrint("Received status code: ${response.statusCode}");
+        debugPrint("Response data: ${response.data}");
+      }
+    } catch (e) {
+      debugPrint("Error: ${e.toString()}");
+    }
+    return staffMembers;
+  }
+
   @override
   void dispose() {
     locationController.dispose();
@@ -65,6 +104,13 @@ class _AdminAddStaffState extends State<AdminAddStaff> {
 
       if (isRegister) {
         print("Staff addded successfully");
+
+        // Add the newly registered staff to the addstaff list
+        addstaff.add(AddStaff(
+          name: nameController.text,
+          location: locationController.text,
+          number: numberController.text,
+        ));
 
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text("Staff added successfully")),
@@ -173,8 +219,23 @@ class _AdminAddStaffState extends State<AdminAddStaff> {
                           style: subhead,
                         ),
                       ],
-
-                      // I want to add added staff here in table
+                    ),
+                    // I want to add added staff here in table
+                    DataTable(
+                      columns: const [
+                        DataColumn(label: Text('Name')),
+                        DataColumn(label: Text('Location')),
+                        DataColumn(label: Text('Phone')),
+                      ],
+                      rows: addstaff
+                          .map(
+                            (staff) => DataRow(cells: [
+                              DataCell(Text(staff.name)),
+                              DataCell(Text(staff.location)),
+                              DataCell(Text(staff.number)),
+                            ]),
+                          )
+                          .toList(),
                     ),
                   ],
                 ),
@@ -267,7 +328,6 @@ class _AdminAddStaffState extends State<AdminAddStaff> {
                       onPressed: () {
                         if (formKey.currentState!.validate()) {
                           _registerStaff();
-                          // Clear text fields after registration
                           nameController.clear();
                           numberController.clear();
                           emailController.clear();
