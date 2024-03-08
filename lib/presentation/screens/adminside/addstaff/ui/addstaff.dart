@@ -28,12 +28,15 @@ class _AdminAddStaffState extends State<AdminAddStaff> {
   TextEditingController housenoController = TextEditingController();
   TextEditingController wardnoController = TextEditingController();
 
-  List<AddStaff> addstaff = List.empty(growable: true);
+  final GlobalKey<FormState> formKey =
+      GlobalKey<FormState>(); // Define formKey here
+
   int selectedIndex = -1;
   @override
   @override
   void dispose() {
     locationController.dispose();
+    wardnoController.dispose();
     nameController.dispose();
     emailController.dispose();
     passwordController.dispose();
@@ -44,6 +47,8 @@ class _AdminAddStaffState extends State<AdminAddStaff> {
 
   _registerStaff() async {
     try {
+      // int wardNumber = int.parse(wardnoController.text);
+      // print("Parsed ward number: $wardNumber");
       StaffRepository staffRepository = StaffRepository();
       bool isRegister = await staffRepository.register(AddStaffModel(
         name: nameController.text,
@@ -51,296 +56,228 @@ class _AdminAddStaffState extends State<AdminAddStaff> {
         password: passwordController.text,
         phone: numberController.text,
         location: locationController.text,
-        houseno: 100, //test
-        wardno: 3, //test
+        // houseno: 100, //test
+        // wardno: 3, //test
+        wardno: int.parse(wardnoController.text),
         isAdmin: 0,
         isStaff: 1,
       ));
 
       if (isRegister) {
         print("Staff addded successfully");
-        // AuthController.login();
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Staff added successfully")),
+        ); // AuthController.login();
+      } else {
+        throw Exception("Registration failed");
       }
-      //  else {
-      //   MotionToast.error(
-      //           height: 50.h,
-      //           animationDuration: const Duration(milliseconds: 300),
-      //           description: const Text("Something went wrong"))
-      //       .show(context);
-      // }
     } catch (e) {
       MotionToast.error(
         height: 50.h,
+        width: double.infinity,
         animationDuration: const Duration(milliseconds: 300),
-        description: Text("Error:${e.toString()}"),
+        description: const Text("Something went wrong"),
       ).show(context);
     }
   }
 
   Widget build(BuildContext context) {
-    List<Map<String, dynamic>> staffData = [
-      {
-        'id': '1',
-        'name': 'John Doe',
-        'number': '1234567890',
-        'location': 'Maitdevi'
-      },
-      {
-        'id': '2',
-        'name': 'Jane Smith',
-        'number': '9876543210',
-        'location': 'Maitidevi'
-      },
-      // add more staff data as needed
-    ];
     //double screenHeight = MediaQuery.of(context).size.height;
     return AdminAppBarWithDrawer(
       title: 'ADMIN',
       body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Padding(
-              padding: EdgeInsets.only(top: 10.h, bottom: 16.h),
-              child: Align(
-                alignment: Alignment.center,
-                child: Text(
-                  "STAFFS",
-                  style: kBodyText2.copyWith(
-                      color: const Color(0xFF365307), letterSpacing: 1),
+        child: Form(
+          key: formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Padding(
+                padding: EdgeInsets.only(top: 10.h, bottom: 16.h),
+                child: Align(
+                  alignment: Alignment.center,
+                  child: Text(
+                    "STAFFS",
+                    style: kBodyText2.copyWith(
+                        color: const Color(0xFF365307), letterSpacing: 1),
+                  ),
                 ),
               ),
-            ),
-            buildLocationSelectionWidget(
-              context: context,
-              locationController: TextEditingController(),
-              housenoController: TextEditingController(),
-              wardnoController: TextEditingController(),
-              formKey: GlobalKey<FormState>(),
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 15.h),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // const SizedBox(height: 20),
-                  Container(
-                    height: 50,
-                    width: double.infinity,
-                    child: Expanded(
-                      child: ListView.builder(
-                          itemCount: addstaff.length,
-                          itemBuilder: (context, index) => getRow(index)),
-                    ),
-                  ),
-                  // SingleChildScrollView(
-                  //   scrollDirection: Axis.horizontal,
-                  //   child: DataTable(
-                  //       dataTextStyle: const TextStyle(
-                  //           fontSize: 16, fontWeight: FontWeight.w400),
-                  //       columnSpacing: 50.w,
-                  //       columns: const [
-                  //         DataColumn(
-                  //             label: Text(
-                  //           'ID',
-                  //           style: kBodyText2,
-                  //         )),
-                  //         DataColumn(
-                  //             label: Text(
-                  //           'Name',
-                  //           style: kBodyText2,
-                  //         )),
-                  //         DataColumn(
-                  //             label: Text(
-                  //           'Number',
-                  //           style: kBodyText2,
-                  //         )),
-                  //         DataColumn(
-                  //             label: Text(
-                  //           'Location',
-                  //           style: kBodyText2,
-                  //         )),
-                  //         DataColumn(
-                  //             label: Text(
-                  //           'Actions',
-                  //           style: kBodyText2,
-                  //         )),
-                  //       ],
-                  //       rows: staffData
-                  //           .map((staff) => DataRow(cells: [
-                  //                 DataCell(Text(staff['id'])),
-                  //                 DataCell(Text(staff['name'])),
-                  //                 DataCell(Text(staff['number'])),
-                  //                 DataCell(Text(staff['location'])),
-                  //                 DataCell(Row(
-                  //                   children: [
-                  //                     IconButton(
-                  //                       icon: const Icon(
-                  //                         Icons.edit,
-                  //                         color: Colors.green,
-                  //                       ),
-                  //                       onPressed: () {
-                  //                         // Handle edit action
-                  //                       },
-                  //                     ),
-                  //                     IconButton(
-                  //                       icon: const Icon(
-                  //                         Icons.delete,
-                  //                         color: Colors.red,
-                  //                       ),
-                  //                       onPressed: () {
-                  //                         // Handle delete action
-                  //                       },
-                  //                     ),
-                  //                   ],
-                  //                 ))
-                  //               ]))
-                  //           .toList()),
-                  // ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(vertical: 10.h),
-                    child: const Text("Add staff to this ward", style: subhead),
-                  ),
-                  TextField(
-                      controller: nameController,
-                      decoration: kTextFieldDecoration.copyWith(
-                          hintText: 'Name...', hintStyle: kBodyText)),
-                  Padding(
-                    padding: EdgeInsets.only(top: 8.h),
-                    child: TextField(
-                        controller: emailController,
-                        decoration: kTextFieldDecoration.copyWith(
-                            hintText: 'Email...', hintStyle: kBodyText)),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(top: 8.h),
-                    child: TextField(
-                        controller: passwordController,
-                        decoration: kTextFieldDecoration.copyWith(
-                            hintText: 'Password...', hintStyle: kBodyText)),
-                  ),
-                  // Column(
-                  //   crossAxisAlignment: CrossAxisAlignment.start,
-                  //   children: [
-                  //     Text(
-                  //       'Location',
-                  //       style: kBodyText,
-                  //     ),
-                  //     TextFormField(
-                  //       controller: locationController,
-                  //       decoration: kTextFieldDecoration.copyWith(
-                  //           hintText: 'Location...',
-                  //           hintStyle: kBodyText,
-                  //           suffixIcon: IconButton(
-                  //             icon: const Icon(Icons.arrow_drop_down),
-                  //             onPressed: () {
-                  //               location(context, locationController);
-                  //             },
-                  //           )),
-                  //       readOnly: false,
-                  //     ),
-                  //   ],
-                  // ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Text(
-                      //   'Number',
-                      //   style: kBodyText,
-                      // ),
-                      Padding(
-                        padding: EdgeInsets.only(top: 8.h),
-                        child: TextFormField(
-                          controller: numberController,
-                          keyboardType: TextInputType.number,
-                          maxLength: 10,
-                          decoration: kTextFieldDecoration.copyWith(
-                              hintText: "Number...", hintStyle: kBodyText),
-                          validator: Validator.requiredValidator,
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 15.h),
+                child: Column(
+                  children: [
+                    Container(
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: const Color.fromRGBO(82, 183, 136, 0.5),
+                        borderRadius: BorderRadius.all(Radius.circular(12.r)),
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.all(8.h),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("Select Location:", style: kHeadline),
+                            MyTextField(
+                              hintText: 'Location...',
+                              controller: locationController,
+                              inputType: TextInputType.text,
+                              onDropdownPressed: () {
+                                location(context, locationController);
+                              },
+                              formKey: formKey,
+                              showDropdownIcon: false,
+                              validator: (name) => name!.isEmpty
+                                  ? 'Please enter your location'
+                                  : null,
+                              isEditable: true,
+                              onChanged: (value) {
+                                // Update locationController when location is selected
+                                locationController.text = value.toString();
+                                print(
+                                    "locationController: ${locationController.text}");
+                              },
+                            ),
+                            Text("Select Ward:", style: kHeadline),
+                            MyTextField(
+                              inputType: TextInputType
+                                  .number, // Set inputType to TextInputType.number
+
+                              hintText: 'WardNo...',
+                              controller: wardnoController,
+                              onDropdownPressed: () {
+                                wardno(context, wardnoController);
+                              },
+                              formKey: formKey,
+                              showDropdownIcon: false,
+                              validator: (name) => name!.isEmpty
+                                  ? 'Please enter your ward number'
+                                  : null,
+                              isEditable: true,
+                              onChanged: (value) {
+                                // Update wardnoController when ward number is selected
+                                wardnoController.text = value.toString();
+                                print("ward no: ${wardnoController.text}");
+                              },
+                            ),
+                          ],
                         ),
                       ),
-                    ],
-                  ),
-                  CustomAddButton(
-                    name: "Add",
-                    onPressed: () {
-                      // if (nameController.text.isNotEmpty &&
-                      //     locationController.text.isNotEmpty &&
-                      //     numberController.text.isNotEmpty &&
-                      //     emailController.text.isNotEmpty &&
-                      //     passwordController.text.isNotEmpty) {
-                      _registerStaff();
+                    ),
+                    SizedBox(height: 10.h),
+                    const Row(
+                      children: [
+                        Text(
+                          "Staff Details",
+                          style: subhead,
+                        ),
+                      ],
 
-                      nameController.clear();
-                      locationController.clear();
-                      numberController.clear();
-                      emailController.clear();
-                      passwordController.clear();
-
-                      // } else {
-                      //   MotionToast.error(
-                      //           height: 50.h,
-                      //           animationDuration:
-                      //               const Duration(milliseconds: 300),
-                      //           description: const Text("Something went wrong"))
-                      //       .show(context);
-                      // }
-                    },
-                  ),
-                ],
+                      // I want to add added staff here in table
+                    ),
+                  ],
+                ),
               ),
-            )
-          ],
-        ),
-      ),
-    );
-  }
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 15.h),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // const SizedBox(height: 20),
+                    Container(
+                      height: 50.h,
+                      // width: double.infinity,
+                    ),
 
-  Widget getRow(int index) {
-    return Card(
-      child: ListTile(
-        leading: CircleAvatar(
-          backgroundColor: index % 2 == 0 ? Colors.green : Colors.lightGreen,
-          foregroundColor: Colors.white,
-          child: Text(
-            addstaff[index].name[0],
-            style: const TextStyle(fontWeight: FontWeight.bold),
-          ),
-        ),
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(addstaff[index].name),
-            Text(addstaff[index].location),
-            Text(addstaff[index].number),
-          ],
-        ),
-        trailing: SizedBox(
-          width: 70,
-          child: Row(
-            children: [
-              InkWell(
-                onTap: () {
-                  //
-                  nameController.text = addstaff[index].name;
-                  locationController.text = addstaff[index].location;
-                  numberController.text = addstaff[index].number;
-                  setState(() {
-                    selectedIndex = index;
-                  });
-                  //
-                },
-                child: const Icon(Icons.edit),
-              ),
-              InkWell(
-                  onTap: (() {
-                    //
-                    setState(() {
-                      addstaff.removeAt(index);
-                    });
-                    //
-                  }),
-                  child: const Icon(Icons.delete))
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 10.h),
+                      child:
+                          const Text("Add staff to this ward", style: subhead),
+                    ),
+                    TextFormField(
+                      controller: nameController,
+                      decoration: kTextFieldDecoration.copyWith(
+                        hintText: 'Name...',
+                        hintStyle: kBodyText,
+                      ),
+                      validator: (value) =>
+                          value!.isEmpty ? 'Please enter a name' : null,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(top: 8.h),
+                      child: TextFormField(
+                        controller: emailController,
+                        decoration: kTextFieldDecoration.copyWith(
+                          hintText: 'Email...',
+                          hintStyle: kBodyText,
+                        ),
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Please enter an email';
+                          } else if (!Validator.isValidEmail(value)) {
+                            return 'Please enter a valid email';
+                          }
+                          return null;
+                        },
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(top: 8.h),
+                      child: TextFormField(
+                        controller: passwordController,
+                        decoration: kTextFieldDecoration.copyWith(
+                          hintText: 'Password...',
+                          hintStyle: kBodyText,
+                        ),
+                        validator: (value) =>
+                            value!.isEmpty ? 'Please enter a password' : null,
+                      ),
+                    ),
+
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Text(
+                        //   'Number',
+                        //   style: kBodyText,
+                        // ),
+                        Padding(
+                          padding: EdgeInsets.only(top: 8.h),
+                          child: TextFormField(
+                            controller: numberController,
+                            keyboardType: TextInputType.number,
+                            maxLength: 10,
+                            decoration: kTextFieldDecoration.copyWith(
+                                hintText: "Number...", hintStyle: kBodyText),
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'Please enter a phone number';
+                              } else if (!Validator.isValidPhoneNumber(value)) {
+                                return 'Please enter a valid phone number';
+                              }
+                              return null;
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                    CustomAddButton(
+                      name: "Add",
+                      onPressed: () {
+                        if (formKey.currentState!.validate()) {
+                          _registerStaff();
+                          // Clear text fields after registration
+                          nameController.clear();
+                          numberController.clear();
+                          emailController.clear();
+                          passwordController.clear();
+                        }
+                      },
+                    ),
+                  ],
+                ),
+              )
             ],
           ),
         ),
@@ -349,84 +286,18 @@ class _AdminAddStaffState extends State<AdminAddStaff> {
   }
 }
 
-Widget buildLocationSelectionWidget({
-  required BuildContext context,
-  required TextEditingController locationController,
-  required TextEditingController wardnoController,
-  required TextEditingController housenoController,
-  required GlobalKey<FormState> formKey,
-}) {
-  return Padding(
-    padding: EdgeInsets.symmetric(horizontal: 15.h),
-    child: Column(
-      children: [
-        Container(
-          width: double.infinity,
-          decoration: BoxDecoration(
-              color: const Color.fromRGBO(82, 183, 136, 0.5),
-              borderRadius: BorderRadius.all(Radius.circular(12.r))),
-          child: Padding(
-            padding: EdgeInsets.all(8.h),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text("Select Location:", style: kHeadline),
-                MyTextField(
-                  hintText: 'Location...',
-                  controller: locationController,
-                  inputType: TextInputType.text,
-                  onDropdownPressed: () {
-                    location(context, locationController);
-                  },
-                  formKey: formKey,
-                  showDropdownIcon: true,
-                  validator: (name) =>
-                      name!.isEmpty ? 'Please enter your location' : null,
-                  isEditable: false,
-                  onChanged: (value) {},
-                ),
-                // Text("Select Ward:", style: kHeadline),
-                // MyTextField(
-                //   hintText: 'WardNo...',
-                //   controller: wardnoController,
-                //   inputType: TextInputType.text,
-                //   onDropdownPressed: () {
-                //     wardno(context, wardnoController);
-                //   },
-                //   formKey: formKey,
-                //   showDropdownIcon: true,
-                //   isEditable: false,
-                //   onChanged: (value) {},
-                // ),
-                // Text("Select House no:", style: kHeadline),
-                // MyTextField(
-                //   hintText: 'Houseno...',
-                //   controller: housenoController,
-                //   inputType: TextInputType.text,
-                //   onDropdownPressed: () {
-                //     houseno(context, housenoController);
-                //   },
-                //   formKey: formKey,
-                //   showDropdownIcon: true,
-                //   isEditable: false,
-                //   onChanged: (value) {},
-                // ),
-              ],
-            ),
-          ),
-        ),
-        SizedBox(
-          height: 10.h,
-        ),
-        const Row(
-          children: [
-            Text(
-              "Staff Details",
-              style: subhead,
-            )
-          ],
-        ),
-      ],
-    ),
-  );
+class Validator {
+  static bool isValidEmail(String email) {
+    // Regular expression for validating email addresses
+    // This regular expression checks for a basic email format with @ and .
+    final RegExp emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+    return emailRegex.hasMatch(email);
+  }
+
+  static bool isValidPhoneNumber(String phoneNumber) {
+    // Regular expression for validating phone numbers
+    // This regular expression checks for a basic phone number format with digits only
+    final RegExp phoneRegex = RegExp(r'^[0-9]{10}$');
+    return phoneRegex.hasMatch(phoneNumber);
+  }
 }
