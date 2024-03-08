@@ -15,7 +15,7 @@ class AddStaffApi {
         url,
         data: user.toJson(),
       );
-      if (response.statusCode == 200) {
+      if (response.statusCode == 201) {
         print("Response data isss addstaffapi: ${response.data}");
         return true;
       } else {
