@@ -200,6 +200,7 @@ class _SignInPageState extends State<SignInPage> {
                       ),
                       // const SizedBox(height: 20),
                       MyPasswordField(
+                        formKey: _formKey,
                         controller: _passwordController,
                         isPasswordVisible: isPasswordVisible,
                         onTap: () {

@@ -67,12 +67,17 @@ class MyPasswordField extends StatelessWidget {
     Key? key,
     required this.isPasswordVisible,
     required this.onTap,
+    this.validator,
+    required this.formKey,
     required this.controller,
     String? errorText,
   }) : super(key: key);
 
   final TextEditingController controller;
   final bool isPasswordVisible;
+  final String? Function(String?)? validator;
+  final GlobalKey<FormState> formKey;
+
   final VoidCallback onTap;
 
   @override
@@ -80,7 +85,9 @@ class MyPasswordField extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 8.h),
       child: TextFormField(
-        key: key, // Assign the provided key
+        validator: validator,
+
+        // key: key, // Assign the provided key
         style: kBodyText,
         obscureText: isPasswordVisible, // Invert obscureText value
         keyboardType: TextInputType.text,
