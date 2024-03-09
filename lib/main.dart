@@ -1,13 +1,21 @@
+import 'package:finalyear/presentation/screens/admin_main/adminside/admindashboard/ui/admindashboard.dart';
 import 'package:finalyear/presentation/screens/splashScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  String? authToken = prefs.getString('token');
+  runApp(MyApp(authToken: authToken)); // Pass authToken to MyApp
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final String? authToken; // Declare authToken as a field
+
+  MyApp({Key? key, this.authToken}) : super(key: key); // Update constructor
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
@@ -23,7 +31,10 @@ class MyApp extends StatelessWidget {
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
         // home: const HomePage(),
-        home: const Splash(),
+        // home: const Splash(),
+        home: authToken != null
+            ? const AdminDashboard() // change garna parxa
+            : const Splash(),
       ),
     );
   }
