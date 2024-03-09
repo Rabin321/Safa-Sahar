@@ -43,9 +43,67 @@ import 'package:flutter/foundation.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
+// class LoginApi {
+//   Future<bool> login(LoginModel user) async {
+//     bool isLogin = false;
+//     var url = baseUrl + loginUrl;
+//     var dio = HttpServices().getDioInstance();
+
+//     try {
+//       Response response = await dio.post(
+//         url,
+//         data: user.toJson(),
+//       );
+
+//       if (response.statusCode == 200) {
+//         print("status code 200");
+//         print("Response data from login API: ${response.data}");
+
+//         print("Is stafff ${response.data['is_Staff']}");
+//         // Parse response data as a Map
+//         Map<String, dynamic> responseData = response.data;
+
+//         // Check if 'success' key exists in the response data
+//         if (responseData.containsKey('success')) {
+//           // Access the value corresponding to the 'success' key
+//           bool successValue = responseData['success'];
+
+//           if (successValue) {
+//             // If login is successful, extract the token
+//             String? token = responseData['token'];
+//             print("Token is $token");
+
+//             if (token != null) {
+//               // Save token using shared_preferences
+//               await saveToken(token);
+//               isLogin = true;
+//             }
+//           } else {
+//             // If login is unsuccessful, print the error message
+//             print("Login failed. Reason: ${responseData['message']}");
+//           }
+//         } else {
+//           // Handle the case where 'success' key is missing in responseData
+//           print("Response data does not contain 'success' key.");
+//         }
+//       } else {
+//         print("Received status code: ${response.statusCode}");
+//         print("Response data: ${response.data}");
+//       }
+//     } catch (e) {
+//       print("Error: ${e.toString()}");
+//     }
+
+//     return isLogin;
+//   }
+
 class LoginApi {
-  Future<bool> login(LoginModel user) async {
-    bool isLogin = false;
+  Future<Map<String, bool>> login(LoginModel user) async {
+    Map<String, bool> loginResult = {
+      'success': false,
+      'is_Staff': false,
+      'is_Admin': false,
+    };
     var url = baseUrl + loginUrl;
     var dio = HttpServices().getDioInstance();
 
@@ -66,6 +124,7 @@ class LoginApi {
         if (responseData.containsKey('success')) {
           // Access the value corresponding to the 'success' key
           bool successValue = responseData['success'];
+          print("bool successValue $successValue");
 
           if (successValue) {
             // If login is successful, extract the token
@@ -75,11 +134,55 @@ class LoginApi {
             if (token != null) {
               // Save token using shared_preferences
               await saveToken(token);
-              isLogin = true;
+              loginResult['success'] = true;
             }
           } else {
             // If login is unsuccessful, print the error message
             print("Login failed. Reason: ${responseData['message']}");
+          }
+
+          // Check if 'data' key exists in the response data
+          if (responseData.containsKey('data')) {
+            // Access the value corresponding to the 'data' key
+            Map<String, dynamic> data = responseData['data'];
+
+            // Check if 'is_Staff' key exists in the 'data' map
+            if (data.containsKey('is_Staff')) {
+              // Access the value corresponding to the 'is_Staff' key
+              print("response contains 'is_Staff'");
+              bool isStaff = data['is_Staff'] == 1;
+              loginResult['is_Staff'] = isStaff;
+            } else {
+              // Set default value for 'is_Staff' if key is not present
+              print("response does not contain 'is_Staff'");
+              loginResult['is_Staff'] = false;
+            }
+          } else {
+            // Set default value for 'is_Staff' if 'data' key is not present
+            print("response does not contain 'data'");
+            loginResult['is_Staff'] = false;
+          }
+
+          // Check if 'data' key exists in the response data
+          if (responseData.containsKey('data')) {
+            // Access the value corresponding to the 'data' key
+            Map<String, dynamic> data = responseData['data'];
+
+            // Check if 'is_Admin' key exists in the 'data' map
+            if (data.containsKey('is_Admin')) {
+              // Access the value corresponding to the 'is_Admin' key
+              print("response contains 'is_Admin'");
+              bool isAdmin = data['is_Admin'] == 1;
+              loginResult['is_Admin'] = isAdmin;
+            } else {
+              // Set default value for 'is_Admin' if key is not present
+              print("response does not contain 'isAdmin'");
+              loginResult['is_Admin'] = false;
+            }
+          } else {
+            // Set default value for 'is_Admin' if 'data' key is not present
+            print("response does not contain 'data'");
+            loginResult['is_Admin'] = false;
           }
         } else {
           // Handle the case where 'success' key is missing in responseData
@@ -93,7 +196,7 @@ class LoginApi {
       print("Error: ${e.toString()}");
     }
 
-    return isLogin;
+    return loginResult;
   }
 
   Future<void> saveToken(String token) async {

@@ -1,4 +1,4 @@
-import 'package:finalyear/presentation/screens/homepage/homepage.dart';
+import 'package:finalyear/presentation/screens/admin_main/adminHomepage/adminHomepage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:finalyear/presentation/screens/screen.dart';

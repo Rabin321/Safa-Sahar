@@ -1,7 +1,7 @@
 import 'package:finalyear/components/constants.dart';
-import 'package:finalyear/presentation/screens/adminside/admindashboard/widgets/activeuser_widget.dart';
-import 'package:finalyear/presentation/screens/adminside/admindashboard/widgets/buildchart.dart';
-import 'package:finalyear/presentation/screens/adminside/admindashboard/widgets/dustbinnumber.dart';
+import 'package:finalyear/presentation/screens/admin_main/adminside/admindashboard/widgets/activeuser_widget.dart';
+import 'package:finalyear/presentation/screens/admin_main/adminside/admindashboard/widgets/buildchart.dart';
+import 'package:finalyear/presentation/screens/admin_main/adminside/admindashboard/widgets/dustbinnumber.dart';
 import 'package:finalyear/widgets/appBarWithDrawer/admin_appbarWithDrawer.dart';
 import 'package:finalyear/widgets/appBarWithDrawer/user_appbarWithDrawer.dart';
 import 'package:flutter/material.dart';
