@@ -1,5 +1,5 @@
-import 'package:finalyear/presentation/screens/adminside/addDustbin/addDustbin.dart';
-import 'package:finalyear/presentation/screens/adminside/adminNotification/adminNotification.dart';
+import 'package:finalyear/presentation/screens/admin_main/adminside/addDustbin/addDustbin.dart';
+import 'package:finalyear/presentation/screens/admin_main/adminside/adminNotification/adminNotification.dart';
 import 'package:finalyear/presentation/screens/hamdrawerpages/mapview/mapviewpage.dart';
 import 'package:finalyear/presentation/screens/login/signin_page.dart';
 import 'package:flutter/material.dart';

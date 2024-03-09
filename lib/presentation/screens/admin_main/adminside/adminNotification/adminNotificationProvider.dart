@@ -1,4 +1,4 @@
-import 'package:finalyear/presentation/screens/adminside/adminNotification/adminNotificationModel.dart';
+import 'package:finalyear/presentation/screens/admin_main/adminside/adminNotification/adminNotificationModel.dart';
 import 'package:flutter/material.dart';
 
 

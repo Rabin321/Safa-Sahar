@@ -1,17 +1,17 @@
-import 'package:finalyear/presentation/screens/adminside/addDustbin/addDustbin.dart';
-import 'package:finalyear/presentation/screens/adminside/addstaff/ui/addstaff.dart';
-import 'package:finalyear/presentation/screens/adminside/adminNotification/adminNotification.dart';
-import 'package:finalyear/presentation/screens/adminside/admindashboard/ui/admindashboard.dart';
+import 'package:finalyear/presentation/screens/admin_main/adminside/addDustbin/addDustbin.dart';
+import 'package:finalyear/presentation/screens/admin_main/adminside/addstaff/ui/addstaff.dart';
+import 'package:finalyear/presentation/screens/admin_main/adminside/adminNotification/adminNotification.dart';
+import 'package:finalyear/presentation/screens/admin_main/adminside/admindashboard/ui/admindashboard.dart';
 import 'package:flutter/material.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class AdminHomePage extends StatefulWidget {
+  const AdminHomePage({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<AdminHomePage> createState() => _AdminHomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _AdminHomePageState extends State<AdminHomePage> {
   int _selectedIndex = 0;
   void _navigatorBottomNavBar(int value) {
     setState(() {

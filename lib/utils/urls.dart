@@ -6,4 +6,4 @@ const otpVerifyUrl = 'otp/verify/';
 
 const forgotPasswordUrl = '/forget-password';
 const addStaff = '/add-staff';
-const getUser = '/get-user';
+const getStaff = '/get-staff';

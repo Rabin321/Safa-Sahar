@@ -29,3 +29,44 @@ class AddStaffApi {
     return isRegister;
   }
 }
+
+// Method to fetch staff members
+Future<List<AddStaff>> fetchStaffMembers() async {
+  try {
+    Response response = await HttpServices().getDioInstance().get(
+          baseUrl + getStaff,
+        );
+    if (response.statusCode == 200) {
+      // Parse the response data into a list of AddStaffModel objects
+      List<dynamic> data = response.data['staff'];
+      List<AddStaff> staffMembers =
+          data.map((item) => AddStaff.fromJson(item)).toList();
+      return staffMembers;
+    } else {
+      throw Exception("Failed to fetch staff members: ${response.statusCode}");
+    }
+  } catch (e) {
+    print("Error fetching staff members: $e");
+    throw Exception("Failed to fetch staff members");
+  }
+}
+
+class AddStaff {
+  final String name;
+  final String location;
+  final String number;
+
+  AddStaff({
+    required this.name,
+    required this.location,
+    required this.number,
+  });
+
+  factory AddStaff.fromJson(Map<String, dynamic> json) {
+    return AddStaff(
+      name: json['name'],
+      location: json['location'],
+      number: json['phone'],
+    );
+  }
+}

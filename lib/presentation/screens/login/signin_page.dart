@@ -1,8 +1,10 @@
 import 'package:finalyear/domain/signin/signinApi/signinModel/login_model.dart';
 import 'package:finalyear/domain/signin/signinApi/signinRepository/login_repository.dart';
 import 'package:finalyear/presentation/screens/forgotPassword/forgotPassword.dart';
-import 'package:finalyear/presentation/screens/homepage/homepage.dart';
+import 'package:finalyear/presentation/screens/admin_main/adminHomepage/adminHomepage.dart';
 import 'package:finalyear/presentation/screens/signup/signup.dart'; // Import the SignUp page
+import 'package:finalyear/presentation/screens/staff_main/staffHomepage/staffHomepage.dart';
+import 'package:finalyear/presentation/screens/user_main/userHomepage/userHomepage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -49,18 +51,57 @@ class _SignInPageState extends State<SignInPage> {
       }
 
       // Attempt to log in using provided credentials
+      // Attempt to log in using provided credentials
       LoginRepository loginRepository = LoginRepository();
-      bool isLogin = await loginRepository.login(LoginModel(
+      Map<String, dynamic> loginResult = await loginRepository.login(LoginModel(
         email: _emailController.text,
         password: _passwordController.text,
       ));
 
+      bool isLogin = loginResult['success'];
+      print("signin login bool value is $isLogin");
+
+      bool isStaff = false;
+      bool isAdmin = false;
+// Check if 'data' key exists in the loginResult
+      if (loginResult.containsKey('data')) {
+        // Access the value corresponding to the 'data' key
+        Map<String, dynamic> userData = loginResult['data'];
+
+        // Check if 'is_Staff' key exists in the 'data' map
+        if (userData.containsKey('is_Staff')) {
+          // Access the value corresponding to the 'is_Staff' key
+          isStaff = userData['is_Staff'] == 1;
+          print("signin isStaff bool value is $isStaff");
+        }
+
+        // Check if 'is_Admin' key exists in the 'data' map
+        if (userData.containsKey('is_Admin')) {
+          // Access the value corresponding to the 'is_Admin' key
+          isAdmin = userData['is_Admin'] == 1;
+          print("signin isAdmin bool value is $isAdmin");
+        }
+      }
+
       if (isLogin) {
-        // If login is successful, navigate to the home page
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const HomePage()),
-        );
+        if (isStaff) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    const AdminHomePage()), //  yo change garna parcha ppachhi
+          );
+        } else if (isAdmin) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const AdminHomePage()),
+          );
+        } else {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const AdminHomePage()),
+          );
+        }
       } else {
         // If login fails, display an appropriate error message
         MotionToast.error(
@@ -205,6 +246,8 @@ class _SignInPageState extends State<SignInPage> {
                           //   // Validation failed, do not proceed
                           //   // You can optionally display an error message to the user
                           // }
+                          FocusScope.of(context).unfocus();
+
                           _loginUser();
                         },
                       ),

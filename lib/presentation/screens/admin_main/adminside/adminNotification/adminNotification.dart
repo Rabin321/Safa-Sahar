@@ -1,5 +1,5 @@
 import 'package:finalyear/components/constants.dart';
-import 'package:finalyear/presentation/screens/adminside/addstaff/ui/staffform.dart';
+import 'package:finalyear/presentation/screens/admin_main/adminside/addstaff/ui/staffform.dart';
 import 'package:finalyear/presentation/screens/signup/widgets/methods.dart';
 import 'package:finalyear/widgets/appBarWithDrawer/admin_appbarWithDrawer.dart';
 import 'package:finalyear/widgets/my_text_field.dart';
