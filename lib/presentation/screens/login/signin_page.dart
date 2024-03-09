@@ -9,13 +9,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:motion_toast/motion_toast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../components/constants.dart';
 import '../../../widgets/my_text_field.dart';
 import '../../../widgets/my_password_field.dart';
 import '../../../widgets/my_text_button.dart';
 
 class SignInPage extends StatefulWidget {
-  const SignInPage({Key? key}) : super(key: key);
+  const SignInPage({super.key});
 
   @override
   _SignInPageState createState() => _SignInPageState();
@@ -32,6 +33,41 @@ class _SignInPageState extends State<SignInPage> {
     _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    autoLogin();
+  }
+
+  void autoLogin() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+
+    String? token = sharedPreferences.getString('token');
+    print("Auth login token is $token");
+
+    if (token != null && token.isNotEmpty) {
+      _navigateToScreen(true);
+    }
+  }
+
+  _navigateToScreen(bool isLogin) {
+    if (isLogin) {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) =>
+                  const AdminHomePage())); //change garnu parxa
+    } else {
+      MotionToast.error(
+          animationDuration: const Duration(milliseconds: 200),
+          description: const Text(
+            "Either email or password is wrong",
+            style: TextStyle(color: Colors.red),
+          )).show(context);
+    }
   }
 
   _loginUser() async {
