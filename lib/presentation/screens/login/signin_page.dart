@@ -71,6 +71,10 @@ class _SignInPageState extends State<SignInPage> {
   }
 
   _loginUser() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+
+    String? token = sharedPreferences.getString('token');
+    print("Auth login token is $token");
     try {
       print("emailcont is ${_emailController.text}");
       print("passcont is ${_passwordController.text}");
@@ -92,6 +96,7 @@ class _SignInPageState extends State<SignInPage> {
       Map<String, dynamic> loginResult = await loginRepository.login(LoginModel(
         email: _emailController.text,
         password: _passwordController.text,
+        // token: token!,
       ));
 
       bool isLogin = loginResult['success'];
@@ -200,6 +205,7 @@ class _SignInPageState extends State<SignInPage> {
                       ),
                       // const SizedBox(height: 20),
                       MyPasswordField(
+                        formKey: _formKey,
                         controller: _passwordController,
                         isPasswordVisible: isPasswordVisible,
                         onTap: () {

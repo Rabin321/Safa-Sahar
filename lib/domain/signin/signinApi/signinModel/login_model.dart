@@ -14,6 +14,7 @@ class LoginModel with _$LoginModel {
   const factory LoginModel({
     required String email,
     required String password,
+    // required String token,
   }) = _LoginModel;
 
   factory LoginModel.fromJson(Map<String, dynamic> json) =>

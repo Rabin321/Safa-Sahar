@@ -180,6 +180,10 @@ class _SignUpState extends State<SignUp> {
                                   onChanged: (value) {},
                                 ),
                                 MyPasswordField(
+                                  formKey: _formKey,
+                                  validator: (name) => name!.isEmpty
+                                      ? 'Please enter your password'
+                                      : null,
                                   controller: _passwordController,
                                   isPasswordVisible: passwordVisibility,
                                   onTap: () {

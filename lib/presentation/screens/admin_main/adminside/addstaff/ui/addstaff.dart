@@ -115,7 +115,7 @@ class _AdminAddStaffState extends State<AdminAddStaff> {
         password: passwordController.text,
         phone: numberController.text,
         location: locationController.text,
-        // houseno: 100, //test
+        houseno: 100, //test
         // wardno: 3, //test
         wardno: int.parse(wardnoController.text),
         isAdmin: 0,
