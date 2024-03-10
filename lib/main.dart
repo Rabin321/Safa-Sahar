@@ -1,8 +1,9 @@
-import 'package:finalyear/presentation/screens/admin_main/adminside/admindashboard/ui/admindashboard.dart';
 import 'package:finalyear/presentation/screens/splashScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'package:finalyear/presentation/screens/admin_main/adminHomepage/adminHomepage.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -33,7 +34,7 @@ class MyApp extends StatelessWidget {
         // home: const HomePage(),
         // home: const Splash(),
         home: authToken != null
-            ? const AdminDashboard() // change garna parxa
+            ? const AdminHomePage() // change garna parxa
             : const Splash(),
       ),
     );
