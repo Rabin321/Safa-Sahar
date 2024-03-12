@@ -81,7 +81,7 @@ class MyTextField extends StatelessWidget {
     required this.inputType,
     this.controller,
     this.validator,
-    required this.formKey,
+    this.formKey,
     this.showDropdownIcon = false,
     this.onDropdownPressed,
     required this.isEditable,
@@ -92,7 +92,7 @@ class MyTextField extends StatelessWidget {
   final TextInputType inputType;
   final TextEditingController? controller;
   final String? Function(String?)? validator;
-  final GlobalKey<FormState> formKey;
+  final GlobalKey<FormState>? formKey;
   final bool showDropdownIcon;
   final VoidCallback? onDropdownPressed;
   final bool isEditable;

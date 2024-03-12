@@ -19,6 +19,10 @@ class SignUpModel with _$SignUpModel {
     required String name,
     required String email,
     required String password,
+    required String houseno,
+    required String wardno,
+    required String location,
+    required String role,
   }) = _SignUpModel;
 
   factory SignUpModel.fromJson(Map<String, dynamic> json) =>

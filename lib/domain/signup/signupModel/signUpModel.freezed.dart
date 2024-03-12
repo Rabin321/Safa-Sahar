@@ -23,6 +23,10 @@ mixin _$SignUpModel {
   String get name => throw _privateConstructorUsedError;
   String get email => throw _privateConstructorUsedError;
   String get password => throw _privateConstructorUsedError;
+  String get houseno => throw _privateConstructorUsedError;
+  String get wardno => throw _privateConstructorUsedError;
+  String get location => throw _privateConstructorUsedError;
+  String get role => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -36,7 +40,14 @@ abstract class $SignUpModelCopyWith<$Res> {
           SignUpModel value, $Res Function(SignUpModel) then) =
       _$SignUpModelCopyWithImpl<$Res, SignUpModel>;
   @useResult
-  $Res call({String name, String email, String password});
+  $Res call(
+      {String name,
+      String email,
+      String password,
+      String houseno,
+      String wardno,
+      String location,
+      String role});
 }
 
 /// @nodoc
@@ -55,6 +66,10 @@ class _$SignUpModelCopyWithImpl<$Res, $Val extends SignUpModel>
     Object? name = null,
     Object? email = null,
     Object? password = null,
+    Object? houseno = null,
+    Object? wardno = null,
+    Object? location = null,
+    Object? role = null,
   }) {
     return _then(_value.copyWith(
       name: null == name
@@ -69,6 +84,22 @@ class _$SignUpModelCopyWithImpl<$Res, $Val extends SignUpModel>
           ? _value.password
           : password // ignore: cast_nullable_to_non_nullable
               as String,
+      houseno: null == houseno
+          ? _value.houseno
+          : houseno // ignore: cast_nullable_to_non_nullable
+              as String,
+      wardno: null == wardno
+          ? _value.wardno
+          : wardno // ignore: cast_nullable_to_non_nullable
+              as String,
+      location: null == location
+          ? _value.location
+          : location // ignore: cast_nullable_to_non_nullable
+              as String,
+      role: null == role
+          ? _value.role
+          : role // ignore: cast_nullable_to_non_nullable
+              as String,
     ) as $Val);
   }
 }
@@ -81,7 +112,14 @@ abstract class _$$SignUpModelImplCopyWith<$Res>
       __$$SignUpModelImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String name, String email, String password});
+  $Res call(
+      {String name,
+      String email,
+      String password,
+      String houseno,
+      String wardno,
+      String location,
+      String role});
 }
 
 /// @nodoc
@@ -98,6 +136,10 @@ class __$$SignUpModelImplCopyWithImpl<$Res>
     Object? name = null,
     Object? email = null,
     Object? password = null,
+    Object? houseno = null,
+    Object? wardno = null,
+    Object? location = null,
+    Object? role = null,
   }) {
     return _then(_$SignUpModelImpl(
       name: null == name
@@ -112,6 +154,22 @@ class __$$SignUpModelImplCopyWithImpl<$Res>
           ? _value.password
           : password // ignore: cast_nullable_to_non_nullable
               as String,
+      houseno: null == houseno
+          ? _value.houseno
+          : houseno // ignore: cast_nullable_to_non_nullable
+              as String,
+      wardno: null == wardno
+          ? _value.wardno
+          : wardno // ignore: cast_nullable_to_non_nullable
+              as String,
+      location: null == location
+          ? _value.location
+          : location // ignore: cast_nullable_to_non_nullable
+              as String,
+      role: null == role
+          ? _value.role
+          : role // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -120,7 +178,13 @@ class __$$SignUpModelImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$SignUpModelImpl implements _SignUpModel {
   const _$SignUpModelImpl(
-      {required this.name, required this.email, required this.password});
+      {required this.name,
+      required this.email,
+      required this.password,
+      required this.houseno,
+      required this.wardno,
+      required this.location,
+      required this.role});
 
   factory _$SignUpModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$SignUpModelImplFromJson(json);
@@ -131,10 +195,18 @@ class _$SignUpModelImpl implements _SignUpModel {
   final String email;
   @override
   final String password;
+  @override
+  final String houseno;
+  @override
+  final String wardno;
+  @override
+  final String location;
+  @override
+  final String role;
 
   @override
   String toString() {
-    return 'SignUpModel(name: $name, email: $email, password: $password)';
+    return 'SignUpModel(name: $name, email: $email, password: $password, houseno: $houseno, wardno: $wardno, location: $location, role: $role)';
   }
 
   @override
@@ -145,12 +217,18 @@ class _$SignUpModelImpl implements _SignUpModel {
             (identical(other.name, name) || other.name == name) &&
             (identical(other.email, email) || other.email == email) &&
             (identical(other.password, password) ||
-                other.password == password));
+                other.password == password) &&
+            (identical(other.houseno, houseno) || other.houseno == houseno) &&
+            (identical(other.wardno, wardno) || other.wardno == wardno) &&
+            (identical(other.location, location) ||
+                other.location == location) &&
+            (identical(other.role, role) || other.role == role));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, name, email, password);
+  int get hashCode => Object.hash(
+      runtimeType, name, email, password, houseno, wardno, location, role);
 
   @JsonKey(ignore: true)
   @override
@@ -170,7 +248,11 @@ abstract class _SignUpModel implements SignUpModel {
   const factory _SignUpModel(
       {required final String name,
       required final String email,
-      required final String password}) = _$SignUpModelImpl;
+      required final String password,
+      required final String houseno,
+      required final String wardno,
+      required final String location,
+      required final String role}) = _$SignUpModelImpl;
 
   factory _SignUpModel.fromJson(Map<String, dynamic> json) =
       _$SignUpModelImpl.fromJson;
@@ -181,6 +263,14 @@ abstract class _SignUpModel implements SignUpModel {
   String get email;
   @override
   String get password;
+  @override
+  String get houseno;
+  @override
+  String get wardno;
+  @override
+  String get location;
+  @override
+  String get role;
   @override
   @JsonKey(ignore: true)
   _$$SignUpModelImplCopyWith<_$SignUpModelImpl> get copyWith =>

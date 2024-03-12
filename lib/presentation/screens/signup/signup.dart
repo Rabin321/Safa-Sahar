@@ -2,12 +2,16 @@ import 'package:finalyear/domain/signup/signUp_repository.dart/signUP_repository
 import 'package:finalyear/domain/signup/signupModel/signUpModel.dart';
 import 'package:finalyear/presentation/screens/login/signin_page.dart';
 import 'package:finalyear/presentation/screens/signup/widgets/methods.dart';
+import 'package:finalyear/widgets/verifyMail.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:motion_toast/motion_toast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../widgets/widget.dart';
 import '../../../components/constants.dart';
+
+import 'package:http/http.dart' as http;
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -41,6 +45,12 @@ class _SignUpState extends State<SignUp> {
     super.dispose();
   }
 
+  @override
+  void initState() {
+    super.initState();
+    // verifyEmail("token");
+  }
+
   _registerUser() async {
     try {
       UserRepository userRepository = UserRepository();
@@ -48,16 +58,29 @@ class _SignUpState extends State<SignUp> {
         name: _fullNameController.text,
         email: _emailController.text,
         password: _passwordController.text,
+        location: _locationController.text,
+        houseno: _housenoController.text,
+        wardno: _wardnoController.text,
+        role: "user",
       ));
 
       if (isRegister) {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const SignInPage()));
+        // Store the token locally
+        // Retrieve the token from shared_preferences
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        String? token = prefs.getString('token');
+        Navigator.push(
+          context,
+          // MaterialPageRoute(builder: (context) => const SignInPage()));
+          MaterialPageRoute(
+              builder: (context) => VerifyMail(registeredVerifyToken: token!)),
+        );
+
         // AuthController.login();
       } else {
         MotionToast.error(
                 height: 50.h,
-                animationDuration: const Duration(milliseconds: 300),
+                animationDuration: const Duration(milliseconds: 200),
                 description: const Text("Something went wrong"))
             .show(context);
       }
