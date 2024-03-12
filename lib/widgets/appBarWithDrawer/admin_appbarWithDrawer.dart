@@ -2,6 +2,8 @@ import 'package:finalyear/presentation/screens/admin_main/adminside/addDustbin/a
 import 'package:finalyear/presentation/screens/admin_main/adminside/adminNotification/adminNotification.dart';
 import 'package:finalyear/presentation/screens/hamdrawerpages/mapview/mapviewpage.dart';
 import 'package:finalyear/presentation/screens/login/signin_page.dart';
+import 'package:finalyear/presentation/screens/profile/my_profile.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -59,11 +61,18 @@ class _MyHomePageState extends State<AdminAppBarWithDrawer> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  CircleAvatar(
-                    backgroundColor: Colors.transparent,
-                    radius: 15.r,
-                    backgroundImage:
-                        const AssetImage('assets/images/google_logo.png'),
+                  GestureDetector(
+                    onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const UserProfile()),
+                    ),
+                    child: CircleAvatar(
+                      backgroundColor: Colors.transparent,
+                      radius: 15.r,
+                      backgroundImage:
+                          const AssetImage('assets/images/google_logo.png'),
+                    ),
                   ),
                 ],
               ),

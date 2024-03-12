@@ -18,7 +18,8 @@ void wardno(BuildContext context, TextEditingController _wardnoController) {
                 onTap: () {
                   // Set the selected ward number to the text field's controller
                   _wardnoController.text = ' $wardNo';
-                  Navigator.of(context).pop(); // Close the dialog
+                  // Navigator.of(context).pop(); // Close the dialog
+                  Navigator.of(context, rootNavigator: true).pop();
                 },
               );
             },
@@ -49,7 +50,8 @@ void houseno(BuildContext context, TextEditingController housenoController) {
                 onTap: () {
                   // Set the selected house number to the text field's controller
                   housenoController.text = houseNo;
-                  Navigator.of(context).pop(); // Close the dialog
+                  // Navigator.of(context).pop(); // Close the dialog
+                  Navigator.of(context, rootNavigator: true).pop();
                 },
               );
             },
@@ -80,7 +82,8 @@ void location(BuildContext context, TextEditingController locationController) {
                 onTap: () {
                   // Set the selected house number to the text field's controller
                   locationController.text = location;
-                  Navigator.of(context).pop(); // Close the dialog
+                  // Navigator.of(context).pop(); // Close the dialog
+                  Navigator.of(context, rootNavigator: true).pop();
                 },
               );
             },

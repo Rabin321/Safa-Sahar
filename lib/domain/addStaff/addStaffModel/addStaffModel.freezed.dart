@@ -24,8 +24,8 @@ mixin _$AddStaffModel {
   String get email => throw _privateConstructorUsedError;
   String get password => throw _privateConstructorUsedError;
   String get location => throw _privateConstructorUsedError;
-  int? get houseno => throw _privateConstructorUsedError;
-  int? get wardno => throw _privateConstructorUsedError;
+  int? get house => throw _privateConstructorUsedError;
+  int? get ward => throw _privateConstructorUsedError;
   String? get role => throw _privateConstructorUsedError;
   int? get isAdmin => throw _privateConstructorUsedError;
   int? get isStaff => throw _privateConstructorUsedError;
@@ -48,8 +48,8 @@ abstract class $AddStaffModelCopyWith<$Res> {
       String email,
       String password,
       String location,
-      int? houseno,
-      int? wardno,
+      int? house,
+      int? ward,
       String? role,
       int? isAdmin,
       int? isStaff,
@@ -73,8 +73,8 @@ class _$AddStaffModelCopyWithImpl<$Res, $Val extends AddStaffModel>
     Object? email = null,
     Object? password = null,
     Object? location = null,
-    Object? houseno = freezed,
-    Object? wardno = freezed,
+    Object? house = freezed,
+    Object? ward = freezed,
     Object? role = freezed,
     Object? isAdmin = freezed,
     Object? isStaff = freezed,
@@ -97,13 +97,13 @@ class _$AddStaffModelCopyWithImpl<$Res, $Val extends AddStaffModel>
           ? _value.location
           : location // ignore: cast_nullable_to_non_nullable
               as String,
-      houseno: freezed == houseno
-          ? _value.houseno
-          : houseno // ignore: cast_nullable_to_non_nullable
+      house: freezed == house
+          ? _value.house
+          : house // ignore: cast_nullable_to_non_nullable
               as int?,
-      wardno: freezed == wardno
-          ? _value.wardno
-          : wardno // ignore: cast_nullable_to_non_nullable
+      ward: freezed == ward
+          ? _value.ward
+          : ward // ignore: cast_nullable_to_non_nullable
               as int?,
       role: freezed == role
           ? _value.role
@@ -138,8 +138,8 @@ abstract class _$$AddStaffModelImplCopyWith<$Res>
       String email,
       String password,
       String location,
-      int? houseno,
-      int? wardno,
+      int? house,
+      int? ward,
       String? role,
       int? isAdmin,
       int? isStaff,
@@ -161,8 +161,8 @@ class __$$AddStaffModelImplCopyWithImpl<$Res>
     Object? email = null,
     Object? password = null,
     Object? location = null,
-    Object? houseno = freezed,
-    Object? wardno = freezed,
+    Object? house = freezed,
+    Object? ward = freezed,
     Object? role = freezed,
     Object? isAdmin = freezed,
     Object? isStaff = freezed,
@@ -185,13 +185,13 @@ class __$$AddStaffModelImplCopyWithImpl<$Res>
           ? _value.location
           : location // ignore: cast_nullable_to_non_nullable
               as String,
-      houseno: freezed == houseno
-          ? _value.houseno
-          : houseno // ignore: cast_nullable_to_non_nullable
+      house: freezed == house
+          ? _value.house
+          : house // ignore: cast_nullable_to_non_nullable
               as int?,
-      wardno: freezed == wardno
-          ? _value.wardno
-          : wardno // ignore: cast_nullable_to_non_nullable
+      ward: freezed == ward
+          ? _value.ward
+          : ward // ignore: cast_nullable_to_non_nullable
               as int?,
       role: freezed == role
           ? _value.role
@@ -221,8 +221,8 @@ class _$AddStaffModelImpl implements _AddStaffModel {
       required this.email,
       required this.password,
       required this.location,
-      this.houseno,
-      this.wardno,
+      this.house,
+      this.ward,
       this.role,
       this.isAdmin,
       this.isStaff,
@@ -240,9 +240,9 @@ class _$AddStaffModelImpl implements _AddStaffModel {
   @override
   final String location;
   @override
-  final int? houseno;
+  final int? house;
   @override
-  final int? wardno;
+  final int? ward;
   @override
   final String? role;
   @override
@@ -254,7 +254,7 @@ class _$AddStaffModelImpl implements _AddStaffModel {
 
   @override
   String toString() {
-    return 'AddStaffModel(name: $name, email: $email, password: $password, location: $location, houseno: $houseno, wardno: $wardno, role: $role, isAdmin: $isAdmin, isStaff: $isStaff, phone: $phone)';
+    return 'AddStaffModel(name: $name, email: $email, password: $password, location: $location, house: $house, ward: $ward, role: $role, isAdmin: $isAdmin, isStaff: $isStaff, phone: $phone)';
   }
 
   @override
@@ -268,8 +268,8 @@ class _$AddStaffModelImpl implements _AddStaffModel {
                 other.password == password) &&
             (identical(other.location, location) ||
                 other.location == location) &&
-            (identical(other.houseno, houseno) || other.houseno == houseno) &&
-            (identical(other.wardno, wardno) || other.wardno == wardno) &&
+            (identical(other.house, house) || other.house == house) &&
+            (identical(other.ward, ward) || other.ward == ward) &&
             (identical(other.role, role) || other.role == role) &&
             (identical(other.isAdmin, isAdmin) || other.isAdmin == isAdmin) &&
             (identical(other.isStaff, isStaff) || other.isStaff == isStaff) &&
@@ -279,7 +279,7 @@ class _$AddStaffModelImpl implements _AddStaffModel {
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, name, email, password, location,
-      houseno, wardno, role, isAdmin, isStaff, phone);
+      house, ward, role, isAdmin, isStaff, phone);
 
   @JsonKey(ignore: true)
   @override
@@ -301,8 +301,8 @@ abstract class _AddStaffModel implements AddStaffModel {
       required final String email,
       required final String password,
       required final String location,
-      final int? houseno,
-      final int? wardno,
+      final int? house,
+      final int? ward,
       final String? role,
       final int? isAdmin,
       final int? isStaff,
@@ -320,9 +320,9 @@ abstract class _AddStaffModel implements AddStaffModel {
   @override
   String get location;
   @override
-  int? get houseno;
+  int? get house;
   @override
-  int? get wardno;
+  int? get ward;
   @override
   String? get role;
   @override

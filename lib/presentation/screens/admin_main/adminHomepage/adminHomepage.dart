@@ -33,43 +33,47 @@ class _AdminHomePageState extends State<AdminHomePage> {
       onWillPop: () async => false,
       child: Scaffold(
         body: _children[_selectedIndex],
-        bottomNavigationBar: BottomNavigationBar(
-            backgroundColor: const Color(0xFF52B788),
-            fixedColor: Colors.black,
-            currentIndex: _selectedIndex,
-            onTap: _navigatorBottomNavBar,
-            type: BottomNavigationBarType.fixed,
-            items: const [
-              BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.home,
-                  size: 30,
-                ),
-                label: "Home",
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.delete_outline,
-                  size: 30,
-                ),
-                label: "Dustbin",
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.people,
-                  size: 30,
-                ),
-                label: "People",
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.notifications,
-                  size: 30,
-                ),
-                label: "Notifications",
-              ),
-            ]),
-      ),
+        bottomNavigationBar: CustomBottomNavBar(),
+      ),  
     );
+  }
+
+  BottomNavigationBar CustomBottomNavBar() {
+    return BottomNavigationBar(
+        backgroundColor: const Color(0xFF52B788),
+        fixedColor: Colors.black,
+        currentIndex: _selectedIndex,
+        onTap: _navigatorBottomNavBar,
+        type: BottomNavigationBarType.fixed,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.home,
+              size: 30,
+            ),
+            label: "Home",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.delete_outline,
+              size: 30,
+            ),
+            label: "Dustbin",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.people,
+              size: 30,
+            ),
+            label: "People",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.notifications,
+              size: 30,
+            ),
+            label: "Notifications",
+          ),
+        ]);
   }
 }

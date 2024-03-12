@@ -20,78 +20,82 @@ class AdminAddDustbin extends StatelessWidget {
       {'did': '2', 'fillPercentage': '40%', 'assignedStaff': 'Rohan'},
       // add more staff data as needed
     ];
-    return AdminAppBarWithDrawer(
-      title: 'ADMIN',
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Padding(
-              padding: EdgeInsets.only(top: 10.h, bottom: 16.h),
-              child: Align(
-                alignment: Alignment.center,
-                child: Text(
-                  "DUSTBIN",
-                  style: kBodyText2.copyWith(
-                      color: const Color(0xFF365307), letterSpacing: 1),
+    return WillPopScope(
+            onWillPop: () async => false,
+
+      child: AdminAppBarWithDrawer(
+        title: 'ADMIN',
+        body: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Padding(
+                padding: EdgeInsets.only(top: 10.h, bottom: 16.h),
+                child: Align(
+                  alignment: Alignment.center,
+                  child: Text(
+                    "DUSTBIN",
+                    style: kBodyText2.copyWith(
+                        color: const Color(0xFF365307), letterSpacing: 1),
+                  ),
                 ),
               ),
-            ),
-            buildLocationSelectionWidget(
-              name: "Dustbin Details",
-              context: context,
-              locationController: TextEditingController(),
-              wardnoController: TextEditingController(),
-              formKey: GlobalKey<FormState>(),
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 15.h),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: DataTable(
-                      columnSpacing: 50.w,
-                      columns: const [
-                        DataColumn(label: Text('Dustbin ID')),
-                        DataColumn(label: Text('Fill Percentage')),
-                        DataColumn(label: Text('Assigned Staff')),
-                      ],
-                      rows: staffData
-                          .map((staff) => DataRow(cells: [
-                                DataCell(Text(staff['did'])),
-                                DataCell(Text(staff['fillPercentage'])),
-                                DataCell(Text(staff['assignedStaff'])),
-                              ]))
-                          .toList(),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(vertical: 5.h),
-                    child:
-                        const Text("Add Dustbin to this ward", style: subhead),
-                  ),
-                  CustomAddTextfield(
-                    name: "Dustbin ID",
-                    hintTextName: "Dustbin id...",
-                    validatorText: "Please enter a valid dustbin id",
-                    controller: null,
-                  ),
-                  CustomAddTextfield(
-                    name: "Location",
-                    hintTextName: "Location...",
-                    validatorText: "Please enter a valid location",
-                    controller: null,
-                  ),
-                  CustomAddButton(
-                    name: "Add",
-                    onPressed: () {},
-                  )
-                ],
+              buildLocationSelectionWidget(
+                name: "Dustbin Details",
+                context: context,
+                locationController: TextEditingController(),
+                wardnoController: TextEditingController(),
+                formKey: GlobalKey<FormState>(),
               ),
-            )
-          ],
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 15.h),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: DataTable(
+                        columnSpacing: 50.w,
+                        columns: const [
+                          DataColumn(label: Text('Dustbin ID')),
+                          DataColumn(label: Text('Fill Percentage')),
+                          DataColumn(label: Text('Assigned Staff')),
+                        ],
+                        rows: staffData
+                            .map((staff) => DataRow(cells: [
+                                  DataCell(Text(staff['did'])),
+                                  DataCell(Text(staff['fillPercentage'])),
+                                  DataCell(Text(staff['assignedStaff'])),
+                                ]))
+                            .toList(),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 5.h),
+                      child:
+                          const Text("Add Dustbin to this ward", style: subhead),
+                    ),
+                    CustomAddTextfield(
+                      name: "Dustbin ID",
+                      hintTextName: "Dustbin id...",
+                      validatorText: "Please enter a valid dustbin id",
+                      controller: null,
+                    ),
+                    CustomAddTextfield(
+                      name: "Location",
+                      hintTextName: "Location...",
+                      validatorText: "Please enter a valid location",
+                      controller: null,
+                    ),
+                    CustomAddButton(
+                      name: "Add",
+                      onPressed: () {},
+                    )
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
