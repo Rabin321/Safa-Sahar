@@ -152,6 +152,7 @@ class LoginApi {
               print("response contains 'is_Staff'");
               bool isStaff = data['is_Staff'] == 1;
               loginResult['is_Staff'] = isStaff;
+              print("isStaff bool ${loginResult['is_Staff']}");
             } else {
               // Set default value for 'is_Staff' if key is not present
               print("response does not contain 'is_Staff'");
@@ -174,6 +175,7 @@ class LoginApi {
               print("response contains 'is_Admin'");
               bool isAdmin = data['is_Admin'] == 1;
               loginResult['is_Admin'] = isAdmin;
+              print("isAdmin bool ${loginResult['is_Admin']}");
             } else {
               // Set default value for 'is_Admin' if key is not present
               print("response does not contain 'isAdmin'");

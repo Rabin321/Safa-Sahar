@@ -170,20 +170,21 @@ class _AdminAddStaffState extends State<AdminAddStaff> {
         // Extract staff members' names, locations, and emails
         final List<dynamic> staffMembers = data['staffMembers'];
 
-        staffList.clear(); //yo herna parchha
-
         staffMembers.forEach((staff) {
+          final int id = staff['id'];
           final String name = staff['name'];
           final String location = staff['location'];
           final String email = staff['email'];
-          print('Name: $name, Location: $location, Email: $email');
+          print('ID: $id, $name, Location: $location, Email: $email');
           // Add staff details to the staff list
           staffList.add({
+            'Id': id.toString(),
             'Name': name,
             'Location': location,
             'Email': email,
           });
         });
+        setState(() {}); // Notify that the state has changed
       } else {
         // ignore: use_build_context_synchronously
         ScaffoldMessenger.of(context).showSnackBar(
@@ -277,71 +278,79 @@ class _AdminAddStaffState extends State<AdminAddStaff> {
                           ),
                         ),
                         // SizedBox(height: 15.h),
-                        const Row(
-                          children: [
-                            Text(
-                              "Staff Details",
-                              style: subhead,
-                            ),
-                          ],
+                        Padding(
+                          padding: EdgeInsets.only(top: 20.h, bottom: 5.h),
+                          child: const Row(
+                            children: [
+                              Text(
+                                "Staff Details",
+                                style: subhead,
+                              ),
+                            ],
+                          ),
                         ),
                         Padding(
                           padding: EdgeInsets.all(2.h),
                           child: Column(
                             children: [
                               Container(
+                                decoration: BoxDecoration(
+                                  border: Border.all(color: Colors.grey),
+                                  borderRadius: BorderRadius.circular(8.r),
+                                ),
                                 height: 150.h,
-                                //     .h, // Set a fixed height for the container
-
+                                width: double.infinity,
                                 child: Scrollbar(
-                                  thumbVisibility: true,
-                                  trackVisibility: true,
-                                  showTrackOnHover: true,
                                   child: SingleChildScrollView(
                                     scrollDirection: Axis.vertical,
                                     child: DataTable(
-                                      columnSpacing: 3.w,
+                                      headingRowColor:
+                                          MaterialStateColor.resolveWith(
+                                        (states) =>
+                                            Color.fromRGBO(82, 183, 136, 0.5),
+                                      ),
+                                      columnSpacing: 4.w,
                                       columns: const [
+                                        DataColumn(label: Text('Id')),
                                         DataColumn(label: Text('Name')),
                                         DataColumn(label: Text('Location')),
                                         DataColumn(label: Text('Email')),
-                                        DataColumn(
-                                            label: Text(
-                                                'Actions')), // New column for actions
+                                        DataColumn(label: Text('Actions')),
                                       ],
                                       rows: staffList
                                           .map(
                                             (staff) => DataRow(cells: [
+                                              DataCell(Text(staff['Id'] ?? '')),
                                               DataCell(
                                                   Text(staff['Name'] ?? '')),
                                               DataCell(Text(
                                                   staff['Location'] ?? '')),
                                               DataCell(
                                                   Text(staff['Email'] ?? '')),
-                                              DataCell(Row(
-                                                children: [
-                                                  IconButton(
-                                                    icon: const Icon(
-                                                      Icons.edit,
-                                                      color: Colors.green,
+                                              DataCell(
+                                                Row(
+                                                  children: [
+                                                    IconButton(
+                                                      icon: const Icon(
+                                                        Icons.edit,
+                                                        color: Colors.green,
+                                                      ),
+                                                      onPressed: () {
+                                                        // Add your edit logic here
+                                                      },
                                                     ),
-                                                    onPressed: () {
-                                                      // Add your edit logic here
-                                                      // For example, navigate to a new screen for editing staff details
-                                                    },
-                                                  ),
-                                                  IconButton(
-                                                    icon: Icon(
-                                                      Icons.delete,
-                                                      color: Colors.red[600],
+                                                    IconButton(
+                                                      icon: Icon(
+                                                        Icons.delete,
+                                                        color: Colors.red[600],
+                                                      ),
+                                                      onPressed: () {
+                                                        // Add your delete logic here
+                                                      },
                                                     ),
-                                                    onPressed: () {
-                                                      // Add your delete logic here
-                                                      // For example, show a confirmation dialog before deleting the staff
-                                                    },
-                                                  ),
-                                                ],
-                                              )),
+                                                  ],
+                                                ),
+                                              ),
                                             ]),
                                           )
                                           .toList(),

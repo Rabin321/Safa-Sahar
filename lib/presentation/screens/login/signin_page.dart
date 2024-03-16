@@ -100,10 +100,15 @@ class _SignInPageState extends State<SignInPage> {
       ));
 
       bool isLogin = loginResult['success'];
+      bool isStaff = loginResult['is_Staff'];
+      bool isAdmin = loginResult['is_Admin'];
       print("signin login bool value is $isLogin");
+            print("signin isStaff bool value is $isStaff");
 
-      bool isStaff = false;
-      bool isAdmin = false;
+      print("signin isAdmin bool value is $isAdmin");
+
+
+    
 // Check if 'data' key exists in the loginResult
       if (loginResult.containsKey('data')) {
         // Access the value corresponding to the 'data' key
