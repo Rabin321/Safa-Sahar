@@ -225,14 +225,11 @@ class _AdminAddStaffState extends State<AdminAddStaff> {
       );
 
       if (response.statusCode == 200) {
-        // Staff member updated successfully
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Staff member updated successfully')),
         );
-        // Refresh the staff list or perform any other action needed
         _refreshStaffMembersokk();
       } else {
-        // Failed to update staff member
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Failed to update staff member')),
         );
@@ -245,9 +242,34 @@ class _AdminAddStaffState extends State<AdminAddStaff> {
       );
     }
   }
+
 //
 //
-//
+// delete staff
+  void deleteStaff(String id) async {
+    try {
+      final response = await http.delete(
+        Uri.parse('http://192.168.1.74:5000/api/delete-staff/?id=$id'),
+      );
+
+      if (response.statusCode == 200) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Staff member deleted successfully')),
+        );
+        _refreshStaffMembersokk();
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Failed to delete staff member')),
+        );
+      }
+    } catch (error) {
+      // Handle errors
+      print('Error deleting staff member: $error');
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('An error occurred')),
+      );
+    }
+  }
 
   Future<void> _refreshStaffMembersokk() async {
     try {
@@ -510,7 +532,8 @@ class _AdminAddStaffState extends State<AdminAddStaff> {
                                                               Colors.red[600],
                                                         ),
                                                         onPressed: () {
-                                                          // Add your delete logic here
+                                                          deleteStaff(
+                                                              staff['Id']!);
                                                         },
                                                       ),
                                                     ],
