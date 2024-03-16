@@ -99,45 +99,42 @@ class _SignInPageState extends State<SignInPage> {
         // token: token!,
       ));
 
-      bool isLogin = loginResult['success'];
-      bool isStaff = loginResult['is_Staff'];
-      bool isAdmin = loginResult['is_Admin'];
-      print("signin login bool value is $isLogin");
-            print("signin isStaff bool value is $isStaff");
+      // Extract login result
+      bool isLogin = loginResult['success'] == true;
+      bool isStaff = loginResult['is_Staff'] == true;
+      bool isAdmin = loginResult['is_Admin'] == true;
 
-      print("signin isAdmin bool value is $isAdmin");
+      String? responseRole = loginResult['role'];
+      print("signin responseRole is $responseRole");
 
-
-    
 // Check if 'data' key exists in the loginResult
-      if (loginResult.containsKey('data')) {
-        // Access the value corresponding to the 'data' key
-        Map<String, dynamic> userData = loginResult['data'];
+      // if (loginResult.containsKey('data')) {
+      //   // Access the value corresponding to the 'data' key
+      //   Map<String, dynamic> userData = loginResult['data'];
 
-        // Check if 'is_Staff' key exists in the 'data' map
-        if (userData.containsKey('is_Staff')) {
-          // Access the value corresponding to the 'is_Staff' key
-          isStaff = userData['is_Staff'] == 1;
-          print("signin isStaff bool value is $isStaff");
-        }
+      //   // Check if 'is_Staff' key exists in the 'data' map
+      //   if (userData.containsKey('is_Staff')) {
+      //     // Access the value corresponding to the 'is_Staff' key
+      //     isStaff = userData['is_Staff'] == 1;
+      //     print("signin isStaff bool value is $isStaff");
+      //   }
 
-        // Check if 'is_Admin' key exists in the 'data' map
-        if (userData.containsKey('is_Admin')) {
-          // Access the value corresponding to the 'is_Admin' key
-          isAdmin = userData['is_Admin'] == 1;
-          print("signin isAdmin bool value is $isAdmin");
-        }
-      }
+      //   // Check if 'is_Admin' key exists in the 'data' map
+      //   if (userData.containsKey('is_Admin')) {
+      //     // Access the value corresponding to the 'is_Admin' key
+      //     isAdmin = userData['is_Admin'] == 1;
+      //     print("signin isAdmin bool value is $isAdmin");
+      //   }
+      // }
 
       if (isLogin) {
-        if (isStaff) {
+        if (isStaff || responseRole == "staff") {
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    const AdminHomePage()), //  yo change garna parcha ppachhi
+            MaterialPageRoute(builder: (context) => const AdminHomePage()),
+            // const StaffHomePage()), //  yo change garna parcha ppachhi
           );
-        } else if (isAdmin) {
+        } else if (isAdmin || responseRole == "admin") {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(builder: (context) => const AdminHomePage()),
@@ -145,7 +142,10 @@ class _SignInPageState extends State<SignInPage> {
         } else {
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => const AdminHomePage()),
+            MaterialPageRoute(
+                builder: (context) =>
+                    // const UserHomePage()),
+                    const AdminHomePage()),
           );
         }
       } else {
