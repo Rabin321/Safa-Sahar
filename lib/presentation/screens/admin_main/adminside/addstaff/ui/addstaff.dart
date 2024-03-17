@@ -178,7 +178,7 @@ class _AdminAddStaffState extends State<AdminAddStaff> {
           final String? location = staff['location'];
           final String? email = staff['email'];
           final int? wardno = staff['wardno'];
-          final int? phone = staff['phone'];
+          final String? phone = staff['phone'];
           print(
               'ID: $id, Name: $name, Location: $location, Email: $email, Ward: $wardno, Phone:$phone,');
           // Add staff details to the staff list
@@ -211,7 +211,7 @@ class _AdminAddStaffState extends State<AdminAddStaff> {
 //
 // edidt staff
 
-  Future<void> editStaff({required String id}) async {
+  Future<void> editStaff({required int id}) async {
     try {
       final response = await http.patch(
         Uri.parse('http://192.168.1.74:5000/api/edit-staff?id=$id'),
@@ -490,8 +490,11 @@ class _AdminAddStaffState extends State<AdminAddStaff> {
                                                                     onPressed:
                                                                         () {
                                                                       editStaff(
-                                                                          id: staff[
-                                                                              'Id']!);
+                                                                        id: int.parse(
+                                                                            staff['Id']!),
+                                                                        // id: staff[
+                                                                        //     'Id']!
+                                                                      );
                                                                       Navigator.of(
                                                                               context)
                                                                           .pop();

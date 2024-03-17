@@ -37,7 +37,6 @@ class _VerifyMailState extends State<VerifyMail> {
     if (response.statusCode == 200) {
       final Map<String, dynamic> data = json.decode(response.body);
       if (data['success'] == false) {
-        // User is successfully verified
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => SignInPage()),

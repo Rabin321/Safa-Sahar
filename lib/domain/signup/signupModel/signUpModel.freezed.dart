@@ -23,8 +23,8 @@ mixin _$SignUpModel {
   String get name => throw _privateConstructorUsedError;
   String get email => throw _privateConstructorUsedError;
   String get password => throw _privateConstructorUsedError;
-  String get houseno => throw _privateConstructorUsedError;
-  String get wardno => throw _privateConstructorUsedError;
+  int get houseno => throw _privateConstructorUsedError;
+  int get wardno => throw _privateConstructorUsedError;
   String get location => throw _privateConstructorUsedError;
   String get role => throw _privateConstructorUsedError;
 
@@ -44,8 +44,8 @@ abstract class $SignUpModelCopyWith<$Res> {
       {String name,
       String email,
       String password,
-      String houseno,
-      String wardno,
+      int houseno,
+      int wardno,
       String location,
       String role});
 }
@@ -87,11 +87,11 @@ class _$SignUpModelCopyWithImpl<$Res, $Val extends SignUpModel>
       houseno: null == houseno
           ? _value.houseno
           : houseno // ignore: cast_nullable_to_non_nullable
-              as String,
+              as int,
       wardno: null == wardno
           ? _value.wardno
           : wardno // ignore: cast_nullable_to_non_nullable
-              as String,
+              as int,
       location: null == location
           ? _value.location
           : location // ignore: cast_nullable_to_non_nullable
@@ -116,8 +116,8 @@ abstract class _$$SignUpModelImplCopyWith<$Res>
       {String name,
       String email,
       String password,
-      String houseno,
-      String wardno,
+      int houseno,
+      int wardno,
       String location,
       String role});
 }
@@ -157,11 +157,11 @@ class __$$SignUpModelImplCopyWithImpl<$Res>
       houseno: null == houseno
           ? _value.houseno
           : houseno // ignore: cast_nullable_to_non_nullable
-              as String,
+              as int,
       wardno: null == wardno
           ? _value.wardno
           : wardno // ignore: cast_nullable_to_non_nullable
-              as String,
+              as int,
       location: null == location
           ? _value.location
           : location // ignore: cast_nullable_to_non_nullable
@@ -196,9 +196,9 @@ class _$SignUpModelImpl implements _SignUpModel {
   @override
   final String password;
   @override
-  final String houseno;
+  final int houseno;
   @override
-  final String wardno;
+  final int wardno;
   @override
   final String location;
   @override
@@ -249,8 +249,8 @@ abstract class _SignUpModel implements SignUpModel {
       {required final String name,
       required final String email,
       required final String password,
-      required final String houseno,
-      required final String wardno,
+      required final int houseno,
+      required final int wardno,
       required final String location,
       required final String role}) = _$SignUpModelImpl;
 
@@ -264,9 +264,9 @@ abstract class _SignUpModel implements SignUpModel {
   @override
   String get password;
   @override
-  String get houseno;
+  int get houseno;
   @override
-  String get wardno;
+  int get wardno;
   @override
   String get location;
   @override
