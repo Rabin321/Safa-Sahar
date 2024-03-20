@@ -7,6 +7,7 @@ import 'package:finalyear/domain/addStaff/addStaffModel/addStaffModel.dart';
 import 'package:finalyear/domain/addStaff/addStaffRepository/addStaffRepository.dart';
 import 'package:finalyear/presentation/screens/admin_main/adminside/addstaff/ui/staffform.dart';
 import 'package:finalyear/presentation/screens/signup/widgets/methods.dart';
+import 'package:finalyear/utils/urls.dart';
 import 'package:finalyear/widgets/appBarWithDrawer/admin_appbarWithDrawer.dart';
 import 'package:finalyear/widgets/my_text_field.dart';
 import 'package:flutter/material.dart';
@@ -165,7 +166,7 @@ class _AdminAddStaffState extends State<AdminAddStaff> {
       staffList.clear(); //yo herna parchha
 
       final response = await http.get(Uri.parse(
-          'http://192.168.1.74:5000/api/get-staff-ward/?wardno=$ward'));
+          baseUrl + getStaffByWard + '?wardno=$ward'));
       if (response.statusCode == 200) {
         print("staffbyward res");
         final data = jsonDecode(response.body);
@@ -326,25 +327,28 @@ class _AdminAddStaffState extends State<AdminAddStaff> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text("Select Ward no:", style: kHeadline),
-                                MyTextField(
-                                  hintText: 'Ward no...',
-                                  controller: filterWardController,
-                                  inputType: TextInputType.text,
-                                  onDropdownPressed: () {
-                                    wardno(context, filterWardController);
-                                  },
-                                  // formKey: formKeydrpdwn,
-                                  showDropdownIcon: true,
-                                  // validator: (name) => name!.isEmpty
-                                  //     ? 'Please select your location'
-                                  //     : null,
-                                  isEditable: false,
-                                  onChanged: (value) {
-                                    // Update locationController when location is selected
-                                    filterWardController.text = value;
-                                    print(
-                                        "filterwardController: ${filterWardController.text}");
-                                  },
+                                Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 10.h),
+                                  child: MyTextField(
+                                    hintText: 'Ward no...',
+                                    controller: filterWardController,
+                                    inputType: TextInputType.text,
+                                    onDropdownPressed: () {
+                                      wardno(context, filterWardController);
+                                    },
+                                    // formKey: formKeydrpdwn,
+                                    showDropdownIcon: true,
+                                    // validator: (name) => name!.isEmpty
+                                    //     ? 'Please select your location'
+                                    //     : null,
+                                    isEditable: false,
+                                    onChanged: (value) {
+                                      // Update locationController when location is selected
+                                      filterWardController.text = value;
+                                      print(
+                                          "filterwardController: ${filterWardController.text}");
+                                    },
+                                  ),
                                 ),
                                 Align(
                                   alignment: Alignment.bottomRight,

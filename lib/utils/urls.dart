@@ -11,3 +11,9 @@ const editStaff = '/edit-staff';
 
 const getUser = '/get-user';
 const getStaffByWard = '/get-staff-ward';
+
+const addDustbinUrl = '/add-dustbin';
+const getDustbinUrl = '/get-dustbin';
+
+const wastepickupAddTime = '/add-time';
+const getWastepickupTimeByWard = '/get-filter-time';

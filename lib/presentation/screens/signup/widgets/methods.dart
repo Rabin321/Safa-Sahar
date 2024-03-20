@@ -1,4 +1,9 @@
+import 'dart:convert';
+
+import 'package:finalyear/utils/urls.dart';
 import 'package:flutter/material.dart';
+
+import 'package:http/http.dart' as http;
 
 void wardno(BuildContext context, TextEditingController _wardnoController) {
   showDialog(
@@ -92,4 +97,54 @@ void location(BuildContext context, TextEditingController locationController) {
       );
     },
   );
+}
+
+void selectAssignedStaff(
+    BuildContext context, TextEditingController assignedStaff) async {
+  List<dynamic> staffList =
+      await fetchStaffData(); // Fetch staff data asynchronously
+
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: const Text('Select Staff'),
+        content: SizedBox(
+          width: double.minPositive,
+          height: 200,
+          child: ListView.builder(
+            itemCount: staffList.length,
+            itemBuilder: (BuildContext context, int index) {
+              final staff = staffList[index];
+              return ListTile(
+                title:
+                    Text('${staff["name"]}'), // Display the staff member's name
+                onTap: () {
+                  // Set the selected staff member's name to the text field's controller
+                  assignedStaff.text = staff["name"];
+                  Navigator.of(context, rootNavigator: true).pop();
+                },
+              );
+            },
+          ),
+        ),
+      );
+    },
+  );
+}
+
+Future<List<dynamic>> fetchStaffData() async {
+  try {
+    final response = await http.get(Uri.parse(baseUrl + getStaff));
+    if (response.statusCode == 200) {
+      final staffList = jsonDecode(response.body)['staffMembers'];
+      return staffList;
+    } else {
+      print('Failed to fetch staff data: ${response.statusCode}');
+      return []; // Return an empty list in case of failure
+    }
+  } catch (error) {
+    print('Error fetching staff data: $error');
+    return []; // Return an empty list in case of error
+  }
 }
