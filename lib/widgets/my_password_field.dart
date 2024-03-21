@@ -105,7 +105,7 @@ class MyPasswordField extends StatelessWidget {
               ),
             ),
           ),
-          contentPadding: EdgeInsets.all(16.h),
+          contentPadding: EdgeInsets.all(14.h),
           hintText: 'Password',
           hintStyle: kBodyText,
           enabledBorder: OutlineInputBorder(

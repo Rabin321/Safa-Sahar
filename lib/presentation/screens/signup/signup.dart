@@ -133,6 +133,7 @@ class _SignUpState extends State<SignUp> {
                           Form(
                             key: _formKey,
                             child: Column(
+                              
                               children: [
                                 MyTextField(
                                   formKey: _formKey,

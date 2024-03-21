@@ -16,7 +16,7 @@ class _UserProfileState extends State<UserProfile> {
   @override
   Widget build(BuildContext context) {
     return AdminAppBarWithDrawer(
-      title: 'ADMIN',
+      title: 'USER',
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 6.h),

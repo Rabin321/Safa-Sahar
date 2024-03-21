@@ -1,3 +1,4 @@
+import 'package:finalyear/presentation/screens/users/user_aboutuspage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -142,7 +143,10 @@ class _MyHomePageState extends State<UserAppBarWithDrawer> {
                   'About Us',
                   style: listTextStyle,
                 ),
-                onTap: () {},
+                onTap: () {
+                  Navigator.pushReplacement(context,
+                      MaterialPageRoute(builder: ((context) => AboutUs())));
+                },
               ),
               const Divider(
                 color: Colors.green,
