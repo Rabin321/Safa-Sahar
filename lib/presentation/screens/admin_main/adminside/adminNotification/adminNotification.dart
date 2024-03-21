@@ -132,6 +132,73 @@ class _AdminNotificationPageState extends State<AdminNotificationPage> {
     }
   }
 
+  Future<void> _refreshWasteTimesokk() async {
+    try {
+      await fetchWastebyWard(int.parse(_filterWardController.text));
+    } catch (error) {
+      print('Error refreshing time: $error');
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Failed to refresh")),
+      );
+    }
+  }
+
+  Future<void> editWasteTime({required int id}) async {
+    try {
+      final response = await http.patch(
+        // Uri.parse('http://192.168.1.74:5000/api/edit-staff?id=$id'),
+        Uri.parse(baseUrl + editWastepickupTime + '?id=$id'),
+        body: {
+          'location': _locationController.text,
+          'wardno': _wardnoController.text,
+          'street': _streetController.text,
+          'pickup_time': _pickupTimeController.text,
+        },
+      );
+
+      if (response.statusCode == 200) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Time updated successfully')),
+        );
+        _refreshWasteTimesokk();
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Failed to update')),
+        );
+      }
+    } catch (error) {
+      // Handle errors
+      print('Error updating : $error');
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('An error occurred')),
+      );
+    }
+  }
+
+  void deleteWasteTime(String id) async {
+    try {
+      final response = await http
+          .delete(Uri.parse(baseUrl + deleteWastepickupTime + '?id=$id'));
+
+      if (response.statusCode == 200) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Deleted successfully')),
+        );
+        _refreshWasteTimesokk();
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Failed to delete')),
+        );
+      }
+    } catch (error) {
+      // Handle errors
+      print('Error deleting: $error');
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('An error occurred')),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -182,7 +249,12 @@ class _AdminNotificationPageState extends State<AdminNotificationPage> {
                                   },
                                   showDropdownIcon: true,
                                   isEditable: false,
-                                  onChanged: (value) {},
+                                  onChanged: (value) {
+                                    // Update locationController when location is selected
+                                    _filterWardController.text = value;
+                                    print(
+                                        "filterwardController: ${_filterWardController.text}");
+                                  },
                                 ),
                               ),
                               Align(
@@ -324,12 +396,13 @@ class _AdminNotificationPageState extends State<AdminNotificationPage> {
                                                                 ElevatedButton(
                                                                   onPressed:
                                                                       () {
-                                                                    // editStaff(
-                                                                    //   id: int.parse(
-                                                                    //       waste['id']!),
-                                                                    //   // id: staff[
-                                                                    //   //     'Id']!
-                                                                    // );
+                                                                    editWasteTime(
+                                                                      id: int.parse(
+                                                                          waste[
+                                                                              'id']!),
+                                                                      // id: staff[
+                                                                      //     'Id']!
+                                                                    );
                                                                     Navigator.of(
                                                                             context)
                                                                         .pop();
@@ -367,8 +440,8 @@ class _AdminNotificationPageState extends State<AdminNotificationPage> {
                                                         color: Colors.red[600],
                                                       ),
                                                       onPressed: () {
-                                                        // deleteStaff(
-                                                        //     staff['Id']!);
+                                                        deleteWasteTime(
+                                                            waste['id']!);
                                                       },
                                                     ),
                                                   ],

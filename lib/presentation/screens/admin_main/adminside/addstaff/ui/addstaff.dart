@@ -165,8 +165,8 @@ class _AdminAddStaffState extends State<AdminAddStaff> {
     try {
       staffList.clear(); //yo herna parchha
 
-      final response = await http.get(Uri.parse(
-          baseUrl + getStaffByWard + '?wardno=$ward'));
+      final response =
+          await http.get(Uri.parse(baseUrl + getStaffByWard + '?wardno=$ward'));
       if (response.statusCode == 200) {
         print("staffbyward res");
         final data = jsonDecode(response.body);
@@ -215,7 +215,7 @@ class _AdminAddStaffState extends State<AdminAddStaff> {
   Future<void> editStaff({required int id}) async {
     try {
       final response = await http.patch(
-        Uri.parse('http://192.168.1.74:5000/api/edit-staff?id=$id'),
+        Uri.parse(baseUrl + editStaffUrl + '?id=$id'),
         body: {
           'name': nameController.text,
           'email': emailController.text,
@@ -250,7 +250,9 @@ class _AdminAddStaffState extends State<AdminAddStaff> {
   void deleteStaff(String id) async {
     try {
       final response = await http.delete(
-        Uri.parse('http://192.168.1.74:5000/api/delete-staff/?id=$id'),
+        // Uri.parse('http://192.168.1.74:5000/api/delete-staff/?id=$id'),
+
+        Uri.parse(baseUrl + deleteStaffUrl + '?id=$id')
       );
 
       if (response.statusCode == 200) {

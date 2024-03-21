@@ -108,8 +108,12 @@ class _AdminAddDustbinState extends State<AdminAddDustbin> {
     try {
       dustbinList.clear(); //yo herna parchha
 
-      final response = await http.get(Uri.parse(
-          'http://192.168.1.74:5000/api/get-filter-dustbin/?wardno=$ward'));
+      final response = await http.get(
+          // Uri.parse(
+          // 'http://192.168.1.74:5000/api/get-filter-dustbin/?wardno=$ward'));
+
+          Uri.parse(baseUrl + getDustbinByWard + '?wardno=$ward'));
+
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         final List<dynamic> dustbinData = data['data'];
@@ -156,6 +160,59 @@ class _AdminAddDustbinState extends State<AdminAddDustbin> {
       print('Error refreshing staff members: $error');
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Failed to refresh staff members")),
+      );
+    }
+  }
+
+  Future<void> editDustbin({required int id}) async {
+    try {
+      final response = await http.patch(
+        Uri.parse(baseUrl + editDustbinUrl + '?id=$id'),
+        body: {
+          'location': locationController.text,
+        },
+      );
+
+      if (response.statusCode == 200) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Dustbin updated successfully')),
+        );
+        _refreshDustbinokk();
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Failed to update dustbin')),
+        );
+      }
+    } catch (error) {
+      // Handle errors
+      print('Error updating staff member: $error');
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('An error occurred')),
+      );
+    }
+  }
+
+//delete dustbin
+  void deleteDustbin(String id) async {
+    try {
+      final response =
+          await http.delete(Uri.parse(baseUrl + deleteDustbinUrl + '?id=$id'));
+
+      if (response.statusCode == 200) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Dustbin deleted successfully')),
+        );
+        _refreshDustbinokk();
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Failed to delete dustbin')),
+        );
+      }
+    } catch (error) {
+      // Handle errors
+      print('Error deleting dustbin: $error');
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('An error occurred')),
       );
     }
   }
@@ -282,6 +339,7 @@ class _AdminAddDustbinState extends State<AdminAddDustbin> {
                                               label: Text('Fill Precentage')),
                                           DataColumn(
                                               label: Text('Assigned Staff')),
+                                          DataColumn(label: Text('Action')),
                                         ],
                                         rows: dustbinList
                                             .map(
@@ -296,6 +354,100 @@ class _AdminAddDustbinState extends State<AdminAddDustbin> {
                                                 DataCell(Text(
                                                     dustbin['assigned_staff'] ??
                                                         '')),
+                                                DataCell(
+                                                  Row(
+                                                    children: [
+                                                      IconButton(
+                                                        icon: const Icon(
+                                                          Icons.edit,
+                                                          color: Colors.green,
+                                                        ),
+                                                        onPressed: () {
+                                                          showDialog(
+                                                            context: context,
+                                                            builder:
+                                                                (BuildContext
+                                                                    context) {
+                                                              return AlertDialog(
+                                                                title: const Text(
+                                                                    'Edit Dustbin'),
+                                                                content:
+                                                                    SingleChildScrollView(
+                                                                  child: Column(
+                                                                    crossAxisAlignment:
+                                                                        CrossAxisAlignment
+                                                                            .start,
+                                                                    children: [
+                                                                      Text(
+                                                                          'Location: ${dustbin['location']}'),
+                                                                      TextFormField(
+                                                                        controller:
+                                                                            locationController,
+                                                                        decoration:
+                                                                            const InputDecoration(labelText: 'New location'),
+                                                                      ),
+                                                                      Text(
+                                                                          'Assigned Staff: ${dustbin['assigned_staff']}'),
+                                                                      TextFormField(
+                                                                        controller:
+                                                                            assignedStaff,
+                                                                        decoration:
+                                                                            const InputDecoration(labelText: 'New Assigned Staff'),
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                                actions: [
+                                                                  ElevatedButton(
+                                                                    onPressed:
+                                                                        () {
+                                                                      editDustbin(
+                                                                        id: int.parse(
+                                                                            dustbin['id']!),
+                                                                        // id: staff[
+                                                                        //     'Id']!
+                                                                      );
+                                                                      Navigator.of(
+                                                                              context)
+                                                                          .pop();
+                                                                      locationController
+                                                                          .clear();
+                                                                      assignedStaff
+                                                                          .clear();
+                                                                    },
+                                                                    child: Text(
+                                                                        'Save'),
+                                                                  ),
+                                                                  TextButton(
+                                                                    onPressed:
+                                                                        () {
+                                                                      Navigator.of(
+                                                                              context)
+                                                                          .pop();
+                                                                    },
+                                                                    child: const Text(
+                                                                        'Cancel'),
+                                                                  ),
+                                                                ],
+                                                              );
+                                                            },
+                                                          );
+                                                        },
+                                                      ),
+                                                      IconButton(
+                                                        icon: Icon(
+                                                          Icons.delete,
+                                                          color:
+                                                              Colors.red[600],
+                                                        ),
+                                                        onPressed: () {
+                                                          deleteDustbin(
+                                                              dustbin['id']!);
+                                                        },
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
                                               ]),
                                             )
                                             .toList(),
