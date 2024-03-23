@@ -2,7 +2,7 @@ const baseUrl = 'http://192.168.1.74:5000/api';
 const registerUrl = '/register';
 
 const loginUrl = '/login';
-const verifyMail = 'http://192.168.1.74:5000/mail-verification/';
+const verifyMailUrl = '/mail-verification';
 
 const forgotPasswordUrl = '/forget-password';
 const addStaff = '/add-staff';
