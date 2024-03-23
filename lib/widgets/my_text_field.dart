@@ -101,7 +101,7 @@ class MyTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 10.h),
+      padding: EdgeInsets.symmetric(vertical: 8.h),
       child: Stack(
         alignment: Alignment.centerRight,
         children: [
@@ -116,7 +116,7 @@ class MyTextField extends StatelessWidget {
             decoration: InputDecoration(
               fillColor: Colors.white,
               filled: true,
-              contentPadding: EdgeInsets.all(16.h),
+              contentPadding: EdgeInsets.all(13.h),
               hintText: hintText,
               hintStyle: kBodyText,
               enabledBorder: OutlineInputBorder(

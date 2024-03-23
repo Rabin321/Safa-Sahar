@@ -1,15 +1,79 @@
+import 'dart:convert';
+
 import 'package:finalyear/components/constants.dart';
 import 'package:finalyear/presentation/screens/admin_main/adminside/admindashboard/widgets/activeuser_widget.dart';
 import 'package:finalyear/presentation/screens/admin_main/adminside/admindashboard/widgets/buildchart.dart';
 import 'package:finalyear/presentation/screens/admin_main/adminside/admindashboard/widgets/dustbinnumber.dart';
+import 'package:finalyear/utils/urls.dart';
 import 'package:finalyear/widgets/appBarWithDrawer/admin_appbarWithDrawer.dart';
 import 'package:finalyear/widgets/appBarWithDrawer/user_appbarWithDrawer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:responsive_grid_list/responsive_grid_list.dart';
 
-class AdminDashboard extends StatelessWidget {
+import 'package:http/http.dart' as http;
+
+class AdminDashboard extends StatefulWidget {
   const AdminDashboard({super.key});
+
+  @override
+  State<AdminDashboard> createState() => _AdminDashboardState();
+}
+
+class _AdminDashboardState extends State<AdminDashboard> {
+  List<dynamic> staffList = []; // List to store staff data
+  List<dynamic> dustbinList = []; // List to store staff data
+
+  int totalStaff = 0; // Declare totalStaff as a class member
+  int totalDustbin = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchStaffData(); // Call the function to fetch staff data when the widget initializes
+    fetchDustbinData();
+  }
+
+  // Function to fetch staff data from API
+  Future<void> fetchStaffData() async {
+    try {
+      final response = await http.get(Uri.parse(baseUrl + getStaff));
+      if (response.statusCode == 200) {
+        setState(() {
+          staffList = jsonDecode(response.body)['staffMembers'];
+          totalStaff = staffList.length; // Update totalStaff here
+        });
+      } else {
+        print('Failed to fetch staff data: ${response.statusCode}');
+      }
+    } catch (error) {
+      print('Error fetching staff data: $error');
+    }
+  }
+
+// dustbin
+  Future<void> fetchDustbinData() async {
+    try {
+      final response = await http.get(Uri.parse(baseUrl + getDustbinUrl));
+      if (response.statusCode == 200) {
+        setState(() {
+          // Parse the response correctly
+          var responseData = jsonDecode(response.body);
+          if (responseData['success'] == true) {
+            dustbinList = responseData['data'];
+            totalDustbin = dustbinList.length; // Update totalDustbin here
+            print("Total dustin is $totalDustbin");
+          } else {
+            print('Failed to fetch dustbin data: ${response.statusCode}');
+          }
+        });
+      } else {
+        print('Failed to fetch dustbin data: ${response.statusCode}');
+      }
+    } catch (error) {
+      print('Error fetching dustbin data: $error');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +136,7 @@ class AdminDashboard extends StatelessWidget {
                 padding:
                     EdgeInsets.symmetric(horizontal: 16.w).copyWith(top: 5.h),
                 child: Container(
-                  height: 200.h,
+                  height: 150.h,
                   width: double.infinity,
                   decoration: BoxDecoration(
                     color: Colors.white,
@@ -91,15 +155,15 @@ class AdminDashboard extends StatelessWidget {
                           ),
                         ],
                       ),
-                      buildActiveUsersWidget("ACTIVE USERS", 10),
+                      buildActiveUsersWidget("ACTIVE USERS", totalStaff),
                       // const SizedBox(
                       //   height: 12,
                       // ),
-                      buildActiveUsersWidget("ACTIVE USERS", 10),
+                      buildActiveUsersWidget("TOTAL DUSTBINS", totalDustbin),
                       // const SizedBox(
                       //   height: 12,
                       // ),
-                      buildActiveUsersWidget("INACTIVE USERS", 10),
+                      // buildActiveUsersWidget("TOTAL DUSTBINS", 10),
                     ],
                   ),
                 ),

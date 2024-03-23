@@ -7,6 +7,7 @@ import 'package:finalyear/domain/addStaff/addStaffModel/addStaffModel.dart';
 import 'package:finalyear/domain/addStaff/addStaffRepository/addStaffRepository.dart';
 import 'package:finalyear/presentation/screens/admin_main/adminside/addstaff/ui/staffform.dart';
 import 'package:finalyear/presentation/screens/signup/widgets/methods.dart';
+import 'package:finalyear/utils/urls.dart';
 import 'package:finalyear/widgets/appBarWithDrawer/admin_appbarWithDrawer.dart';
 import 'package:finalyear/widgets/my_text_field.dart';
 import 'package:flutter/material.dart';
@@ -105,6 +106,7 @@ class _AdminAddStaffState extends State<AdminAddStaff> {
   void dispose() {
     locationController.dispose();
     wardnoController.dispose();
+    housenoController.dispose();
     nameController.dispose();
     emailController.dispose();
     passwordController.dispose();
@@ -133,7 +135,8 @@ class _AdminAddStaffState extends State<AdminAddStaff> {
         location: locationController.text,
         // houseno: 100, //test
         // wardno: 3, //test
-        ward: int.parse(wardnoController.text),
+        wardno: int.parse(wardnoController.text),
+        houseno: int.parse(housenoController.text),
 
         isAdmin: 0,
         isStaff: 1,
@@ -162,28 +165,34 @@ class _AdminAddStaffState extends State<AdminAddStaff> {
     try {
       staffList.clear(); //yo herna parchha
 
-      final response = await http.get(
-          Uri.parse('http://192.168.1.74:5000/api/get-staff-ward/?ward=$ward'));
+      final response =
+          await http.get(Uri.parse(baseUrl + getStaffByWard + '?wardno=$ward'));
       if (response.statusCode == 200) {
         print("staffbyward res");
         final data = jsonDecode(response.body);
         // Extract staff members' names, locations, and emails
         final List<dynamic> staffMembers = data['staffMembers'];
 
-        staffList.clear(); //yo herna parchha
-
         staffMembers.forEach((staff) {
+          final int id = staff['id'];
           final String name = staff['name'];
-          final String location = staff['location'];
-          final String email = staff['email'];
-          print('Name: $name, Location: $location, Email: $email');
+          final String? location = staff['location'];
+          final String? email = staff['email'];
+          final int? wardno = staff['wardno'];
+          final String? phone = staff['phone'];
+          print(
+              'ID: $id, Name: $name, Location: $location, Email: $email, Ward: $wardno, Phone:$phone,');
           // Add staff details to the staff list
           staffList.add({
+            'Id': id.toString(),
             'Name': name,
-            'Location': location,
-            'Email': email,
+            'Location': location!,
+            'Email': email!,
+            'Ward': wardno.toString(),
+            'Phone': phone.toString(),
           });
         });
+        setState(() {}); // Notify that the state has changed
       } else {
         // ignore: use_build_context_synchronously
         ScaffoldMessenger.of(context).showSnackBar(
@@ -195,6 +204,83 @@ class _AdminAddStaffState extends State<AdminAddStaff> {
       print('Error fetching staff members: $error');
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Please try again")),
+      );
+    }
+  }
+
+//
+//
+// edidt staff
+
+  Future<void> editStaff({required int id}) async {
+    try {
+      final response = await http.patch(
+        Uri.parse(baseUrl + editStaffUrl + '?id=$id'),
+        body: {
+          'name': nameController.text,
+          'email': emailController.text,
+          'location': locationController.text,
+          'ward': wardnoController.text,
+          'phone': numberController.text,
+        },
+      );
+
+      if (response.statusCode == 200) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Staff member updated successfully')),
+        );
+        _refreshStaffMembersokk();
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Failed to update staff member')),
+        );
+      }
+    } catch (error) {
+      // Handle errors
+      print('Error updating staff member: $error');
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('An error occurred')),
+      );
+    }
+  }
+
+//
+//
+// delete staff
+  void deleteStaff(String id) async {
+    try {
+      final response = await http.delete(
+        // Uri.parse('http://192.168.1.74:5000/api/delete-staff/?id=$id'),
+
+        Uri.parse(baseUrl + deleteStaffUrl + '?id=$id')
+      );
+
+      if (response.statusCode == 200) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Staff member deleted successfully')),
+        );
+        _refreshStaffMembersokk();
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Failed to delete staff member')),
+        );
+      }
+    } catch (error) {
+      // Handle errors
+      print('Error deleting staff member: $error');
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('An error occurred')),
+      );
+    }
+  }
+
+  Future<void> _refreshStaffMembersokk() async {
+    try {
+      await fetchStaffByWard(int.parse(filterWardController.text));
+    } catch (error) {
+      print('Error refreshing staff members: $error');
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Failed to refresh staff members")),
       );
     }
   }
@@ -243,25 +329,28 @@ class _AdminAddStaffState extends State<AdminAddStaff> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text("Select Ward no:", style: kHeadline),
-                                MyTextField(
-                                  hintText: 'Ward no...',
-                                  controller: filterWardController,
-                                  inputType: TextInputType.text,
-                                  onDropdownPressed: () {
-                                    wardno(context, filterWardController);
-                                  },
-                                  // formKey: formKeydrpdwn,
-                                  showDropdownIcon: true,
-                                  // validator: (name) => name!.isEmpty
-                                  //     ? 'Please select your location'
-                                  //     : null,
-                                  isEditable: false,
-                                  onChanged: (value) {
-                                    // Update locationController when location is selected
-                                    filterWardController.text = value;
-                                    print(
-                                        "filterwardController: ${filterWardController.text}");
-                                  },
+                                Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 10.h),
+                                  child: MyTextField(
+                                    hintText: 'Ward no...',
+                                    controller: filterWardController,
+                                    inputType: TextInputType.text,
+                                    onDropdownPressed: () {
+                                      wardno(context, filterWardController);
+                                    },
+                                    // formKey: formKeydrpdwn,
+                                    showDropdownIcon: true,
+                                    // validator: (name) => name!.isEmpty
+                                    //     ? 'Please select your location'
+                                    //     : null,
+                                    isEditable: false,
+                                    onChanged: (value) {
+                                      // Update locationController when location is selected
+                                      filterWardController.text = value;
+                                      print(
+                                          "filterwardController: ${filterWardController.text}");
+                                    },
+                                  ),
                                 ),
                                 Align(
                                   alignment: Alignment.bottomRight,
@@ -277,79 +366,197 @@ class _AdminAddStaffState extends State<AdminAddStaff> {
                           ),
                         ),
                         // SizedBox(height: 15.h),
-                        const Row(
-                          children: [
-                            Text(
-                              "Staff Details",
-                              style: subhead,
-                            ),
-                          ],
+                        Padding(
+                          padding: EdgeInsets.only(top: 20.h, bottom: 5.h),
+                          child: const Row(
+                            children: [
+                              Text(
+                                "Staff Details",
+                                style: subhead,
+                              ),
+                            ],
+                          ),
                         ),
                         Padding(
                           padding: EdgeInsets.all(2.h),
-                          child: Column(
-                            children: [
-                              Container(
-                                height: 150.h,
-                                //     .h, // Set a fixed height for the container
-
-                                child: Scrollbar(
-                                  thumbVisibility: true,
-                                  trackVisibility: true,
-                                  showTrackOnHover: true,
-                                  child: SingleChildScrollView(
-                                    scrollDirection: Axis.vertical,
-                                    child: DataTable(
-                                      columnSpacing: 3.w,
-                                      columns: const [
-                                        DataColumn(label: Text('Name')),
-                                        DataColumn(label: Text('Location')),
-                                        DataColumn(label: Text('Email')),
-                                        DataColumn(
-                                            label: Text(
-                                                'Actions')), // New column for actions
-                                      ],
-                                      rows: staffList
-                                          .map(
-                                            (staff) => DataRow(cells: [
-                                              DataCell(
-                                                  Text(staff['Name'] ?? '')),
-                                              DataCell(Text(
-                                                  staff['Location'] ?? '')),
-                                              DataCell(
-                                                  Text(staff['Email'] ?? '')),
-                                              DataCell(Row(
-                                                children: [
-                                                  IconButton(
-                                                    icon: const Icon(
-                                                      Icons.edit,
-                                                      color: Colors.green,
-                                                    ),
-                                                    onPressed: () {
-                                                      // Add your edit logic here
-                                                      // For example, navigate to a new screen for editing staff details
-                                                    },
+                          child: SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Column(
+                              children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                    border: Border.all(color: Colors.grey),
+                                    borderRadius: BorderRadius.circular(8.r),
+                                  ),
+                                  height: 150.h,
+                                  // width: 320.w,
+                                  child: Scrollbar(
+                                    child: SingleChildScrollView(
+                                      scrollDirection: Axis.vertical,
+                                      child: DataTable(
+                                        headingRowColor:
+                                            MaterialStateColor.resolveWith(
+                                          (states) =>
+                                              Color.fromRGBO(82, 183, 136, 0.5),
+                                        ),
+                                        columnSpacing: 4.w,
+                                        columns: const [
+                                          DataColumn(label: Text('Id')),
+                                          DataColumn(label: Text('Name')),
+                                          DataColumn(label: Text('Location')),
+                                          DataColumn(label: Text('Email')),
+                                          DataColumn(label: Text('Ward')),
+                                          DataColumn(label: Text('Phone')),
+                                          DataColumn(label: Text('Actions')),
+                                        ],
+                                        rows: staffList
+                                            .map(
+                                              (staff) => DataRow(cells: [
+                                                DataCell(
+                                                    Text(staff['Id'] ?? '')),
+                                                DataCell(
+                                                    Text(staff['Name'] ?? '')),
+                                                DataCell(Text(
+                                                    staff['Location'] ?? '')),
+                                                DataCell(
+                                                    Text(staff['Email'] ?? '')),
+                                                DataCell(
+                                                    Text(staff['Ward'] ?? '')),
+                                                DataCell(
+                                                    Text(staff['Phone'] ?? '')),
+                                                DataCell(
+                                                  Row(
+                                                    children: [
+                                                      IconButton(
+                                                        icon: const Icon(
+                                                          Icons.edit,
+                                                          color: Colors.green,
+                                                        ),
+                                                        onPressed: () {
+                                                          showDialog(
+                                                            context: context,
+                                                            builder:
+                                                                (BuildContext
+                                                                    context) {
+                                                              return AlertDialog(
+                                                                title: const Text(
+                                                                    'Edit Staff'),
+                                                                content:
+                                                                    SingleChildScrollView(
+                                                                  child: Column(
+                                                                    crossAxisAlignment:
+                                                                        CrossAxisAlignment
+                                                                            .start,
+                                                                    children: [
+                                                                      Text(
+                                                                          'Name: ${staff['Name']}'),
+                                                                      TextFormField(
+                                                                        controller:
+                                                                            nameController,
+                                                                        decoration:
+                                                                            const InputDecoration(labelText: 'New Name'),
+                                                                      ),
+                                                                      Text(
+                                                                          'Email: ${staff['Email']}'),
+                                                                      TextFormField(
+                                                                        controller:
+                                                                            emailController,
+                                                                        decoration:
+                                                                            const InputDecoration(labelText: 'New Email'),
+                                                                      ),
+                                                                      Text(
+                                                                          'Location: ${staff['Location']}'),
+                                                                      TextFormField(
+                                                                        controller:
+                                                                            locationController,
+                                                                        decoration:
+                                                                            InputDecoration(labelText: 'New Location'),
+                                                                      ),
+                                                                      Text(
+                                                                          'Ward: ${staff['Ward']}'),
+                                                                      TextFormField(
+                                                                        controller:
+                                                                            wardnoController,
+                                                                        decoration:
+                                                                            InputDecoration(labelText: 'New Ward'),
+                                                                      ),
+                                                                      Text(
+                                                                          'Phone: ${staff['Phone']}'),
+                                                                      TextFormField(
+                                                                        controller:
+                                                                            numberController,
+                                                                        decoration:
+                                                                            InputDecoration(labelText: 'New Phone'),
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                                actions: [
+                                                                  ElevatedButton(
+                                                                    onPressed:
+                                                                        () {
+                                                                      editStaff(
+                                                                        id: int.parse(
+                                                                            staff['Id']!),
+                                                                        // id: staff[
+                                                                        //     'Id']!
+                                                                      );
+                                                                      Navigator.of(
+                                                                              context)
+                                                                          .pop();
+                                                                      nameController
+                                                                          .clear();
+                                                                      emailController
+                                                                          .clear();
+                                                                      locationController
+                                                                          .clear();
+                                                                      wardnoController
+                                                                          .clear();
+                                                                      numberController
+                                                                          .clear();
+                                                                    },
+                                                                    child: Text(
+                                                                        'Save'),
+                                                                  ),
+                                                                  TextButton(
+                                                                    onPressed:
+                                                                        () {
+                                                                      Navigator.of(
+                                                                              context)
+                                                                          .pop();
+                                                                    },
+                                                                    child: const Text(
+                                                                        'Cancel'),
+                                                                  ),
+                                                                ],
+                                                              );
+                                                            },
+                                                          );
+                                                        },
+                                                      ),
+                                                      IconButton(
+                                                        icon: Icon(
+                                                          Icons.delete,
+                                                          color:
+                                                              Colors.red[600],
+                                                        ),
+                                                        onPressed: () {
+                                                          deleteStaff(
+                                                              staff['Id']!);
+                                                        },
+                                                      ),
+                                                    ],
                                                   ),
-                                                  IconButton(
-                                                    icon: Icon(
-                                                      Icons.delete,
-                                                      color: Colors.red[600],
-                                                    ),
-                                                    onPressed: () {
-                                                      // Add your delete logic here
-                                                      // For example, show a confirmation dialog before deleting the staff
-                                                    },
-                                                  ),
-                                                ],
-                                              )),
-                                            ]),
-                                          )
-                                          .toList(),
+                                                ),
+                                              ]),
+                                            )
+                                            .toList(),
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                       ],
@@ -435,6 +642,19 @@ class _AdminAddStaffState extends State<AdminAddStaff> {
                                 : null,
                           ),
                         ),
+                        Padding(
+                          padding: EdgeInsets.only(top: 8.h),
+                          child: TextFormField(
+                            controller: housenoController,
+                            decoration: kTextFieldDecoration.copyWith(
+                              hintText: 'House Number...',
+                              hintStyle: kBodyText,
+                            ),
+                            validator: (value) => value!.isEmpty
+                                ? 'Please enter a house number'
+                                : null,
+                          ),
+                        ),
 
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -476,6 +696,7 @@ class _AdminAddStaffState extends State<AdminAddStaff> {
                               numberController.clear();
                               locationController.clear();
                               wardnoController.clear();
+                              housenoController.clear();
                               emailController.clear();
                               passwordController.clear();
                             }

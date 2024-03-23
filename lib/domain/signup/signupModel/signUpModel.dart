@@ -19,8 +19,8 @@ class SignUpModel with _$SignUpModel {
     required String name,
     required String email,
     required String password,
-    required String houseno,
-    required String wardno,
+    required int houseno,
+    required int wardno,
     required String location,
     required String role,
   }) = _SignUpModel;

@@ -8,21 +8,24 @@ import 'package:shared_preferences/shared_preferences.dart';
 class UserAPI {
   Future<bool> register(SignUpModel user) async {
     bool isRegister = false;
-    Response response;
     var url = baseUrl + registerUrl;
     var dio = HttpServices().getDioInstance();
     try {
-      response = await dio.post(
+      print('Sending registration request to: $url');
+      print('Request data: ${user.toJson()}');
+
+      Response response = await dio.post(
         url,
         data: user.toJson(),
       );
+      print("Responsecode is ${response.statusCode}");
       if (response.statusCode == 200) {
         print("Response data isss signUPAPi: ${response.data}");
         // fetch token from response
         var verifyTokenRegister = response.data['token'];
         print("verifyTokenRegister from response: $verifyTokenRegister");
 
-    // Save the token using shared_preferences
+        // Save the token using shared_preferences
         await saveToken(verifyTokenRegister);
 
         return true;

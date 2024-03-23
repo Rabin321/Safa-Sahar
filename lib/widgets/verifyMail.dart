@@ -4,6 +4,7 @@ import 'package:finalyear/presentation/screens/login/signin_page.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+import 'package:finalyear/utils/urls.dart';
 
 class VerifyMail extends StatefulWidget {
   final String registeredVerifyToken;
@@ -31,20 +32,21 @@ class _VerifyMailState extends State<VerifyMail> {
       return;
     }
 
-    final response = await http.get(Uri.parse(
-        'http://192.168.1.74:5000/mail-verification/?token=$registeredVerifyToken'));
+    final response = await http.get(
+        // Uri.parse(
+        //   'http://192.168.1.74:5000/mail-verification/?token=$registeredVerifyToken')
+
+        Uri.parse(baseUrl + verifyMailUrl + 'token=$registeredVerifyToken'));
 
     if (response.statusCode == 200) {
       final Map<String, dynamic> data = json.decode(response.body);
       if (data['success'] == false) {
-        // User is successfully verified
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => SignInPage()),
         );
       } else {
         print("Mail verification failed");
-        
       }
     } else {
       // Handle HTTP request failure

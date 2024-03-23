@@ -59,8 +59,8 @@ class _SignUpState extends State<SignUp> {
         email: _emailController.text,
         password: _passwordController.text,
         location: _locationController.text,
-        houseno: _housenoController.text,
-        wardno: _wardnoController.text,
+        houseno: int.parse(_housenoController.text),
+        wardno: int.parse(_wardnoController.text),
         role: "user",
       ));
 
@@ -133,6 +133,7 @@ class _SignUpState extends State<SignUp> {
                           Form(
                             key: _formKey,
                             child: Column(
+                              
                               children: [
                                 MyTextField(
                                   formKey: _formKey,

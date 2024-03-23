@@ -11,8 +11,8 @@ _$SignUpModelImpl _$$SignUpModelImplFromJson(Map<String, dynamic> json) =>
       name: json['name'] as String,
       email: json['email'] as String,
       password: json['password'] as String,
-      houseno: json['houseno'] as String,
-      wardno: json['wardno'] as String,
+      houseno: json['houseno'] as int,
+      wardno: json['wardno'] as int,
       location: json['location'] as String,
       role: json['role'] as String,
     );
