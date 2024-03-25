@@ -138,9 +138,24 @@ class _MyHomePageState extends State<UserAppBarWithDrawer> {
               ),
               ListTile(
                 textColor: Colors.white,
-                leading: const Icon(Icons.question_mark_outlined),
+                leading: const Icon(Icons.info),
                 title: Text(
                   'About Us',
+                  style: listTextStyle,
+                ),
+                onTap: () {
+                  Navigator.pushReplacement(context,
+                      MaterialPageRoute(builder: ((context) => AboutUs())));
+                },
+              ),
+              const Divider(
+                color: Colors.green,
+              ),
+              ListTile(
+                textColor: Colors.white,
+                leading: const Icon(Icons.logout),
+                title: Text(
+                  'Log out',
                   style: listTextStyle,
                 ),
                 onTap: () {

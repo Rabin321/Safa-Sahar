@@ -3,6 +3,7 @@ import 'package:finalyear/presentation/screens/admin_main/adminside/addstaff/ui/
 import 'package:finalyear/presentation/screens/admin_main/adminside/adminNotification/adminNotification.dart';
 import 'package:finalyear/presentation/screens/admin_main/adminside/admindashboard/ui/admindashboard.dart';
 import 'package:finalyear/presentation/screens/profile/my_profile.dart';
+import 'package:finalyear/presentation/screens/user_main/payment/payment_screen.dart';
 import 'package:finalyear/presentation/screens/users/userMainPage.dart';
 import 'package:finalyear/presentation/screens/users/userReport.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +27,7 @@ class _UserHomePageState extends State<UserHomePage> {
   final List<Widget> _children = [
     const UserMainPage(),
     const UserReportPage(),
-    const AdminAddStaff(),
+    const PaymentScreen(),
     const UserProfile(),
   ];
 
@@ -65,10 +66,10 @@ class _UserHomePageState extends State<UserHomePage> {
           ),
           BottomNavigationBarItem(
             icon: Icon(
-              Icons.notifications,
+              Icons.payment,
               size: 30,
             ),
-            label: "Notifications",
+            label: "Payment",
           ),
           BottomNavigationBarItem(
             icon: Icon(

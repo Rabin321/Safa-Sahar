@@ -11,7 +11,9 @@ import 'package:finalyear/utils/urls.dart';
 import 'package:finalyear/widgets/appBarWithDrawer/admin_appbarWithDrawer.dart';
 import 'package:finalyear/widgets/appBarWithDrawer/user_appbarWithDrawer.dart';
 import 'package:finalyear/widgets/my_text_field.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:motion_toast/motion_toast.dart';
@@ -38,7 +40,8 @@ class _UserMainPageState extends State<UserMainPage> {
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       GlobalKey<RefreshIndicatorState>();
 
-  List<Map<String, String>> staffList = []; // Store staff details acc to ward
+  List<Map<String, String>> pickUpTimeListAdd =
+      []; // Store staff details acc to ward
 
   int selectedIndex = -1;
   @override
@@ -56,69 +59,68 @@ class _UserMainPageState extends State<UserMainPage> {
     super.dispose();
   }
 
-  // Future<void> fetchStaffByWard(int ward) async {
-  //   try {
-  //     staffList.clear(); //yo herna parchha
+  Future<void> fetchTimeByWard(int ward) async {
+    try {
+      pickUpTimeListAdd.clear(); //yo herna parchha
 
-  //     final response =
-  //         await http.get(Uri.parse(baseUrl + getStaffByWard + '?wardno=$ward'));
-  //     if (response.statusCode == 200) {
-  //       print("staffbyward res");
-  //       final data = jsonDecode(response.body);
-  //       // Extract staff members' names, locations, and emails
-  //       final List<dynamic> staffMembers = data['staffMembers'];
+      final response = await http
+          .get(Uri.parse(baseUrl + getWastepickupTimeByWard + '?wardno=$ward'));
+      if (response.statusCode == 200) {
+        print("pickuptime res");
+        final data = jsonDecode(response.body);
+        // Extract staff members' names, locations, and emails
+        final List<dynamic> pickTimeList = data['data'];
 
-  //       staffMembers.forEach((staff) {
-  //         final int id = staff['id'];
-  //         final String name = staff['name'];
-  //         final String? location = staff['location'];
-  //         final String? email = staff['email'];
-  //         final int? wardno = staff['wardno'];
-  //         final String? phone = staff['phone'];
-  //         print(
-  //             'ID: $id, Name: $name, Location: $location, Email: $email, Ward: $wardno, Phone:$phone,');
-  //         // Add staff details to the staff list
-  //         staffList.add({
-  //           'Id': id.toString(),
-  //           'Name': name,
-  //           'Location': location!,
-  //           'Email': email!,
-  //           'Ward': wardno.toString(),
-  //           'Phone': phone.toString(),
-  //         });
-  //       });
-  //       setState(() {}); // Notify that the state has changed
-  //     } else {
-  //       // ignore: use_build_context_synchronously
-  //       ScaffoldMessenger.of(context).showSnackBar(
-  //         const SnackBar(content: Text("Please try again")),
-  //       );
-  //       print('Failed to fetch staff members: ${response.statusCode}');
-  //     }
-  //   } catch (error) {
-  //     print('Error fetching staff members: $error');
-  //     ScaffoldMessenger.of(context).showSnackBar(
-  //       const SnackBar(content: Text("Please try again")),
-  //     );
-  //   }
-  // }
+        pickTimeList.forEach((pickUpTime) {
+          final int id = pickUpTime['id'];
+          final String pickup_time = pickUpTime['pickup_time'];
+          final String? location = pickUpTime['location'];
+          final String? street = pickUpTime['street'];
+          final String? message = pickUpTime['message'];
 
-//
-//
+          print(
+              "pickup_time: $pickup_time, location: $location, street: $street, message: $message");
+          // Add staff details to the staff list
+          pickUpTimeListAdd.add({
+            'id': id.toString(),
+            'pickup_time': pickup_time,
+            'location': location!,
+            'street': street!,
+            'message': message!,
+          });
+        });
+        setState(() {}); // Notify that the state has changed
+      } else {
+        // ignore: use_build_context_synchronously
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Please try again")),
+        );
+        print('Failed to fetch : ${response.statusCode}');
+      }
+    } catch (error) {
+      print('Error fetching  : $error');
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Please try again")),
+      );
+    }
+  }
 
 //
 //
 
-  // Future<void> _refreshStaffMembersokk() async {
-  //   try {
-  //     await fetchStaffByWard(int.parse(filterWardController.text));
-  //   } catch (error) {
-  //     print('Error refreshing staff members: $error');
-  //     ScaffoldMessenger.of(context).showSnackBar(
-  //       const SnackBar(content: Text("Failed to refresh staff members")),
-  //     );
-  //   }
-  // }
+//
+//
+
+  Future<void> _refreshPickUpTimesokk() async {
+    try {
+      await fetchTimeByWard(int.parse(filterWardController.text));
+    } catch (error) {
+      print('Error refreshing : $error');
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Failed to refresh")),
+      );
+    }
+  }
 
   Widget build(BuildContext context) {
     //double screenHeight = MediaQuery.of(context).size.height;
@@ -193,8 +195,8 @@ class _UserMainPageState extends State<UserMainPage> {
                                   alignment: Alignment.bottomRight,
                                   child: ElevatedButton(
                                     onPressed: () {
-                                      // fetchStaffByWard(int.parse(
-                                      //     filterWardController.text));
+                                      fetchTimeByWard(
+                                          int.parse(filterWardController.text));
                                     },
                                     child: Text("Filter"),
                                   ),
@@ -215,11 +217,8 @@ class _UserMainPageState extends State<UserMainPage> {
                           ),
                         ),
                         // ListView container starts here
-                        ListView.builder(
-                          shrinkWrap: true,
-                          itemCount:
-                              3, // Adjust this according to your actual data count
-                          itemBuilder: (context, index) {
+                        Column(
+                          children: pickUpTimeListAdd.map((pickUpTime) {
                             return Container(
                               margin: EdgeInsets.symmetric(vertical: 10.h),
                               padding: EdgeInsets.all(20.h),
@@ -235,22 +234,45 @@ class _UserMainPageState extends State<UserMainPage> {
                                       Icon(Icons.access_time), // Clock Icon
                                       SizedBox(width: 10.w),
                                       Text(
-                                        "10:00 - 12:00", // Time range
+                                        pickUpTime['pickup_time']!,
                                         style: TextStyle(fontSize: 16.sp),
                                       ),
                                     ],
                                   ),
-                                  SizedBox(
-                                      height: 10
-                                          .h), // Increased height between time and location
-                                  Text(
-                                    "Location", // Location text
-                                    style: TextStyle(fontSize: 16.sp),
+                                  SizedBox(height: 10.h),
+                                  Row(
+                                    children: [
+                                      Icon(Icons.location_on),
+                                      SizedBox(width: 10.w),
+                                      Text(
+                                        pickUpTime['street']!,
+                                        style: TextStyle(fontSize: 16.sp),
+                                      ),
+                                      Text(","),
+                                      SizedBox(width: 8.w),
+                                      Text(
+                                        pickUpTime['location']!,
+                                        style: TextStyle(fontSize: 16.sp),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(height: 10.h),
+                                  Row(
+                                    children: [
+                                      Icon(Icons.message),
+                                      SizedBox(width: 10.w),
+                                      Flexible(
+                                        child: Text(
+                                          pickUpTime['message']!,
+                                          style: TextStyle(fontSize: 16.sp),
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ],
                               ),
                             );
-                          },
+                          }).toList(),
                         ),
 
                         // ListView container ends here

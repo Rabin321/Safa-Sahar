@@ -1,19 +1,19 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:finalyear/components/constants.dart';
-import 'package:finalyear/domain/addStaff/addStaffModel/addStaffModel.dart';
-import 'package:finalyear/domain/addStaff/addStaffRepository/addStaffRepository.dart';
+
 import 'package:finalyear/presentation/screens/admin_main/adminside/addstaff/ui/staffform.dart';
 import 'package:finalyear/presentation/screens/signup/widgets/methods.dart';
-import 'package:finalyear/utils/urls.dart';
-import 'package:finalyear/widgets/appBarWithDrawer/admin_appbarWithDrawer.dart';
+
 import 'package:finalyear/widgets/appBarWithDrawer/user_appbarWithDrawer.dart';
 import 'package:finalyear/widgets/my_text_field.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:motion_toast/motion_toast.dart';
 
 import 'package:http/http.dart' as http;
@@ -47,7 +47,55 @@ class _UserReportPageState extends State<UserReportPage> {
   }
 
   Future<void> _refreshStaffMembers() async {}
+  final imagePicker = ImagePicker();
+  XFile? pickedImage;
 
+  pickImage() async {
+    final XFile? pickedImage =
+        await imagePicker.pickImage(source: ImageSource.gallery);
+    if (pickedImage != null) {
+      setState(() {
+        this.pickedImage = pickedImage;
+      });
+    } else {
+      print("no images selected");
+    }
+  }
+
+  // Future<void> uploadImages() async {
+  //   if (pickedImage != null) {
+  //     try {
+  //       String downloadUrl = await postImages(pickedImage);
+  //       setState(() {
+  //         imageUrls = downloadUrl; // Update imageUrls with the download URL
+  //       });
+  //     } catch (e) {
+  //       print('Error uploading image: $e');
+  //     }
+  //   }
+  // }
+
+  //   Future postImages(XFile? imageFile) async {
+  //   setState(() {
+  //     isUploading = true;
+  //   });
+  //   String? urls;
+  //   Reference ref = FirebaseStorage.instance
+  //       .ref()
+  //       .child("userImages")
+  //       .child(imageFile!.name);
+
+  //   await ref.putData(
+  //     await imageFile.readAsBytes(),
+  //     SettableMetadata(contentType: "image/jpeg"),
+  //   );
+  //   urls = await ref.getDownloadURL();
+  //   setState(() {
+  //     isUploading = false;
+  //     imageUrls = urls!;
+  //   });
+  //   return urls;
+  // }
   @override
   void dispose() {
     locationController.dispose();
@@ -120,6 +168,33 @@ class _UserReportPageState extends State<UserReportPage> {
   //   }
   // }
 
+  void _showImageDialog(XFile image) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          child: Image.file(
+              File(image.path)), // Show the selected image in the dialog
+        );
+      },
+    );
+  }
+
+  List<XFile> selectedImages = [];
+
+  // Function to add or remove selected images
+  void toggleImage(XFile image) {
+    if (selectedImages.contains(image)) {
+      setState(() {
+        selectedImages.remove(image);
+      });
+    } else {
+      setState(() {
+        selectedImages.add(image);
+      });
+    }
+  }
+
   Widget build(BuildContext context) {
     //double screenHeight = MediaQuery.of(context).size.height;
     return WillPopScope(
@@ -154,7 +229,7 @@ class _UserReportPageState extends State<UserReportPage> {
                     child: Column(
                       children: [
                         Container(
-                          width: double.infinity,
+                          width: double.maxFinite,
                           decoration: BoxDecoration(
                             color: const Color.fromRGBO(82, 183, 136, 0.5),
                             borderRadius:
@@ -187,16 +262,6 @@ class _UserReportPageState extends State<UserReportPage> {
                                       print(
                                           "filterwardController: ${filterWardController.text}");
                                     },
-                                  ),
-                                ),
-                                Align(
-                                  alignment: Alignment.bottomRight,
-                                  child: ElevatedButton(
-                                    onPressed: () {
-                                      // fetchStaffByWard(int.parse(
-                                      //     filterWardController.text));
-                                    },
-                                    child: Text("Filter"),
                                   ),
                                 ),
                               ],
@@ -253,42 +318,88 @@ class _UserReportPageState extends State<UserReportPage> {
                             ),
                           ),
                         ),
+
+                        // Container for displaying the picked image
                         Padding(
                           padding: EdgeInsets.symmetric(
                               horizontal: 0.h, vertical: 5.h),
-                          child: CustomAddButton(
-                              name: "Add Photo or image from gallery",
-                              onPressed: () {
-                                FocusScope.of(context).unfocus();
-
-                                // if (_formKey.currentState!.validate()) {
-                                //   _addWastePickupTime();
-                                //   _locationController.clear();
-                                //   _wardnoController.clear();
-                                //   _streetController.clear();
-                                //   _pickupTimeController.clear();
-                                //   _messageController.clear();
-                                // }
-                              }),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              // Add Photo button
+                              CustomAddButton(
+                                name: "Add photo or image from gallery",
+                                onPressed: () async {
+                                  final XFile? image = await imagePicker
+                                      .pickImage(source: ImageSource.gallery);
+                                  if (image != null) {
+                                    toggleImage(image);
+                                  } else {
+                                    print("No image selected");
+                                  }
+                                },
+                              ),
+                              SizedBox(
+                                  height: 10
+                                      .h), // Add spacing between buttons and selected images
+                              // Display selected images with cancel icon
+                              Wrap(
+                                children: selectedImages.map((image) {
+                                  return Stack(
+                                    children: [
+                                      GestureDetector(
+                                        onTap: () {
+                                          _showImageDialog(
+                                              image); // Show the image in a dialog when tapped
+                                        },
+                                        child: Container(
+                                          height: 50.h,
+                                          width: 50.w,
+                                          margin: EdgeInsets.only(right: 10.w),
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(8),
+                                            image: DecorationImage(
+                                              image:
+                                                  FileImage(File(image.path)),
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      Positioned(
+                                        top: 0,
+                                        right: 0,
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            toggleImage(image);
+                                          },
+                                          child: Container(
+                                            padding: EdgeInsets.all(2),
+                                            decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              color: Colors.white,
+                                            ),
+                                            child: Icon(
+                                              Icons.close,
+                                              color: Colors.black,
+                                              size: 18.sp,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                }).toList(),
+                              ),
+                            ],
+                          ),
                         ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 0.h, vertical: 0.h),
-                          child: CustomAddButton(
-                              name: "Submit",
-                              onPressed: () {
-                                FocusScope.of(context).unfocus();
 
-                                // if (_formKey.currentState!.validate()) {
-                                //   _addWastePickupTime();
-                                //   _locationController.clear();
-                                //   _wardnoController.clear();
-                                //   _streetController.clear();
-                                //   _pickupTimeController.clear();
-                                //   _messageController.clear();
-                                // }
-                              }),
-                        )
+                        CustomAddButton(
+                          name: "Submit Report",
+                          onPressed: () {},
+                        ),
                       ],
                     ),
                   ),
