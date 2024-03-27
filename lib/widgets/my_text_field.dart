@@ -116,7 +116,7 @@ class MyTextField extends StatelessWidget {
             decoration: InputDecoration(
               fillColor: Colors.white,
               filled: true,
-              contentPadding: EdgeInsets.all(13.h),
+              contentPadding: EdgeInsets.all(12.h),
               hintText: hintText,
               hintStyle: kBodyText,
               enabledBorder: OutlineInputBorder(

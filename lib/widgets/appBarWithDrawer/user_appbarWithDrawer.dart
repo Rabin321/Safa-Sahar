@@ -1,6 +1,9 @@
+import 'package:finalyear/presentation/screens/login/signin_page.dart';
+import 'package:finalyear/presentation/screens/user_main/payment/payment_screen.dart';
 import 'package:finalyear/presentation/screens/users/user_aboutuspage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class UserAppBarWithDrawer extends StatefulWidget {
   final String title;
@@ -103,8 +106,12 @@ class _MyHomePageState extends State<UserAppBarWithDrawer> {
                   'Payment',
                   style: listTextStyle,
                 ),
-                onTap: () {
-                  // Handle Home Click
+                onTap: () async {
+                  // Navigate to the login screen
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => PaymentScreen()),
+                  );
                 },
               ),
               const Divider(
@@ -158,9 +165,17 @@ class _MyHomePageState extends State<UserAppBarWithDrawer> {
                   'Log out',
                   style: listTextStyle,
                 ),
-                onTap: () {
-                  Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: ((context) => AboutUs())));
+                onTap: () async {
+                  SharedPreferences prefs =
+                      await SharedPreferences.getInstance();
+                  await prefs.remove('token');
+                  print("token removed");
+
+                  // Navigate to the login screen
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => SignInPage()),
+                  );
                 },
               ),
               const Divider(

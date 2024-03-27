@@ -7,6 +7,7 @@ import 'package:finalyear/components/constants.dart';
 
 import 'package:finalyear/presentation/screens/admin_main/adminside/addstaff/ui/staffform.dart';
 import 'package:finalyear/presentation/screens/signup/widgets/methods.dart';
+import 'package:finalyear/utils/urls.dart';
 
 import 'package:finalyear/widgets/appBarWithDrawer/user_appbarWithDrawer.dart';
 import 'package:finalyear/widgets/my_text_field.dart';
@@ -17,40 +18,44 @@ import 'package:image_picker/image_picker.dart';
 import 'package:motion_toast/motion_toast.dart';
 
 import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:image_picker/image_picker.dart';
 
 class UserReportPage extends StatefulWidget {
-  const UserReportPage({super.key});
+  const UserReportPage({Key? key}) : super(key: key);
 
   @override
   State<UserReportPage> createState() => _UserReportPageState();
 }
 
 class _UserReportPageState extends State<UserReportPage> {
-  // List<AddStaff> addstaff = []; // Define addstaff list here
-
   TextEditingController locationController = TextEditingController();
   TextEditingController wardnoController = TextEditingController();
   TextEditingController filterWardController = TextEditingController();
-  TextEditingController reportdetailsCOntroller = TextEditingController();
-  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  final GlobalKey<FormState> formKeydrpdwn = GlobalKey<FormState>();
+  TextEditingController reportdetailsController = TextEditingController();
 
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       GlobalKey<RefreshIndicatorState>();
 
-  List<Map<String, String>> staffList = []; // Store staff details acc to ward
+  XFile? pickedImage;
+  final ImagePicker imagePicker = ImagePicker();
+  List<XFile> selectedImages = [];
 
-  int selectedIndex = -1;
   @override
-  void initState() {
-    super.initState();
+  void dispose() {
+    locationController.dispose();
+    wardnoController.dispose();
+    filterWardController.dispose();
+    reportdetailsController.dispose();
+    super.dispose();
   }
 
-  Future<void> _refreshStaffMembers() async {}
-  final imagePicker = ImagePicker();
-  XFile? pickedImage;
-
-  pickImage() async {
+  void pickImage() async {
     final XFile? pickedImage =
         await imagePicker.pickImage(source: ImageSource.gallery);
     if (pickedImage != null) {
@@ -58,131 +63,21 @@ class _UserReportPageState extends State<UserReportPage> {
         this.pickedImage = pickedImage;
       });
     } else {
-      print("no images selected");
+      print("No images selected");
     }
   }
-
-  // Future<void> uploadImages() async {
-  //   if (pickedImage != null) {
-  //     try {
-  //       String downloadUrl = await postImages(pickedImage);
-  //       setState(() {
-  //         imageUrls = downloadUrl; // Update imageUrls with the download URL
-  //       });
-  //     } catch (e) {
-  //       print('Error uploading image: $e');
-  //     }
-  //   }
-  // }
-
-  //   Future postImages(XFile? imageFile) async {
-  //   setState(() {
-  //     isUploading = true;
-  //   });
-  //   String? urls;
-  //   Reference ref = FirebaseStorage.instance
-  //       .ref()
-  //       .child("userImages")
-  //       .child(imageFile!.name);
-
-  //   await ref.putData(
-  //     await imageFile.readAsBytes(),
-  //     SettableMetadata(contentType: "image/jpeg"),
-  //   );
-  //   urls = await ref.getDownloadURL();
-  //   setState(() {
-  //     isUploading = false;
-  //     imageUrls = urls!;
-  //   });
-  //   return urls;
-  // }
-  @override
-  void dispose() {
-    locationController.dispose();
-    wardnoController.dispose();
-
-    super.dispose();
-  }
-
-  // Future<void> fetchStaffByWard(int ward) async {
-  //   try {
-  //     staffList.clear(); //yo herna parchha
-
-  //     final response =
-  //         await http.get(Uri.parse(baseUrl + getStaffByWard + '?wardno=$ward'));
-  //     if (response.statusCode == 200) {
-  //       print("staffbyward res");
-  //       final data = jsonDecode(response.body);
-  //       // Extract staff members' names, locations, and emails
-  //       final List<dynamic> staffMembers = data['staffMembers'];
-
-  //       staffMembers.forEach((staff) {
-  //         final int id = staff['id'];
-  //         final String name = staff['name'];
-  //         final String? location = staff['location'];
-  //         final String? email = staff['email'];
-  //         final int? wardno = staff['wardno'];
-  //         final String? phone = staff['phone'];
-  //         print(
-  //             'ID: $id, Name: $name, Location: $location, Email: $email, Ward: $wardno, Phone:$phone,');
-  //         // Add staff details to the staff list
-  //         staffList.add({
-  //           'Id': id.toString(),
-  //           'Name': name,
-  //           'Location': location!,
-  //           'Email': email!,
-  //           'Ward': wardno.toString(),
-  //           'Phone': phone.toString(),
-  //         });
-  //       });
-  //       setState(() {}); // Notify that the state has changed
-  //     } else {
-  //       // ignore: use_build_context_synchronously
-  //       ScaffoldMessenger.of(context).showSnackBar(
-  //         const SnackBar(content: Text("Please try again")),
-  //       );
-  //       print('Failed to fetch staff members: ${response.statusCode}');
-  //     }
-  //   } catch (error) {
-  //     print('Error fetching staff members: $error');
-  //     ScaffoldMessenger.of(context).showSnackBar(
-  //       const SnackBar(content: Text("Please try again")),
-  //     );
-  //   }
-  // }
-
-//
-//
-
-//
-//
-
-  // Future<void> _refreshStaffMembersokk() async {
-  //   try {
-  //     await fetchStaffByWard(int.parse(filterWardController.text));
-  //   } catch (error) {
-  //     print('Error refreshing staff members: $error');
-  //     ScaffoldMessenger.of(context).showSnackBar(
-  //       const SnackBar(content: Text("Failed to refresh staff members")),
-  //     );
-  //   }
-  // }
 
   void _showImageDialog(XFile image) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return Dialog(
-          child: Image.file(
-              File(image.path)), // Show the selected image in the dialog
+          child: Image.file(File(image.path)),
         );
       },
     );
   }
 
-  List<XFile> selectedImages = [];
-
-  // Function to add or remove selected images
   void toggleImage(XFile image) {
     if (selectedImages.contains(image)) {
       setState(() {
@@ -195,6 +90,55 @@ class _UserReportPageState extends State<UserReportPage> {
     }
   }
 
+  Future<void> submitReport() async {
+    if (formKey.currentState!.validate()) {
+      // Form is validated, proceed with report submission
+
+      // Prepare report data
+      String wardno = filterWardController.text;
+      String details = reportdetailsController.text;
+
+      // Construct the request body
+      var request = http.MultipartRequest(
+        'POST',
+        Uri.parse(baseUrl + createReport), // Adjust the URL
+      );
+
+      request.fields['wardno'] = wardno;
+      request.fields['details'] = details;
+
+      // Attach images
+      for (XFile image in selectedImages) {
+        var stream = http.ByteStream(image.openRead());
+        var length = await image.length();
+
+        var multipartFile = http.MultipartFile(
+          'image',
+          stream,
+          length,
+          filename: image.path.split('/').last,
+        );
+
+        request.files.add(multipartFile);
+      }
+
+      // Send the request
+      var response = await request.send();
+
+      if (response.statusCode == 200) {
+        print('Report submitted successfully');
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Report submitted successfully')),
+        );
+      } else {
+        print('Failed to submit report');
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Failed to submit report')),
+        );
+      }
+    }
+  }
+
   Widget build(BuildContext context) {
     //double screenHeight = MediaQuery.of(context).size.height;
     return WillPopScope(
@@ -203,7 +147,7 @@ class _UserReportPageState extends State<UserReportPage> {
         title: 'USER',
         body: RefreshIndicator(
           key: _refreshIndicatorKey,
-          onRefresh: _refreshStaffMembers,
+          onRefresh: () async {},
           child: SingleChildScrollView(
             physics: AlwaysScrollableScrollPhysics(),
             child: Form(
@@ -300,7 +244,7 @@ class _UserReportPageState extends State<UserReportPage> {
                                 ),
                                 height: double.infinity,
                                 child: TextField(
-                                  controller: reportdetailsCOntroller,
+                                  controller: reportdetailsController,
                                   keyboardType: TextInputType.multiline,
                                   maxLines: null,
                                   decoration: const InputDecoration(
@@ -398,7 +342,14 @@ class _UserReportPageState extends State<UserReportPage> {
 
                         CustomAddButton(
                           name: "Submit Report",
-                          onPressed: () {},
+                          onPressed: () {
+                            FocusScope.of(context).unfocus();
+
+                            submitReport();
+                            wardnoController.clear();
+                            reportdetailsController.clear();
+                            selectedImages.clear();
+                          },
                         ),
                       ],
                     ),

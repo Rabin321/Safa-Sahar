@@ -24,5 +24,6 @@ const getWastepickupTimeByWard = '/get-filter-time';
 const editWastepickupTime = '/edit-time';
 const deleteWastepickupTime = '/delete-time';
 
-
 // merged
+
+const createReport = '/create-report';

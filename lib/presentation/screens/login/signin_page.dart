@@ -71,10 +71,10 @@ class _SignInPageState extends State<SignInPage> {
   }
 
   _loginUser() async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    // SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
 
-    String? token = sharedPreferences.getString('token');
-    print("Auth login token is $token");
+    // String? token = sharedPreferences.getString('token');
+    // print("Auth login token is $token");
     try {
       print("emailcont is ${_emailController.text}");
       print("passcont is ${_passwordController.text}");
@@ -98,6 +98,7 @@ class _SignInPageState extends State<SignInPage> {
         password: _passwordController.text,
         // token: token!,
       ));
+      print("Login Result: $loginResult");
 
       // Extract login result
       bool isLogin = loginResult['success'] == true;
@@ -107,27 +108,8 @@ class _SignInPageState extends State<SignInPage> {
       String? responseRole = loginResult['role'];
       print("signin responseRole is $responseRole");
 
-// Check if 'data' key exists in the loginResult
-      // if (loginResult.containsKey('data')) {
-      //   // Access the value corresponding to the 'data' key
-      //   Map<String, dynamic> userData = loginResult['data'];
-
-      //   // Check if 'is_Staff' key exists in the 'data' map
-      //   if (userData.containsKey('is_Staff')) {
-      //     // Access the value corresponding to the 'is_Staff' key
-      //     isStaff = userData['is_Staff'] == 1;
-      //     print("signin isStaff bool value is $isStaff");
-      //   }
-
-      //   // Check if 'is_Admin' key exists in the 'data' map
-      //   if (userData.containsKey('is_Admin')) {
-      //     // Access the value corresponding to the 'is_Admin' key
-      //     isAdmin = userData['is_Admin'] == 1;
-      //     print("signin isAdmin bool value is $isAdmin");
-      //   }
-      // }
-
       if (isLogin) {
+       
         if (isStaff || responseRole == "staff") {
           Navigator.pushReplacement(
             context,
@@ -142,10 +124,8 @@ class _SignInPageState extends State<SignInPage> {
         } else {
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    const UserHomePage()),
-                    // const AdminHomePage()),
+            MaterialPageRoute(builder: (context) => const UserHomePage()),
+            // const AdminHomePage()),
           );
         }
       } else {

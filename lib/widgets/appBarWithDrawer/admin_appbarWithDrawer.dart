@@ -3,6 +3,7 @@ import 'package:finalyear/presentation/screens/admin_main/adminside/adminNotific
 import 'package:finalyear/presentation/screens/hamdrawerpages/mapview/mapviewpage.dart';
 import 'package:finalyear/presentation/screens/login/signin_page.dart';
 import 'package:finalyear/presentation/screens/profile/my_profile.dart';
+import 'package:finalyear/presentation/screens/users/getAllUsers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -120,7 +121,7 @@ class _MyHomePageState extends State<AdminAppBarWithDrawer> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const MapViewPage()),
+                        builder: (context) => const GetAllUsers()),
                   );
                   // Handle Home Click
                 },
@@ -139,7 +140,7 @@ class _MyHomePageState extends State<AdminAppBarWithDrawer> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const MapViewPage()),
+                        builder: (context) => const UserProfile()),
                   );
                   // Handle Home Click
                 },
@@ -159,25 +160,6 @@ class _MyHomePageState extends State<AdminAppBarWithDrawer> {
                     context,
                     MaterialPageRoute(
                         builder: (context) => const MapViewPage()),
-                  );
-                  // Handle Home Click
-                },
-              ),
-              const Divider(
-                color: Colors.green,
-              ),
-              ListTile(
-                textColor: Colors.white,
-                leading: const Icon(Icons.settings),
-                title: Text(
-                  'Settings',
-                  style: listTextStyle,
-                ),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const AdminAddDustbin()),
                   );
                   // Handle Home Click
                 },

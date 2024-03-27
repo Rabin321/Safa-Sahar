@@ -504,7 +504,7 @@ class _AdminAddDustbinState extends State<AdminAddDustbin> {
                           ),
                         ),
                         Padding(
-                          padding: EdgeInsets.only(top: 8.h),
+                          padding: EdgeInsets.only(top: 1.h),
                           child: MyTextField(
                             hintText: 'Assigned Staff...',
                             controller: assignedStaff,

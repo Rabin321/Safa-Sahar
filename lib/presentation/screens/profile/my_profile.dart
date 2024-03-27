@@ -1,9 +1,12 @@
+import 'dart:convert';
+
 import 'package:finalyear/components/constants.dart';
 import 'package:finalyear/widgets/appBarWithDrawer/admin_appbarWithDrawer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class UserProfile extends StatefulWidget {
   const UserProfile({super.key});
@@ -13,6 +16,27 @@ class UserProfile extends StatefulWidget {
 }
 
 class _UserProfileState extends State<UserProfile> {
+  String name = '';
+  String email = '';
+  String phone = '';
+  String location = '';
+  @override
+  void initState() {
+    super.initState();
+    getUserData(); // Call a method to retrieve user data from SharedPreferences
+  }
+
+  Future<void> getUserData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      // Retrieve user data from SharedPreferences
+      name = prefs.getString('user_name') ?? '';
+      email = prefs.getString('user_email') ?? '';
+      phone = prefs.getString('phone') ?? '';
+      location = prefs.getString('location') ?? '';
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return AdminAppBarWithDrawer(
@@ -39,7 +63,7 @@ class _UserProfileState extends State<UserProfile> {
                 backgroundImage: AssetImage('assets/images/user.jpg'),
               ),
               Text(
-                "fname lname",
+                name,
                 style: kHeadline.copyWith(fontSize: 18.sp),
               ),
               Padding(
@@ -69,10 +93,10 @@ class _UserProfileState extends State<UserProfile> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildDetailRow("Name", "fghjsd fdghjsds"),
-          _buildDetailRow("Address", "fghjsdsdk"),
-          _buildDetailRow("Email", "fghjk@sdfgh.com"),
-          _buildDetailRow("Phone", "9876543210"),
+          _buildDetailRow("Name", name),
+          _buildDetailRow("Address", location),
+          _buildDetailRow("Email", email),
+          _buildDetailRow("Phone", phone),
         ],
       ),
     );

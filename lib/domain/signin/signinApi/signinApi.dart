@@ -113,10 +113,30 @@ class LoginApi {
         print("status code 200");
         print("Response data from login API: ${response.data}");
 
-        // Parse response data as a Map
+// Extract data from the response
         Map<String, dynamic> responseData = response.data;
+        Map<String, dynamic> userData =
+            responseData['data']; // Access the 'data' object
 
-        // Check if 'data' key exists in the response data
+        int? userId = userData['id'];
+        String? userName = userData['name'];
+        String? userEmail = userData['email'];
+        String? location = userData['location'];
+        String? phone = userData['phone'];
+        String? userToken = responseData['token'];
+
+// Save user details to SharedPreferences
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        prefs.setInt('user_id', userId ?? 0);
+        prefs.setString('user_name', userName ?? '');
+        prefs.setString('user_email', userEmail ?? '');
+        prefs.setString('user_token', userToken ?? '');
+        prefs.setString('location', location ?? '');
+        prefs.setString('phone', phone ?? '');
+
+        print(
+            'User details saved to SharedPreferences $userId, $userName, $userEmail, $location, $phone, $userToken');
+
         if (responseData.containsKey('data')) {
           // Access the value corresponding to the 'data' key
           Map<String, dynamic> data = responseData['data'];
