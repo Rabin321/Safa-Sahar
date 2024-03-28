@@ -4,12 +4,15 @@ import 'dart:convert';
 
 import 'package:finalyear/components/constants.dart';
 import 'package:finalyear/presentation/screens/admin_main/adminside/addstaff/ui/staffform.dart';
+import 'package:finalyear/presentation/screens/user_main/payment/khalti.dart';
+import 'package:finalyear/presentation/screens/user_main/userHomepage/userHomepage.dart';
 
 import 'package:finalyear/widgets/appBarWithDrawer/user_appbarWithDrawer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:khalti_flutter/khalti_flutter.dart';
 
 class PaymentScreen extends StatefulWidget {
   const PaymentScreen({super.key});
@@ -27,10 +30,10 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
   // List of available packages with descriptions
   final List<Map<String, dynamic>> packages = [
-    {'name': '12 Month Package', 'description': 'Rs 1500'},
-    {'name': '6 Month Package', 'description': 'Rs 1000'},
-    {'name': '3 Month Package', 'description': 'Rs 700'},
-    {'name': '1 Month Package', 'description': 'Rs 300'},
+    {'name': '12 Month Package', 'description': '1500'},
+    {'name': '6 Month Package', 'description': '1000'},
+    {'name': '3 Month Package', 'description': '500'},
+    {'name': '1 Month Package', 'description': '200'},
 
     // Add more packages as needed
   ];
@@ -49,8 +52,11 @@ class _PaymentScreenState extends State<PaymentScreen> {
     //double screenHeight = MediaQuery.of(context).size.height;
     return WillPopScope(
       onWillPop: () async {
-        Navigator.pop(context);
-        return true; // Return true to allow the back button press
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const UserHomePage()),
+        );
+        return true; // Return true to allow the back navigation
       },
       child: UserAppBarWithDrawer(
         title: 'USER',
@@ -95,7 +101,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                           title: Text(
                             package['name'],
                           ),
-                          subtitle: Text(package['description']),
+                          subtitle: Text("Rs ${package['description']}"),
                           value: package['name'],
                           groupValue: selectedPackage,
                           onChanged: (value) {
@@ -136,7 +142,23 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   padding: EdgeInsets.symmetric(horizontal: 0.h, vertical: 0.h),
                   child: CustomAddButton(
                     name: "Pay via khalti",
-                    onPressed: () {},
+                    onPressed: () {
+                      String selectedPackageDescription = '';
+                      for (var package in packages) {
+                        if (package['name'] == selectedPackage) {
+                          selectedPackageDescription = package['description'];
+                          break;
+                        }
+                      }
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => KhaltiPaymentPage(
+                            amountDescription: selectedPackageDescription,
+                          ),
+                        ),
+                      );
+                    },
                   ),
                 )
               ],

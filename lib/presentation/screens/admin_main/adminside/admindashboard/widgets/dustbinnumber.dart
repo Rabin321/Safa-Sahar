@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 Widget builddustbinbox({
+  String? count,
   required String title,
   required VoidCallback onPressed,
 }) {
@@ -17,7 +18,7 @@ Widget builddustbinbox({
       child: InkWell(
         onTap: onPressed,
         child: Padding(
-          padding: EdgeInsets.all(10.w), // Adjust padding as needed
+          padding: EdgeInsets.all(10.w),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -27,14 +28,14 @@ Widget builddustbinbox({
                   overflow: TextOverflow.ellipsis,
                   maxLines: 1,
                   style: TextStyle(
-                    fontSize: 14.sp, // Use scaled font size
+                    fontSize: 15.sp,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
               ),
               Text(
-                'Total: ',
-                style: TextStyle(fontSize: 12.sp), // Use scaled font size
+                'Total: $count',
+                style: TextStyle(fontSize: 15.sp),
               )
             ],
           ),

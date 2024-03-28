@@ -18,6 +18,7 @@ const editDustbinUrl = '/edit-dustbin';
 const getDustbinUrl = '/get-dustbin';
 const deleteDustbinUrl = '/delete-dustbin';
 const getDustbinByWard = '/get-filter-dustbin';
+const getDustbinStats = '/dustbin-stats';
 
 const wastepickupAddTime = '/add-time';
 const getWastepickupTimeByWard = '/get-filter-time';

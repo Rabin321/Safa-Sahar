@@ -2,16 +2,15 @@ import 'dart:convert';
 
 import 'package:finalyear/components/constants.dart';
 import 'package:finalyear/presentation/screens/admin_main/adminside/admindashboard/widgets/activeuser_widget.dart';
-import 'package:finalyear/presentation/screens/admin_main/adminside/admindashboard/widgets/buildchart.dart';
 import 'package:finalyear/presentation/screens/admin_main/adminside/admindashboard/widgets/dustbinnumber.dart';
 import 'package:finalyear/utils/urls.dart';
 import 'package:finalyear/widgets/appBarWithDrawer/admin_appbarWithDrawer.dart';
-import 'package:finalyear/widgets/appBarWithDrawer/user_appbarWithDrawer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:responsive_grid_list/responsive_grid_list.dart';
 
 import 'package:http/http.dart' as http;
+import 'package:syncfusion_flutter_charts/charts.dart';
 
 class AdminDashboard extends StatefulWidget {
   const AdminDashboard({super.key});
@@ -27,11 +26,39 @@ class _AdminDashboardState extends State<AdminDashboard> {
   int totalStaff = 0; // Declare totalStaff as a class member
   int totalDustbin = 0;
 
+  int fullDustbin = 0;
+  int halfDustbin = 0;
+  int emptyDustbin = 0;
+  int damagedDustbin = 0;
   @override
   void initState() {
     super.initState();
-    fetchStaffData(); // Call the function to fetch staff data when the widget initializes
+    fetchStaffData();
     fetchDustbinData();
+    fetchDustbinStats();
+  }
+
+  Future<void> fetchDustbinStats() async {
+    try {
+      final response = await http.get(Uri.parse(baseUrl + getDustbinStats));
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        setState(() {
+          // Update variables with data from the response
+          fullDustbin = data['data']['Full Dustbin'];
+          halfDustbin = data['data']['Half Dustbin'];
+          emptyDustbin = data['data']['Empty Dustbin'];
+          damagedDustbin = data['data']['Damaged Dustbin'];
+
+          print(
+              "Full Dustbin: $fullDustbin, Half Dustbin: $halfDustbin, Empty Dustbin: $emptyDustbin, Damaged Dustbin: $damagedDustbin");
+        });
+      } else {
+        print('Failed to fetch dustbin stats: ${response.statusCode}');
+      }
+    } catch (error) {
+      print('Error fetching dustbin stats: $error');
+    }
   }
 
   // Function to fetch staff data from API
@@ -104,7 +131,10 @@ class _AdminDashboardState extends State<AdminDashboard> {
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(20.r),
                   ),
-                  child: SizedBox(height: 180.h, child: buildChart()),
+                  child: SizedBox(
+                      height: 180.h,
+                      child: buildChart(
+                          fullDustbin, emptyDustbin, damagedDustbin)),
                 ),
               ),
               Padding(
@@ -122,13 +152,21 @@ class _AdminDashboardState extends State<AdminDashboard> {
                       listViewBuilderOptions: ListViewBuilderOptions(),
                       children: [
                         builddustbinbox(
-                            title: 'Full Dustbin', onPressed: () {}),
+                            title: 'Full Dustbin',
+                            onPressed: () {},
+                            count: fullDustbin.toString()),
                         builddustbinbox(
-                            title: 'Half Dustbin', onPressed: () {}),
+                            title: 'Half Dustbin',
+                            onPressed: () {},
+                            count: halfDustbin.toString()),
                         builddustbinbox(
-                            title: 'Empty Dustbin', onPressed: () {}),
+                            title: 'Empty Dustbin',
+                            onPressed: () {},
+                            count: emptyDustbin.toString()),
                         builddustbinbox(
-                            title: 'Damage Dustbin', onPressed: () {})
+                            title: 'Damage Dustbin',
+                            onPressed: () {},
+                            count: damagedDustbin.toString()),
                       ]),
                 ),
               ),
@@ -221,4 +259,46 @@ dynamic getColumnData() {
     )
   ];
   return columnData;
+}
+
+Widget buildChart(int fullDustbin, int emptyDustbin, int damagedDustbin) {
+  return SizedBox(
+    child: SfCartesianChart(
+      title: const ChartTitle(
+          text: 'Dustbin Overview',
+          textStyle:
+              TextStyle(color: Color(0xFF365307), fontWeight: FontWeight.bold)),
+      primaryXAxis: const CategoryAxis(),
+      primaryYAxis: const NumericAxis(minimum: 0, maximum: 100, interval: 5),
+      series: <CartesianSeries>[
+        // Full Dustbin Series
+        ColumnSeries<DustbinData, String>(
+          dataSource: [
+            DustbinData('Full Dustbin', fullDustbin, 0, 0),
+          ],
+          xValueMapper: (DustbinData dustbin, _) => dustbin.year,
+          yValueMapper: (DustbinData dustbin, _) => dustbin.y,
+          color: Colors.green,
+        ),
+        // Empty Dustbin Series
+        ColumnSeries<DustbinData, String>(
+          dataSource: [
+            DustbinData('Empty Dustbin', emptyDustbin, 0, 0),
+          ],
+          xValueMapper: (DustbinData dustbin, _) => dustbin.year,
+          yValueMapper: (DustbinData dustbin, _) => dustbin.y,
+          color: Colors.yellow,
+        ),
+        // Damaged Dustbin Series
+        ColumnSeries<DustbinData, String>(
+          dataSource: [
+            DustbinData('Damaged Dustbin', damagedDustbin, 0, 0),
+          ],
+          xValueMapper: (DustbinData dustbin, _) => dustbin.year,
+          yValueMapper: (DustbinData dustbin, _) => dustbin.y,
+          color: Colors.red,
+        ),
+      ],
+    ),
+  );
 }

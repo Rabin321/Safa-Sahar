@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:finalyear/components/constants.dart';
 import 'package:finalyear/googlemapapi/googlemap.dart';
 import 'package:finalyear/presentation/screens/admin_main/adminside/addDustbin/addDustbin.dart';
@@ -5,12 +7,13 @@ import 'package:finalyear/presentation/screens/admin_main/adminside/addstaff/ui/
 import 'package:finalyear/presentation/screens/admin_main/adminside/adminNotification/adminNotification.dart';
 import 'package:finalyear/presentation/screens/admin_main/adminside/admindashboard/ui/admindashboard.dart';
 import 'package:finalyear/presentation/screens/admin_main/adminside/admindashboard/widgets/dustbinnumber.dart';
+import 'package:finalyear/utils/urls.dart';
 //import 'package:finalyear/googlemapapi/googlemap.dart';
 import 'package:finalyear/widgets/appBarWithDrawer/admin_appbarWithDrawer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:responsive_grid_list/responsive_grid_list.dart';
-
+import 'package:http/http.dart' as http;
 
 // class MapViewPage extends StatefulWidget {
 //   const MapViewPage({super.key});
@@ -74,8 +77,6 @@ import 'package:responsive_grid_list/responsive_grid_list.dart';
 //   }
 // }
 
-
-
 class MapViewPage extends StatefulWidget {
   const MapViewPage({Key? key}) : super(key: key);
 
@@ -83,7 +84,40 @@ class MapViewPage extends StatefulWidget {
   State<MapViewPage> createState() => _MapViewPageState();
 }
 
+int fullDustbin = 0;
+int halfDustbin = 0;
+int emptyDustbin = 0;
+int damagedDustbin = 0;
+
 class _MapViewPageState extends State<MapViewPage> {
+  @override
+  void initState() {
+    super.initState();
+    fetchDustbinStats();
+  }
+
+  Future<void> fetchDustbinStats() async {
+    try {
+      final response = await http.get(Uri.parse(baseUrl + getDustbinStats));
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        setState(() {
+          fullDustbin = data['data']['Full Dustbin'];
+          halfDustbin = data['data']['Half Dustbin'];
+          emptyDustbin = data['data']['Empty Dustbin'];
+          damagedDustbin = data['data']['Damaged Dustbin'];
+
+          print(
+              "Full Dustbin: $fullDustbin, Half Dustbin: $halfDustbin, Empty Dustbin: $emptyDustbin, Damaged Dustbin: $damagedDustbin");
+        });
+      } else {
+        print('Failed to fetch dustbin stats: ${response.statusCode}');
+      }
+    } catch (error) {
+      print('Error fetching dustbin stats: $error');
+    }
+  }
+
   int _selectedIndex = 0;
 
   @override
@@ -125,9 +159,18 @@ class _MapViewPageState extends State<MapViewPage> {
                     maxItemsPerRow: 2,
                     listViewBuilderOptions: ListViewBuilderOptions(),
                     children: [
-                      builddustbinbox(title: 'Full Dustbin', onPressed: () {}),
-                      builddustbinbox(title: 'Half Dustbin', onPressed: () {}),
-                      builddustbinbox(title: 'Empty Dustbin', onPressed: () {}),
+                      builddustbinbox(
+                          title: 'Full Dustbin',
+                          onPressed: () {},
+                          count: fullDustbin.toString()),
+                      builddustbinbox(
+                          title: 'Half Dustbin',
+                          onPressed: () {},
+                          count: halfDustbin.toString()),
+                      builddustbinbox(
+                          title: 'Empty Dustbin',
+                          onPressed: () {},
+                          count: emptyDustbin.toString()),
                       builddustbinbox(
                           title: 'Damage Dustbin', onPressed: () {}),
                     ],

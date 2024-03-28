@@ -1,5 +1,6 @@
 import 'package:finalyear/presentation/screens/login/signin_page.dart';
 import 'package:finalyear/presentation/screens/user_main/payment/payment_screen.dart';
+import 'package:finalyear/presentation/screens/users/userReport.dart';
 import 'package:finalyear/presentation/screens/users/user_aboutuspage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -107,7 +108,6 @@ class _MyHomePageState extends State<UserAppBarWithDrawer> {
                   style: listTextStyle,
                 ),
                 onTap: () async {
-                  // Navigate to the login screen
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(builder: (context) => PaymentScreen()),
@@ -124,21 +124,12 @@ class _MyHomePageState extends State<UserAppBarWithDrawer> {
                   'Report',
                   style: listTextStyle,
                 ),
-                onTap: () {
-                  // Handle Home Click
+                onTap: () async {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => UserReportPage()),
+                  );
                 },
-              ),
-              const Divider(
-                color: Colors.green,
-              ),
-              ListTile(
-                textColor: Colors.white,
-                leading: const Icon(Icons.delete),
-                title: Text(
-                  'View Bin',
-                  style: listTextStyle,
-                ),
-                onTap: () {},
               ),
               const Divider(
                 color: Colors.green,

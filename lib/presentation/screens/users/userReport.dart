@@ -7,6 +7,7 @@ import 'package:finalyear/components/constants.dart';
 
 import 'package:finalyear/presentation/screens/admin_main/adminside/addstaff/ui/staffform.dart';
 import 'package:finalyear/presentation/screens/signup/widgets/methods.dart';
+import 'package:finalyear/presentation/screens/user_main/userHomepage/userHomepage.dart';
 import 'package:finalyear/utils/urls.dart';
 
 import 'package:finalyear/widgets/appBarWithDrawer/user_appbarWithDrawer.dart';
@@ -142,8 +143,13 @@ class _UserReportPageState extends State<UserReportPage> {
   Widget build(BuildContext context) {
     //double screenHeight = MediaQuery.of(context).size.height;
     return WillPopScope(
-      onWillPop: () async => false,
-      child: UserAppBarWithDrawer(
+onWillPop: () async {
+  Navigator.pushReplacement(
+    context,
+    MaterialPageRoute(builder: (context) => const UserHomePage()),
+  );
+  return true; // Return true to allow the back navigation
+},      child: UserAppBarWithDrawer(
         title: 'USER',
         body: RefreshIndicator(
           key: _refreshIndicatorKey,

@@ -7,6 +7,7 @@ import 'package:finalyear/domain/addStaff/addStaffModel/addStaffModel.dart';
 import 'package:finalyear/domain/addStaff/addStaffRepository/addStaffRepository.dart';
 import 'package:finalyear/presentation/screens/admin_main/adminside/addstaff/ui/staffform.dart';
 import 'package:finalyear/presentation/screens/signup/widgets/methods.dart';
+import 'package:finalyear/presentation/screens/user_main/userHomepage/userHomepage.dart';
 import 'package:finalyear/utils/urls.dart';
 import 'package:finalyear/widgets/appBarWithDrawer/admin_appbarWithDrawer.dart';
 import 'package:finalyear/widgets/appBarWithDrawer/user_appbarWithDrawer.dart';
@@ -56,39 +57,51 @@ class _AboutUsState extends State<AboutUs> {
     super.dispose();
   }
 
- 
 //
-
-
 
   Widget build(BuildContext context) {
     //double screenHeight = MediaQuery.of(context).size.height;
     return WillPopScope(
-      onWillPop: () async => false,
+      onWillPop: () async {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const UserHomePage()),
+        );
+        return true; // Return true to allow the back navigation
+      },
       child: UserAppBarWithDrawer(
         title: 'USER',
         body: SingleChildScrollView(
           physics: AlwaysScrollableScrollPhysics(),
           child: Form(
             key: formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(top: 10.h, bottom: 16.h),
-                  child: Align(
+            child: Padding(
+              padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 16.h),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Align(
                     alignment: Alignment.center,
-                    child: Text(
-                      "About us",
-                      style: kBodyText2.copyWith(
-                        color: const Color(0xFF365307),
-                        letterSpacing: 1,
+                    child: Padding(
+                      padding: EdgeInsets.all(8.h),
+                      child: Text(
+                        "About us",
+                        style: kBodyText2.copyWith(
+                          fontSize: 14.sp,
+                          color: const Color(0xFF365307),
+                          letterSpacing: 1,
+                        ),
                       ),
                     ),
                   ),
-                ),
-               
-              ],
+                  Text(
+                      """ Welcome to SafaSahar Waste Management System, where innovation meets sustainability. We're dedicated to transforming waste management practices for cleaner communities and a healthier planet.
+              
+Through advanced technology and community engagement, we streamline waste collection, sorting, and processing to minimize landfill waste and maximize resource recovery.
+              
+Join us in our mission to create a greener future. Together, we can make a lasting impact on our environment and build sustainable communities""")
+                ],
+              ),
             ),
           ),
         ),

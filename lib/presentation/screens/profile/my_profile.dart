@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:finalyear/components/constants.dart';
 import 'package:finalyear/widgets/appBarWithDrawer/admin_appbarWithDrawer.dart';
+import 'package:finalyear/widgets/appBarWithDrawer/user_appbarWithDrawer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -39,7 +40,7 @@ class _UserProfileState extends State<UserProfile> {
 
   @override
   Widget build(BuildContext context) {
-    return AdminAppBarWithDrawer(
+    return UserAppBarWithDrawer(
       title: 'USER',
       body: SingleChildScrollView(
         child: Padding(

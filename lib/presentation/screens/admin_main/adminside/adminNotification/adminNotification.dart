@@ -545,7 +545,7 @@ class _AdminNotificationPageState extends State<AdminNotificationPage> {
                       // SizedBox(
                       //   height: 10.h,
                       // ),
-                      Row(
+                      const Row(
                         children: [
                           Text(
                             "Other updates",

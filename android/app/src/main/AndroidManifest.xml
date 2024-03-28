@@ -14,6 +14,7 @@
             android:value="AIzaSyD9GUN6NoQ_ldV5gTWSsKsfAjwJ61Xbq7Q" />
 
         <activity
+        
             android:name=".MainActivity"
             android:exported="true"
             android:launchMode="singleTop"
@@ -21,6 +22,13 @@
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
             android:hardwareAccelerated="true"
             android:windowSoftInputMode="adjustResize">
+            <meta-data android:name="flutter_deeplinking_enabled" android:value="true" />
+<intent-filter android:autoVerify="true">
+    <action android:name="android.intent.action.VIEW" />
+    <category android:name="android.intent.category.DEFAULT" />
+    <category android:name="android.intent.category.BROWSABLE" />
+    <data android:scheme="kpg" android:host="com.example.finalyear" />
+</intent-filter>
 
             <!-- Your activity configuration here -->
 

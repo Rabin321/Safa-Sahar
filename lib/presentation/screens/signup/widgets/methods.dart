@@ -99,12 +99,45 @@ void location(BuildContext context, TextEditingController locationController) {
   );
 }
 
-void selectAssignedStaff(
-    BuildContext context, TextEditingController assignedStaff) async {
+// void selectAssignedStaff(
+//     BuildContext context, TextEditingController assignedStaff) async {
+//   List<dynamic> staffList =
+//       await fetchStaffData(); // Fetch staff data asynchronously
+
+//   showDialog(
+//     context: context,
+//     builder: (BuildContext context) {
+//       return AlertDialog(
+//         title: const Text('Select Staff'),
+//         content: SizedBox(
+//           width: double.minPositive,
+//           height: 200,
+//           child: ListView.builder(
+//             itemCount: staffList.length,
+//             itemBuilder: (BuildContext context, int index) {
+//               final staff = staffList[index];
+//               return ListTile(
+//                 title:
+//                     Text('${staff["name"]}'), // Display the staff member's name
+//                 onTap: () {
+//                   // Set the selected staff member's name to the text field's controller
+//                   assignedStaff.text = staff["name"];
+//                   Navigator.of(context, rootNavigator: true).pop();
+//                 },
+//               );
+//             },
+//           ),
+//         ),
+//       );
+//     },
+//   );
+// }
+
+Future<Map<String, dynamic>?> selectAssignedStaff(BuildContext context) async {
   List<dynamic> staffList =
       await fetchStaffData(); // Fetch staff data asynchronously
 
-  showDialog(
+  return await showDialog<Map<String, dynamic>>(
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
@@ -121,8 +154,8 @@ void selectAssignedStaff(
                     Text('${staff["name"]}'), // Display the staff member's name
                 onTap: () {
                   // Set the selected staff member's name to the text field's controller
-                  assignedStaff.text = staff["name"];
-                  Navigator.of(context, rootNavigator: true).pop();
+                  Navigator.of(context, rootNavigator: true)
+                      .pop({'name': staff["name"], 'id': staff["id"]});
                 },
               );
             },
