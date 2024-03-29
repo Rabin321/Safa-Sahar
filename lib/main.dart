@@ -21,6 +21,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return KhaltiScope(
+        enabledDebugging: true,
         publicKey: "test_public_key_9b85f567ac5c4a9e8c05e301397154fe",
         builder: (context, navigatorKey) {
           return ScreenUtilInit(

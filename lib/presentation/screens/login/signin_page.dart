@@ -104,17 +104,26 @@ class _SignInPageState extends State<SignInPage> {
       bool isLogin = loginResult['success'] == true;
       bool isStaff = loginResult['is_Staff'] == true;
       bool isAdmin = loginResult['is_Admin'] == true;
+      
 
       String? responseRole = loginResult['role'];
       print("signin responseRole is $responseRole");
+              SharedPreferences prefs = await SharedPreferences.getInstance();
+
+int? wardno = prefs.getInt('wardno');
+      print("Signin ward no is $wardno");
 
       if (isLogin) {
-       
         if (isStaff || responseRole == "staff") {
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => const AdminHomePage()),
-            // const StaffHomePage()), //  yo change garna parcha ppachhi
+            MaterialPageRoute(
+                builder: (context) =>
+
+                    //  const AdminHomePage()),
+                    StaffHomePage(
+                      wardno: wardno,
+                    )),
           );
         } else if (isAdmin || responseRole == "admin") {
           Navigator.pushReplacement(

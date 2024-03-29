@@ -10,20 +10,23 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:responsive_grid_list/responsive_grid_list.dart';
 
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
-class AdminDashboard extends StatefulWidget {
-  const AdminDashboard({super.key});
+class StaffDashboard extends StatefulWidget {
+  final int? wardno;
+  const StaffDashboard({super.key, this.wardno});
 
   @override
-  State<AdminDashboard> createState() => _AdminDashboardState();
+  State<StaffDashboard> createState() => _StaffDashboardState();
 }
 
-class _AdminDashboardState extends State<AdminDashboard> {
+class _StaffDashboardState extends State<StaffDashboard> {
   List<dynamic> staffList = []; // List to store staff data
   List<dynamic> dustbinList = [];
+  List<dynamic> userList = [];
 
-  int? totalStaff = 0; // Declare totalStaff as a class member
+  int? totalStaff = 0;
   int? totalDustbin = 0;
 
   int? fullDustbin = 0;
@@ -33,9 +36,9 @@ class _AdminDashboardState extends State<AdminDashboard> {
   @override
   void initState() {
     super.initState();
-    fetchStaffData();
     fetchDustbinData();
     fetchDustbinStats();
+    fetchUserByWard(widget.wardno!);
   }
 
   Future<void> fetchDustbinStats() async {
@@ -51,30 +54,13 @@ class _AdminDashboardState extends State<AdminDashboard> {
           damagedDustbin = data['data']['Damaged Dustbin'];
 
           print(
-              "Full Dustbin: $fullDustbin, Half Dustbin: $halfDustbin, Empty Dustbin: $emptyDustbin, Damaged Dustbin: $damagedDustbin");
+              "Full Dustbin staff: $fullDustbin, Half Dustbin staf: $halfDustbin, Empty Dustbin: $emptyDustbin, Damaged Dustbin: $damagedDustbin");
         });
       } else {
         print('Failed to fetch dustbin stats: ${response.statusCode}');
       }
     } catch (error) {
       print('Error fetching dustbin stats: $error');
-    }
-  }
-
-  // Function to fetch staff data from API
-  Future<void> fetchStaffData() async {
-    try {
-      final response = await http.get(Uri.parse(baseUrl + getStaff));
-      if (response.statusCode == 200) {
-        setState(() {
-          staffList = jsonDecode(response.body)['staffMembers'];
-          totalStaff = staffList.length; // Update totalStaff here
-        });
-      } else {
-        print('Failed to fetch staff data: ${response.statusCode}');
-      }
-    } catch (error) {
-      print('Error fetching staff data: $error');
     }
   }
 
@@ -102,13 +88,61 @@ class _AdminDashboardState extends State<AdminDashboard> {
     }
   }
 
+  Future<void> fetchUserByWard(int wardno) async {
+    try {
+      userList.clear();
+
+      final response = await http
+          .get(Uri.parse(baseUrl + getUserByWard + '?wardno=$wardno'));
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        // Extract staff members' names, locations, and emails
+        final List<dynamic> userMembers = data['users'];
+
+        userMembers.forEach((users) {
+          final int id = users['id'];
+          final String name = users['name'];
+          final String? location = users['location'];
+          final int? houseno = users['houseno'];
+          final String? email = users['email'];
+          final int? wardno = users['wardno'];
+          final String? phone = users['phone'];
+          print(
+              'ID r: $id, Name: $name, Location: $location, Houseno: $houseno Email: $email, Ward: $wardno, Phone:$phone,');
+          // Add staff details to the staff list
+          userList.add({
+            'id': id.toString(),
+            'name': name,
+            'location': location!,
+            'houseno': houseno.toString(),
+            'email': email!,
+            'wardno': wardno.toString(),
+            'phone': phone.toString(),
+          });
+        });
+        setState(() {});
+      } else {
+        // ignore: use_build_context_synchronously
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Please try again")),
+        );
+        print('Failed to fetch users: ${response.statusCode}');
+      }
+    } catch (error) {
+      print('Error fetching users: $error');
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Please try again")),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     // return AdminAppBarWithDrawer(
     return WillPopScope(
       onWillPop: () async => false,
       child: AdminAppBarWithDrawer(
-        title: 'ADMIN',
+        title: 'STAFF',
         body: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -189,15 +223,17 @@ class _AdminDashboardState extends State<AdminDashboard> {
                         children: [
                           Padding(
                             padding: EdgeInsets.only(top: 6.h),
-                            child: Text("STAFFS", style: kBodyText),
+                            child: Text("Users in my ward", style: kBodyText),
                           ),
                         ],
                       ),
-                      buildActiveUsersWidget("ACTIVE USERS", totalStaff!),
+                      buildActiveUsersWidgetStaffScreen(
+                          "ACTIVE USERS", userList.length),
                       // const SizedBox(
                       //   height: 12,
                       // ),
-                      buildActiveUsersWidget("TOTAL DUSTBINS", totalDustbin!),
+                      buildActiveUsersWidgetStaffScreen(
+                          "TOTAL DUSTBINS", totalDustbin!),
                       // const SizedBox(
                       //   height: 12,
                       // ),
@@ -299,6 +335,38 @@ Widget buildChart(int fullDustbin, int emptyDustbin, int damagedDustbin) {
           color: Colors.red,
         ),
       ],
+    ),
+  );
+}
+
+Widget buildActiveUsersWidgetStaffScreen(
+    String activeUsersText, int totalUsers) {
+  return Padding(
+    padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 5.h),
+    child: Container(
+      height: 45.h,
+      decoration: BoxDecoration(
+        color: const Color(0xFFD9D9D9),
+        borderRadius: BorderRadius.circular(45.r),
+      ),
+      child: Padding(
+        padding: EdgeInsets.only(left: 10.w, right: 10.w),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(activeUsersText,
+                style: kBodyText.copyWith(
+                  color: Color(0xFF003E1F),
+                  fontWeight: FontWeight.w500,
+                )),
+            Text("TOTAL: $totalUsers",
+                style: kBodyText.copyWith(
+                  color: Color(0xFF003E1F),
+                  fontWeight: FontWeight.w500,
+                ))
+          ],
+        ),
+      ),
     ),
   );
 }

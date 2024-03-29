@@ -124,6 +124,7 @@ class LoginApi {
         String? location = userData['location'];
         String? phone = userData['phone'];
         String? userToken = responseData['token'];
+        int? wardno = userData['wardno'];
 
 // Save user details to SharedPreferences
         SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -133,6 +134,7 @@ class LoginApi {
         prefs.setString('user_token', userToken ?? '');
         prefs.setString('location', location ?? '');
         prefs.setString('phone', phone ?? '');
+        prefs.setInt('wardno', wardno ?? 0);
 
         print(
             'User details saved to SharedPreferences $userId, $userName, $userEmail, $location, $phone, $userToken');

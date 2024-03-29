@@ -1,4 +1,4 @@
-const baseUrl = 'http://192.168.1.74:5000/api';
+const baseUrl = 'http://192.168.0.143:5000/api';
 const registerUrl = '/register';
 
 const loginUrl = '/login';
@@ -11,6 +11,7 @@ const editStaffUrl = '/edit-staff';
 const deleteStaffUrl = '/delete-staff';
 
 const getUser = '/get-user';
+const getUserByWard = '/get-user-ward';
 const getStaffByWard = '/get-staff-ward';
 
 const addDustbinUrl = '/add-dustbin';
