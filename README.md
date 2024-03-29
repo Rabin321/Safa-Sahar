@@ -1,4 +1,3 @@
-# finalyear
 
 A new Flutter project.
 
