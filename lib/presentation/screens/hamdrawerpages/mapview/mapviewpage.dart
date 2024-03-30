@@ -10,6 +10,7 @@ import 'package:finalyear/presentation/screens/admin_main/adminside/admindashboa
 import 'package:finalyear/utils/urls.dart';
 //import 'package:finalyear/googlemapapi/googlemap.dart';
 import 'package:finalyear/widgets/appBarWithDrawer/admin_appbarWithDrawer.dart';
+import 'package:finalyear/widgets/customBackButton.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:responsive_grid_list/responsive_grid_list.dart';
@@ -129,6 +130,9 @@ class _MapViewPageState extends State<MapViewPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              const Row(
+                children: [CustomBackIcon()],
+              ),
               Align(
                 alignment: Alignment.center,
                 child: Text(

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:finalyear/components/constants.dart';
 import 'package:finalyear/widgets/appBarWithDrawer/admin_appbarWithDrawer.dart';
 import 'package:finalyear/widgets/appBarWithDrawer/user_appbarWithDrawer.dart';
+import 'package:finalyear/widgets/customBackButton.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -48,6 +49,9 @@ class _UserProfileState extends State<UserProfile> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              const Row(
+                children: [CustomBackIcon()],
+              ),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 6.h),
                 child: Align(

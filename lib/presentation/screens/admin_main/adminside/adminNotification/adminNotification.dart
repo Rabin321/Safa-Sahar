@@ -16,6 +16,8 @@ import 'package:intl/intl.dart';
 
 import 'package:http/http.dart' as http;
 
+import 'package:nepali_date_picker/nepali_date_picker.dart';
+
 class AdminNotificationPage extends StatefulWidget {
   const AdminNotificationPage({Key? key}) : super(key: key);
 
@@ -36,6 +38,8 @@ class _AdminNotificationPageState extends State<AdminNotificationPage> {
   List<Map<String, String>> wastePickuplist =
       []; // Store staff details acc to ward
 
+  NepaliDateTime? _selectedDate;
+
   @override
   void dispose() {
     _messageController.dispose();
@@ -50,14 +54,12 @@ class _AdminNotificationPageState extends State<AdminNotificationPage> {
   _addWastePickupTime() async {
     try {
       WastepickupRepository wastepickupRepository = WastepickupRepository();
-      DateTime pickupTime =
-          DateFormat("HH:mm").parse(_pickupTimeController.text);
 
       bool isRegistered = await wastepickupRepository.register(Wastepickup(
         location: _locationController.text,
         wardno: int.parse(_wardnoController.text),
         street: _streetController.text,
-        pickup_time: pickupTime,
+        pickup_time: _selectedDate!,
         message: _messageController.text,
       ));
 
@@ -95,23 +97,20 @@ class _AdminNotificationPageState extends State<AdminNotificationPage> {
           final String? location = waste['location'];
           final String? street = waste['street'];
           final String? pickupTimeString = waste['pickup_time'];
+
           final String? message = waste['message'];
 
-          String? formattedPickupTime;
-          if (pickupTimeString != null) {
-            final DateTime? pickupTime = DateTime.tryParse(pickupTimeString);
-            formattedPickupTime = pickupTime?.toString();
-          }
+          String? formattedPickUp = pickupTimeString!.split('.')[0];
 
           print(
-              "Waste pickup time: $formattedPickupTime, Wardno: $wardno, Location: $location, Street: $street, Message: $message");
+              "Waste pickup time: $pickupTimeString , Wardno: $wardno, Location: $location, Street: $street, Message: $message");
           // Add staff details to the staff list
           wastePickuplist.add({
             'id': id.toString(),
             'wardno': wardno.toString(),
             'location': location ?? '',
             'street': street ?? '',
-            'pickup_time': formattedPickupTime ?? '',
+            'pickup_time': formattedPickUp ?? '',
             'message': message ?? '',
           });
         });
@@ -152,7 +151,8 @@ class _AdminNotificationPageState extends State<AdminNotificationPage> {
           'location': _locationController.text,
           'wardno': _wardnoController.text,
           'street': _streetController.text,
-          'pickup_time': _pickupTimeController.text,
+          // 'pickup_time': _selectedDate,
+          'message': _messageController.text,
         },
       );
 
@@ -275,11 +275,11 @@ class _AdminNotificationPageState extends State<AdminNotificationPage> {
                       //   height: 10.h,
                       // ),
                       Padding(
-                        padding: EdgeInsets.only(bottom: 10.h),
+                        padding: EdgeInsets.only(top: 10.h, bottom: 10.h),
                         child: Row(
                           children: [
                             Text(
-                              "Add Schedule",
+                              "Schedule Details",
                               style: subhead,
                             ),
                           ],
@@ -363,7 +363,7 @@ class _AdminNotificationPageState extends State<AdminNotificationPage> {
                                                                               labelText: 'New Location'),
                                                                     ),
                                                                     Text(
-                                                                        'Ward no: ${waste['ward_no']}'),
+                                                                        'Ward no: ${waste['wardno']}'),
                                                                     TextFormField(
                                                                       controller:
                                                                           _wardnoController,
@@ -380,15 +380,65 @@ class _AdminNotificationPageState extends State<AdminNotificationPage> {
                                                                           InputDecoration(
                                                                               labelText: 'New Street'),
                                                                     ),
-                                                                    Text(
-                                                                        'Pickup Time: ${waste['pickup_timme']}'),
-                                                                    TextFormField(
-                                                                      controller:
-                                                                          _pickupTimeController,
-                                                                      decoration:
-                                                                          InputDecoration(
-                                                                              labelText: 'New Pickup time'),
-                                                                    ),
+                                                                    // Text(
+                                                                    //     'Pickup Time: ${waste['pickup_time']}'),
+                                                                    // TextFormField(
+                                                                    //   readOnly:
+                                                                    //       true,
+                                                                    //   controller:
+                                                                    //       TextEditingController(
+                                                                    //     text: _selectedDate !=
+                                                                    //             null
+                                                                    //         ? NepaliDateFormat("yyyy-MM-dd HH:mm").format(_selectedDate!)
+                                                                    //         : '',
+                                                                    //   ),
+                                                                    //   decoration:
+                                                                    //       InputDecoration(
+                                                                    //     hintText:
+                                                                    //         'Pick up date and time...',
+                                                                    //     suffixIcon:
+                                                                    //         IconButton(
+                                                                    //       onPressed:
+                                                                    //           () async {
+                                                                    //         final NepaliDateTime?
+                                                                    //             picked =
+                                                                    //             await showMaterialDatePicker(
+                                                                    //           context: context,
+                                                                    //           initialDate: _selectedDate ?? NepaliDateTime.now(),
+                                                                    //           firstDate: NepaliDateTime(2000),
+                                                                    //           lastDate: NepaliDateTime(2090),
+                                                                    //           initialDatePickerMode: DatePickerMode.day,
+                                                                    //         );
+
+                                                                    //         if (picked != null &&
+                                                                    //             picked != _selectedDate) {
+                                                                    //           final TimeOfDay? selectedTime = await showTimePicker(
+                                                                    //             context: context,
+                                                                    //             initialTime: TimeOfDay.fromDateTime(
+                                                                    //               _selectedDate ?? DateTime.now(),
+                                                                    //             ),
+                                                                    //           );
+
+                                                                    //           if (selectedTime != null) {
+                                                                    //             setState(() {
+                                                                    //               _selectedDate = NepaliDateTime(
+                                                                    //                 picked.year,
+                                                                    //                 picked.month,
+                                                                    //                 picked.day,
+                                                                    //                 selectedTime.hour,
+                                                                    //                 selectedTime.minute,
+                                                                    //               );
+
+                                                                    //               print("Selected date: $_selectedDate, ${_selectedDate!.toIso8601String()}, ${_selectedDate!.toDateTime()}, ${_selectedDate!.format("yyyy-MM-dd HH:mm")}");
+                                                                    //             });
+                                                                    //           }
+                                                                    //         }
+                                                                    //       },
+                                                                    //       icon:
+                                                                    //           Icon(Icons.calendar_today),
+                                                                    //     ),
+                                                                    //   ),
+                                                                    // ),
                                                                   ],
                                                                 ),
                                                               ),
@@ -406,14 +456,6 @@ class _AdminNotificationPageState extends State<AdminNotificationPage> {
                                                                     Navigator.of(
                                                                             context)
                                                                         .pop();
-                                                                    _locationController
-                                                                        .clear();
-                                                                    _wardnoController
-                                                                        .clear();
-                                                                    _streetController
-                                                                        .clear();
-                                                                    _pickupTimeController
-                                                                        .clear();
                                                                   },
                                                                   child: Text(
                                                                       'Save'),
@@ -458,6 +500,18 @@ class _AdminNotificationPageState extends State<AdminNotificationPage> {
                           ),
                         ),
                       ),
+
+                      Padding(
+                        padding: EdgeInsets.only(top: 10.h, bottom: 10.h),
+                        child: const Row(
+                          children: [
+                            Text(
+                              "Add Schedule",
+                              style: subhead,
+                            ),
+                          ],
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -477,32 +531,48 @@ class _AdminNotificationPageState extends State<AdminNotificationPage> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              TextFormField(
+                              MyTextField(
+                                hintText: 'Ward no...',
                                 controller: _wardnoController,
-                                decoration: kTextFieldDecoration.copyWith(
-                                  hintText: 'Ward...',
-                                  hintStyle: kBodyText,
-                                ),
-                                // formKey: formKey!,
+                                inputType: TextInputType.text,
+                                onDropdownPressed: () {
+                                  wardno(context, _wardnoController);
+                                },
+                                // formKey: formKeydrpdwn,
+                                showDropdownIcon: true,
                                 validator: (name) => name!.isEmpty
-                                    ? 'Please enter your ward'
+                                    ? 'Please select your ward'
                                     : null,
+                                isEditable: false,
+                                onChanged: (value) {
+                                  // Update locationController when location is selected
+                                  _wardnoController.text = value;
+                                  print(
+                                      "wardController: ${_wardnoController.text}");
+                                },
+                              ),
+                              MyTextField(
+                                hintText: 'Location...',
+                                controller: _locationController,
+                                inputType: TextInputType.text,
+                                onDropdownPressed: () {
+                                  location(context, _locationController);
+                                },
+                                // formKey: formKeydrpdwn,
+                                showDropdownIcon: true,
+                                validator: (name) => name!.isEmpty
+                                    ? 'Please select your location'
+                                    : null,
+                                isEditable: false,
+                                onChanged: (value) {
+                                  // Update locationController when location is selected
+                                  _locationController.text = value;
+                                  print(
+                                      "_locationController: ${_locationController.text}");
+                                },
                               ),
                               Padding(
-                                padding: EdgeInsets.only(top: 8.h),
-                                child: TextFormField(
-                                  controller: _locationController,
-                                  decoration: kTextFieldDecoration.copyWith(
-                                    hintText: 'Location...',
-                                    hintStyle: kBodyText,
-                                  ),
-                                  validator: (name) => name!.isEmpty
-                                      ? 'Please enter your location'
-                                      : null,
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.only(top: 8.h),
+                                padding: EdgeInsets.only(top: 8.h, bottom: 8.h),
                                 child: TextFormField(
                                   controller: _streetController,
                                   decoration: kTextFieldDecoration.copyWith(
@@ -515,29 +585,68 @@ class _AdminNotificationPageState extends State<AdminNotificationPage> {
                                 ),
                               ),
                               Padding(
-                                padding: EdgeInsets.only(top: 8.h),
+                                padding: EdgeInsets.only(top: 8.0),
                                 child: TextFormField(
-                                  controller: _pickupTimeController,
+                                  readOnly: true,
+                                  controller: TextEditingController(
+                                    text: _selectedDate != null
+                                        ? NepaliDateFormat("yyyy-MM-dd HH:mm")
+                                            .format(_selectedDate!)
+                                        : '',
+                                  ),
                                   decoration: kTextFieldDecoration.copyWith(
-                                    hintText: 'Pick up time (HH:MM)...',
+                                    hintText: 'Pick up date and time...',
                                     hintStyle: kBodyText,
+                                    suffixIcon: IconButton(
+                                      onPressed: () async {
+                                        final NepaliDateTime? picked =
+                                            await showMaterialDatePicker(
+                                          context: context,
+                                          initialDate: _selectedDate ??
+                                              NepaliDateTime.now(),
+                                          firstDate: NepaliDateTime(2000),
+                                          lastDate: NepaliDateTime(2090),
+                                          initialDatePickerMode:
+                                              DatePickerMode.day,
+                                        );
+
+                                        if (picked != null &&
+                                            picked != _selectedDate) {
+                                          final TimeOfDay? selectedTime =
+                                              await showTimePicker(
+                                            context: context,
+                                            initialTime: TimeOfDay.fromDateTime(
+                                              _selectedDate ?? DateTime.now(),
+                                            ),
+                                          );
+
+                                          if (selectedTime != null) {
+                                            setState(() {
+                                              _selectedDate = NepaliDateTime(
+                                                picked.year,
+                                                picked.month,
+                                                picked.day,
+                                                selectedTime.hour,
+                                                selectedTime.minute,
+                                              );
+
+                                              print(
+                                                  "Selected date: $_selectedDate, ${_selectedDate!.toIso8601String()}, ${_selectedDate!.toDateTime()}, ${_selectedDate!.format("yyyy-MM-dd HH:mm")}");
+                                            });
+                                          }
+                                        }
+                                      },
+                                      icon: const Icon(Icons.calendar_today),
+                                    ),
                                   ),
                                   validator: (value) {
                                     if (value!.isEmpty) {
-                                      return 'Please enter your pickup time';
+                                      return 'Please select your pickup date and time';
                                     }
-
-                                    // Check if the entered value matches the expected date format "YYYY-MM-DD"
-                                    if (!RegExp(r'^\d{2}:\d{2}$')
-                                        .hasMatch(value)) {
-                                      return 'Invalid time format. Please use HH:MM format';
-                                    }
-
-                                    // Validation passed
                                     return null;
                                   },
                                 ),
-                              ),
+                              )
                             ],
                           ),
                         ),
@@ -605,10 +714,9 @@ class _AdminNotificationPageState extends State<AdminNotificationPage> {
 
                         if (_formKey.currentState!.validate()) {
                           _addWastePickupTime();
-                          _locationController.clear();
-                          _wardnoController.clear();
+
                           _streetController.clear();
-                          _pickupTimeController.clear();
+                          _selectedDate = null;
                           _messageController.clear();
                         }
                       }),

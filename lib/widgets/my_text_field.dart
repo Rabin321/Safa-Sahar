@@ -74,7 +74,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 //     );
 //   }
 // }
-class MyTextField extends StatelessWidget {
+class MyTextField extends StatefulWidget {
   const MyTextField({
     Key? key,
     required this.hintText,
@@ -99,6 +99,37 @@ class MyTextField extends StatelessWidget {
   final ValueChanged<String> onChanged;
 
   @override
+  _MyTextFieldState createState() => _MyTextFieldState();
+}
+
+class _MyTextFieldState extends State<MyTextField> {
+  String? _errorText;
+
+  @override
+  void didUpdateWidget(covariant MyTextField oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // Validate the text field whenever the widget updates
+    if (widget.validator != null) {
+      setState(() {
+        _errorText = widget.validator!(widget.controller!.text);
+      });
+    }
+  }
+
+  void resetError() {
+    setState(() {
+      _errorText = null;
+    });
+  }
+
+  String? validate() {
+    setState(() {
+      _errorText = widget.validator!(widget.controller!.text);
+    });
+    return _errorText;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 8.h),
@@ -106,18 +137,17 @@ class MyTextField extends StatelessWidget {
         alignment: Alignment.centerRight,
         children: [
           TextFormField(
-            controller: controller,
-            keyboardType: inputType,
-            validator: validator,
+            controller: widget.controller,
+            keyboardType: widget.inputType,
             autovalidateMode: AutovalidateMode.onUserInteraction,
             textInputAction: TextInputAction.next,
-            readOnly: !isEditable,
-            onChanged: onChanged,
+            readOnly: !widget.isEditable,
+            onChanged: widget.onChanged,
             decoration: InputDecoration(
               fillColor: Colors.white,
               filled: true,
               contentPadding: EdgeInsets.all(12.h),
-              hintText: hintText,
+              hintText: widget.hintText,
               hintStyle: kBodyText,
               enabledBorder: OutlineInputBorder(
                 borderSide: BorderSide(
@@ -133,12 +163,13 @@ class MyTextField extends StatelessWidget {
                 ),
                 borderRadius: BorderRadius.circular(12.r),
               ),
-              suffixIcon: showDropdownIcon
+              suffixIcon: widget.showDropdownIcon
                   ? IconButton(
                       icon: const Icon(Icons.arrow_drop_down),
-                      onPressed: onDropdownPressed,
+                      onPressed: widget.onDropdownPressed,
                     )
                   : null,
+              errorText: _errorText,
             ),
           ),
         ],

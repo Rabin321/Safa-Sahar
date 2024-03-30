@@ -36,7 +36,7 @@ void wardno(BuildContext context, TextEditingController _wardnoController) {
 }
 
 void houseno(BuildContext context, TextEditingController housenoController) {
-  List<String> houseNumbers = ['111', '222', '333'];
+  List<String> houseNumbers = ['1', '2', '3'];
 
   showDialog(
     context: context,

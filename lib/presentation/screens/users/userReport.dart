@@ -143,13 +143,14 @@ class _UserReportPageState extends State<UserReportPage> {
   Widget build(BuildContext context) {
     //double screenHeight = MediaQuery.of(context).size.height;
     return WillPopScope(
-onWillPop: () async {
-  Navigator.pushReplacement(
-    context,
-    MaterialPageRoute(builder: (context) => const UserHomePage()),
-  );
-  return true; // Return true to allow the back navigation
-},      child: UserAppBarWithDrawer(
+      onWillPop: () async {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const UserHomePage()),
+        );
+        return true; // Return true to allow the back navigation
+      },
+      child: UserAppBarWithDrawer(
         title: 'USER',
         body: RefreshIndicator(
           key: _refreshIndicatorKey,
@@ -161,6 +162,19 @@ onWillPop: () async {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
+                  Row(
+                    children: [
+                      IconButton(
+                        icon: Icon(Icons.arrow_back, color: Colors.black),
+                        onPressed: () {
+                          Navigator.pushReplacement(context,
+                              MaterialPageRoute(builder: (context) {
+                            return UserHomePage();
+                          }));
+                        },
+                      )
+                    ],
+                  ),
                   Padding(
                     padding: EdgeInsets.only(top: 10.h, bottom: 16.h),
                     child: Align(

@@ -72,7 +72,7 @@ class _MyHomePageState extends State<AdminAppBarWithDrawer> {
                       backgroundColor: Colors.transparent,
                       radius: 15.r,
                       backgroundImage:
-                          const AssetImage('assets/images/google_logo.png'),
+                          const AssetImage('assets/images/user.jpg'),
                     ),
                   ),
                 ],

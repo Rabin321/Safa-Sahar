@@ -80,6 +80,19 @@ class _AboutUsState extends State<AboutUs> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
+                  Row(
+                    children: [
+                      IconButton(
+                        icon: Icon(Icons.arrow_back, color: Colors.black),
+                        onPressed: () {
+                          Navigator.pushReplacement(context,
+                              MaterialPageRoute(builder: (context) {
+                            return UserHomePage();
+                          }));
+                        },
+                      )
+                    ],
+                  ),
                   Align(
                     alignment: Alignment.center,
                     child: Padding(

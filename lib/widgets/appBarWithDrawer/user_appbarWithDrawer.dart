@@ -1,4 +1,5 @@
 import 'package:finalyear/presentation/screens/login/signin_page.dart';
+import 'package:finalyear/presentation/screens/profile/my_profile.dart';
 import 'package:finalyear/presentation/screens/user_main/payment/payment_screen.dart';
 import 'package:finalyear/presentation/screens/users/userReport.dart';
 import 'package:finalyear/presentation/screens/users/user_aboutuspage.dart';
@@ -59,11 +60,18 @@ class _MyHomePageState extends State<UserAppBarWithDrawer> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  CircleAvatar(
-                    backgroundColor: Colors.transparent,
-                    radius: 15.r,
-                    backgroundImage:
-                        const AssetImage('assets/images/google_logo.png'),
+                  GestureDetector(
+                    onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const UserProfile()),
+                    ),
+                    child: CircleAvatar(
+                      backgroundColor: Colors.transparent,
+                      radius: 15.r,
+                      backgroundImage:
+                          const AssetImage('assets/images/user.jpg'),
+                    ),
                   ),
                 ],
               ),
