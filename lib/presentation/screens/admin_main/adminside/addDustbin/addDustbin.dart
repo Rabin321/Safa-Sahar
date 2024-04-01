@@ -47,11 +47,22 @@ class _AdminAddDustbinState extends State<AdminAddDustbin> {
   List<Map<String, String>> dustbinList =
       []; // Store dustbin details acc to ward
 
+  StaffMember? selectedStaff;
+
   int selectedIndex = -1;
   @override
   void initState() {
     super.initState();
-    fetchStaffList();
+    // fetchStaffList();
+    super.initState();
+    // Fetch staff list and assign the result to staffList
+    fetchStaffList().then((staff) {
+      setState(() {
+        staffList = staff;
+      });
+    }).catchError((error) {
+      print('Error fetching staff list: $error');
+    });
   }
 
   // just to run
@@ -73,26 +84,56 @@ class _AdminAddDustbinState extends State<AdminAddDustbin> {
     super.dispose();
   }
 
+  // _dustbinAdd() async {
+  //   try {
+  //     // int wardNumber = int.parse(wardnoController.text);
+  //     // print("Parsed ward number: $wardNumber");
+  //     DustbinRepository dustbinRepository = DustbinRepository();
+  //     bool isAdded = await dustbinRepository.register(AddDustbinModel(
+  //       location: locationController.text,
+  //       wardno: int.parse(wardnoController.text),
+  //       assigned_staff: int.parse(assignedStaff.text),
+  //       // assigned_staff: 3,
+  //       dustbin_type: "full",
+  //       fill_percentage: 20,
+  //     ));
+
+  //     if (isAdded) {
+  //       print("dustbin addded successfully");
+
+  //       ScaffoldMessenger.of(context).showSnackBar(
+  //         const SnackBar(content: Text("Dustbin added successfully")),
+  //       ); // AuthController.login();
+  //     } else {
+  //       throw Exception("Registration failed");
+  //     }
+  //   } catch (e) {
+  //     MotionToast.error(
+  //       height: 50.h,
+  //       width: double.infinity,
+  //       animationDuration: const Duration(milliseconds: 300),
+  //       description: const Text("Something went wrong"),
+  //     ).show(context);
+  //   }
+  // }
+
   _dustbinAdd() async {
     try {
-      // int wardNumber = int.parse(wardnoController.text);
-      // print("Parsed ward number: $wardNumber");
       DustbinRepository dustbinRepository = DustbinRepository();
       bool isAdded = await dustbinRepository.register(AddDustbinModel(
         location: locationController.text,
         wardno: int.parse(wardnoController.text),
-        // assignedStaff: int.parse(assignedStaff.text),
-        assigned_staff: 3,
-        dustbin_type: "empty",
-        fill_percentage: 90,
+        assigned_staff:
+            selectedStaff?.id ?? 0, // Use selected staff's ID if available
+        dustbin_type: "full",
+        fill_percentage: 20,
       ));
 
       if (isAdded) {
-        print("dustbin addded successfully");
-
+        print("dustbin added successfully");
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text("Dustbin added successfully")),
-        ); // AuthController.login();
+        );
       } else {
         throw Exception("Registration failed");
       }
@@ -219,28 +260,60 @@ class _AdminAddDustbinState extends State<AdminAddDustbin> {
     }
   }
 
-  List<Map<String, dynamic>> staffList = [];
+  // List<Map<String, dynamic>> staffList = [];
+  // Modify staffList to be a list of StaffMember objects
+  // List<StaffMember> staffList = [];
+  List<StaffMember> staffList = [];
 
-  Future<void> fetchStaffList() async {
+  // Future<void> fetchStaffList() async {
+  //   try {
+  //     final response = await http.get(Uri.parse(baseUrl + getStaff));
+  //     if (response.statusCode == 200) {
+  //       final List<dynamic> staffData = jsonDecode(response.body);
+  //       staffList.clear(); // Clear existing staff list
+  //       staffData.forEach((staff) {
+  //         staffList.add({
+  //           'id': staff['id'].toString(),
+  //           'name': staff['name'],
+  //         });
+  //       });
+  //       setState(() {}); // Notify that the state has changed
+  //     } else {
+  //       print('Failed to fetch staff data: ${response.statusCode}');
+  //       // Handle error
+  //     }
+  //   } catch (error) {
+  //     print('Error fetching staff data: $error');
+  //     // Handle error
+  //   }
+  // }
+  Future<List<StaffMember>> fetchStaffList() async {
     try {
       final response = await http.get(Uri.parse(baseUrl + getStaff));
       if (response.statusCode == 200) {
-        final List<dynamic> staffData = jsonDecode(response.body);
-        staffList.clear(); // Clear existing staff list
-        staffData.forEach((staff) {
-          staffList.add({
-            'id': staff['id'].toString(),
-            'name': staff['name'],
-          });
+        final responseData = jsonDecode(response.body) as Map<String, dynamic>;
+        final staffData = responseData['staffMembers'] as List<dynamic>;
+
+        final List<StaffMember> staffList = staffData.map((staff) {
+          return StaffMember(
+            id: staff['id'],
+            name: staff['name'],
+          );
+        }).toList();
+
+        // Assign the populated staffList to the class variable
+        setState(() {
+          this.staffList = staffList;
         });
-        setState(() {}); // Notify that the state has changed
+
+        return staffList;
       } else {
         print('Failed to fetch staff data: ${response.statusCode}');
-        // Handle error
+        throw Exception('Failed to fetch staff data');
       }
     } catch (error) {
       print('Error fetching staff data: $error');
-      // Handle error
+      throw Exception('Error fetching staff data');
     }
   }
 
@@ -370,14 +443,18 @@ class _AdminAddDustbinState extends State<AdminAddDustbin> {
                                         ],
                                         rows: dustbinList.map((dustbin) {
                                           // Find the staff with the same ID as assigned_staff from the staffList
-                                          var assignedStaff = staffList.firstWhere(
-                                              (staff) =>
-                                                  staff['id'] ==
-                                                  dustbin['assigned_staff'],
-                                              orElse: () => {
-                                                    'name': 'Unknown'
-                                                  } // If no matching staff member found, display "Unknown"
-                                              );
+                                          var assignedStaff =
+                                              staffList.firstWhere(
+                                            (staff) =>
+                                                staff.id ==
+                                                dustbin['assigned_staff'],
+
+                                            // If no matching staff member found, display "Unknown"
+                                            orElse: () => StaffMember(
+                                              id: 0,
+                                              name: 'Unknown',
+                                            ),
+                                          );
 
                                           return DataRow(cells: [
                                             DataCell(Text(dustbin['id'] ?? '')),
@@ -426,7 +503,7 @@ class _AdminAddDustbinState extends State<AdminAddDustbin> {
                                                                             'New location'),
                                                                   ),
                                                                   Text(
-                                                                      'Assigned Staff: ${assignedStaff['name']}'),
+                                                                      'Assigned Staff: ${assignedStaff.name}'),
                                                                   TextFormField(
                                                                     controller:
                                                                         assignedStaffController,
@@ -560,39 +637,90 @@ class _AdminAddDustbinState extends State<AdminAddDustbin> {
                           //       : null,
                           // ),
                         ),
+
+                        // Padding(
+                        //   padding: EdgeInsets.only(top: 1.h),
+                        //   child: MyTextField(
+                        //     hintText: 'Assigned Staff...',
+                        //     controller: assignedStaff,
+                        //     inputType: TextInputType.text,
+                        //     // onDropdownPressed: () {
+                        //     //   selectAssignedStaff(context, assignedStaff);
+                        //     // },
+
+                        //     onDropdownPressed: () async {
+                        //       Map<String, dynamic>? selectedStaff =
+                        //           await selectAssignedStaff(context);
+                        //       if (selectedStaff != null) {
+                        //         assignedStaff.text = selectedStaff[
+                        //             'name']; // Set the selected staff's name to the text field
+                        //         // Use the selected staff's ID for further processing (e.g., sending to backend)
+                        //         int staffId = selectedStaff['id'];
+                        //         print('Selected Staff ID: $staffId');
+                        //       }
+                        //     },
+
+                        //     // formKey: formKeydrpdwn,
+                        //     showDropdownIcon: true,
+                        //     // validator: (name) => name!.isEmpty
+                        //     //     ? 'Please select your location'
+                        //     //     : null,
+                        //     isEditable: false,
+                        //     onChanged: (value) {
+                        //       // Update locationController when location is selected
+                        //       filterWardController.text = value;
+                        //       print("assignedstaff: ${assignedStaff.text}");
+                        //     },
+                        //   ),
+                        // ),
+
                         Padding(
                           padding: EdgeInsets.only(top: 1.h),
-                          child: MyTextField(
-                            hintText: 'Assigned Staff...',
-                            controller: assignedStaff,
-                            inputType: TextInputType.text,
-                            // onDropdownPressed: () {
-                            //   selectAssignedStaff(context, assignedStaff);
-                            // },
-
-                            onDropdownPressed: () async {
-                              Map<String, dynamic>? selectedStaff =
-                                  await selectAssignedStaff(context);
-                              if (selectedStaff != null) {
-                                assignedStaff.text = selectedStaff[
-                                    'name']; // Set the selected staff's name to the text field
-                                // Use the selected staff's ID for further processing (e.g., sending to backend)
-                                int staffId = selectedStaff['id'];
-                                print('Selected Staff ID: $staffId');
-                              }
-                            },
-
-                            // formKey: formKeydrpdwn,
-                            showDropdownIcon: true,
-                            // validator: (name) => name!.isEmpty
-                            //     ? 'Please select your location'
-                            //     : null,
-                            isEditable: false,
-                            onChanged: (value) {
-                              // Update locationController when location is selected
-                              filterWardController.text = value;
-                              print("assignedstaff: ${assignedStaff.text}");
-                            },
+                          child: Container(
+                            constraints: BoxConstraints(
+                                maxHeight: 40
+                                    .h), // Set maximum height for the dropdown
+                            child: DropdownButtonFormField<StaffMember>(
+                              value: selectedStaff,
+                              items: staffList.map((staff) {
+                                return DropdownMenuItem<StaffMember>(
+                                  value: staff,
+                                  child: SizedBox(
+                                    height: 40
+                                        .h, // Match the height with the maximum height
+                                    child: Center(child: Text(staff.name)),
+                                  ),
+                                );
+                              }).toList(),
+                              onChanged: (StaffMember? newValue) {
+                                setState(() {
+                                  selectedStaff = newValue;
+                                });
+                              },
+                              decoration: InputDecoration(
+                                fillColor: Colors.white,
+                                filled: true,
+                                contentPadding: EdgeInsets.all(12.h),
+                                hintText: "Assigned Staff...",
+                                hintStyle: kBodyText,
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color:
+                                        const Color.fromRGBO(82, 183, 136, 2),
+                                    width: 1.5.w,
+                                  ),
+                                  borderRadius: BorderRadius.circular(12.r),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color:
+                                        const Color.fromRGBO(82, 183, 136, 2),
+                                    width: 1.5.w,
+                                  ),
+                                  borderRadius: BorderRadius.circular(12.r),
+                                ),
+                              ),
+                            ),
                           ),
                         ),
 
@@ -604,7 +732,9 @@ class _AdminAddDustbinState extends State<AdminAddDustbin> {
                             if (formKey.currentState!.validate()) {
                               _dustbinAdd();
                               assignedStaff.clear();
+
                               locationController.clear();
+                              selectedStaff = null;
                               wardnoController.clear();
                             }
                           },
@@ -636,4 +766,11 @@ class Validator {
     final RegExp phoneRegex = RegExp(r'^[0-9]{10}$');
     return phoneRegex.hasMatch(phoneNumber);
   }
+}
+
+class StaffMember {
+  final int id;
+  final String name;
+
+  StaffMember({required this.id, required this.name});
 }
