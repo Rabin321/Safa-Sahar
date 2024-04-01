@@ -1,5 +1,7 @@
 import 'package:finalyear/presentation/screens/admin_main/adminside/addDustbin/addDustbin.dart';
 import 'package:finalyear/presentation/screens/admin_main/adminside/adminNotification/adminNotification.dart';
+import 'package:finalyear/presentation/screens/admin_main/adminside/adminProfile.dart';
+import 'package:finalyear/presentation/screens/admin_main/adminside/paymentReport/payment_report.dart';
 import 'package:finalyear/presentation/screens/hamdrawerpages/mapview/mapviewpage.dart';
 import 'package:finalyear/presentation/screens/login/signin_page.dart';
 import 'package:finalyear/presentation/screens/profile/my_profile.dart';
@@ -66,7 +68,7 @@ class _MyHomePageState extends State<AdminAppBarWithDrawer> {
                     onTap: () => Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const UserProfile()),
+                          builder: (context) => const AdminProfile()),
                     ),
                     child: CircleAvatar(
                       backgroundColor: Colors.transparent,
@@ -131,6 +133,25 @@ class _MyHomePageState extends State<AdminAppBarWithDrawer> {
               ),
               ListTile(
                 textColor: Colors.white,
+                leading: const Icon(Icons.people),
+                title: Text(
+                  'Payment Report',
+                  style: listTextStyle,
+                ),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const PaymentReport()),
+                  );
+                  // Handle Home Click
+                },
+              ),
+              const Divider(
+                color: Colors.green,
+              ),
+              ListTile(
+                textColor: Colors.white,
                 leading: const Icon(Icons.person),
                 title: Text(
                   'Profile',
@@ -140,7 +161,7 @@ class _MyHomePageState extends State<AdminAppBarWithDrawer> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const UserProfile()),
+                        builder: (context) => const AdminProfile()),
                   );
                   // Handle Home Click
                 },

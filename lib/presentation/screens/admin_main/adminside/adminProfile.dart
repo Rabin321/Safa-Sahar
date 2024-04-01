@@ -1,24 +1,22 @@
 import 'dart:convert';
 
 import 'package:finalyear/components/constants.dart';
+import 'package:finalyear/presentation/screens/admin_main/adminHomepage/adminHomepage.dart';
 import 'package:finalyear/presentation/screens/user_main/userHomepage/userHomepage.dart';
-import 'package:finalyear/widgets/appBarWithDrawer/admin_appbarWithDrawer.dart';
 import 'package:finalyear/widgets/appBarWithDrawer/user_appbarWithDrawer.dart';
 import 'package:finalyear/widgets/customBackButton.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class UserProfile extends StatefulWidget {
-  const UserProfile({super.key});
+class AdminProfile extends StatefulWidget {
+  const AdminProfile({super.key});
 
   @override
-  State<UserProfile> createState() => _UserProfileState();
+  State<AdminProfile> createState() => _AdminProfileState();
 }
 
-class _UserProfileState extends State<UserProfile> {
+class _AdminProfileState extends State<AdminProfile> {
   String name = '';
   String email = '';
   String phone = '';
@@ -43,7 +41,7 @@ class _UserProfileState extends State<UserProfile> {
   @override
   Widget build(BuildContext context) {
     return UserAppBarWithDrawer(
-      title: 'USER',
+      title: 'ADMIN',
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 6.h),
@@ -56,7 +54,7 @@ class _UserProfileState extends State<UserProfile> {
                     onPressed: () {
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) {
-                        return const UserHomePage();
+                        return const AdminHomePage();
                       }));
                     },
                   )

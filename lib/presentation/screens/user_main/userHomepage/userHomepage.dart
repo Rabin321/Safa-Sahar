@@ -4,6 +4,7 @@ import 'package:finalyear/presentation/screens/admin_main/adminside/adminNotific
 import 'package:finalyear/presentation/screens/admin_main/adminside/admindashboard/ui/admindashboard.dart';
 import 'package:finalyear/presentation/screens/profile/my_profile.dart';
 import 'package:finalyear/presentation/screens/user_main/payment/payment_screen.dart';
+import 'package:finalyear/presentation/screens/user_main/user_awarness/user_awareness.dart';
 import 'package:finalyear/presentation/screens/users/userMainPage.dart';
 import 'package:finalyear/presentation/screens/users/userReport.dart';
 import 'package:flutter/material.dart';
@@ -25,10 +26,11 @@ class _UserHomePageState extends State<UserHomePage> {
 
   //different pages to navigate
   final List<Widget> _children = [
-    const UserMainPage(),
+    const UserAwareness(),
     const UserReportPage(),
     const PaymentScreen(),
-    const UserProfile(),
+    // const UserProfile(),
+    const UserMainPage(),
   ];
 
   @override
@@ -73,10 +75,10 @@ class _UserHomePageState extends State<UserHomePage> {
           ),
           BottomNavigationBarItem(
             icon: Icon(
-              Icons.person,
+              Icons.schedule,
               size: 30,
             ),
-            label: "People",
+            label: "Schedule",
           ),
         ]);
   }

@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
               localizationsDelegates: const [
                 KhaltiLocalizations.delegate,
               ],
-              title: 'Flutter Sign In Sign Up ',
+              title: 'Safa Sahar',
               theme: ThemeData(
                 scaffoldBackgroundColor: const Color.fromRGBO(216, 243, 220, 2),
                 primarySwatch: Colors.blue,

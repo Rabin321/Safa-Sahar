@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:finalyear/components/constants.dart';
 import 'package:finalyear/googlemapapi/googlemap.dart';
+import 'package:finalyear/presentation/screens/admin_main/adminHomepage/adminHomepage.dart';
 import 'package:finalyear/presentation/screens/admin_main/adminside/addDustbin/addDustbin.dart';
 import 'package:finalyear/presentation/screens/admin_main/adminside/addstaff/ui/addstaff.dart';
 import 'package:finalyear/presentation/screens/admin_main/adminside/adminNotification/adminNotification.dart';
@@ -130,8 +131,16 @@ class _MapViewPageState extends State<MapViewPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const Row(
-                children: [CustomBackIcon()],
+               Row(
+                children: [CustomBackIcon(
+                   onPressed: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
+                        return AdminHomePage();
+                      }));
+                    },
+
+                )],
               ),
               Align(
                 alignment: Alignment.center,

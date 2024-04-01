@@ -29,3 +29,5 @@ const deleteWastepickupTime = '/delete-time';
 // merged
 
 const createReport = '/create-report';
+const paymentCreate = '/payment';
+const getPaymentDetails = '/get-payment-details';
