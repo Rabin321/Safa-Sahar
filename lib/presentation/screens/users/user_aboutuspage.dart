@@ -1,23 +1,13 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'dart:convert';
 
 import 'package:finalyear/components/constants.dart';
-import 'package:finalyear/domain/addStaff/addStaffModel/addStaffModel.dart';
-import 'package:finalyear/domain/addStaff/addStaffRepository/addStaffRepository.dart';
-import 'package:finalyear/presentation/screens/admin_main/adminside/addstaff/ui/staffform.dart';
-import 'package:finalyear/presentation/screens/signup/widgets/methods.dart';
 import 'package:finalyear/presentation/screens/user_main/userHomepage/userHomepage.dart';
-import 'package:finalyear/utils/urls.dart';
-import 'package:finalyear/widgets/appBarWithDrawer/admin_appbarWithDrawer.dart';
 import 'package:finalyear/widgets/appBarWithDrawer/user_appbarWithDrawer.dart';
-import 'package:finalyear/widgets/my_text_field.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:motion_toast/motion_toast.dart';
 
-import 'package:http/http.dart' as http;
 
 class AboutUs extends StatefulWidget {
   const AboutUs({super.key});
@@ -59,6 +49,7 @@ class _AboutUsState extends State<AboutUs> {
 
 //
 
+  @override
   Widget build(BuildContext context) {
     //double screenHeight = MediaQuery.of(context).size.height;
     return WillPopScope(
@@ -72,7 +63,7 @@ class _AboutUsState extends State<AboutUs> {
       child: UserAppBarWithDrawer(
         title: 'USER',
         body: SingleChildScrollView(
-          physics: AlwaysScrollableScrollPhysics(),
+          physics: const AlwaysScrollableScrollPhysics(),
           child: Form(
             key: formKey,
             child: Padding(
@@ -83,11 +74,11 @@ class _AboutUsState extends State<AboutUs> {
                   Row(
                     children: [
                       IconButton(
-                        icon: Icon(Icons.arrow_back, color: Colors.black),
+                        icon: const Icon(Icons.arrow_back, color: Colors.black),
                         onPressed: () {
                           Navigator.pushReplacement(context,
                               MaterialPageRoute(builder: (context) {
-                            return UserHomePage();
+                            return const UserHomePage();
                           }));
                         },
                       )
@@ -107,7 +98,7 @@ class _AboutUsState extends State<AboutUs> {
                       ),
                     ),
                   ),
-                  Text(
+                  const Text(
                       """ Welcome to SafaSahar Waste Management System, where innovation meets sustainability. We're dedicated to transforming waste management practices for cleaner communities and a healthier planet.
               
 Through advanced technology and community engagement, we streamline waste collection, sorting, and processing to minimize landfill waste and maximize resource recovery.

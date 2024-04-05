@@ -17,7 +17,7 @@ void main() async {
 class MyApp extends StatelessWidget {
   final String? authToken; // Declare authToken as a field
 
-  MyApp({Key? key, this.authToken}) : super(key: key); // Update constructor
+  const MyApp({super.key, this.authToken}); // Update constructor
   @override
   Widget build(BuildContext context) {
     return KhaltiScope(

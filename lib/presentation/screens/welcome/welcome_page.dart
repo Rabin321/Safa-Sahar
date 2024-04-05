@@ -89,7 +89,7 @@ class WelcomePage extends StatelessWidget {
                             Navigator.push(
                                 context,
                                 CupertinoPageRoute(
-                                  builder: (context) => SignInPage(),
+                                  builder: (context) => const SignInPage(),
                                 ));
                           },
                         ),

@@ -1,12 +1,8 @@
-import 'package:finalyear/presentation/screens/admin_main/adminside/addDustbin/addDustbin.dart';
-import 'package:finalyear/presentation/screens/admin_main/adminside/adminNotification/adminNotification.dart';
 import 'package:finalyear/presentation/screens/admin_main/adminside/adminProfile.dart';
 import 'package:finalyear/presentation/screens/admin_main/adminside/paymentReport/payment_report.dart';
 import 'package:finalyear/presentation/screens/hamdrawerpages/mapview/mapviewpage.dart';
 import 'package:finalyear/presentation/screens/login/signin_page.dart';
-import 'package:finalyear/presentation/screens/profile/my_profile.dart';
 import 'package:finalyear/presentation/screens/users/getAllUsers.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -37,7 +33,7 @@ class _MyHomePageState extends State<AdminAppBarWithDrawer> {
         key: scaffoldKey,
         appBar: AppBar(
           iconTheme: const IconThemeData(
-            color: const Color.fromRGBO(138, 201, 38, 1),
+            color: Color.fromRGBO(138, 201, 38, 1),
           ),
           backgroundColor: const Color.fromRGBO(0, 62, 31, 0.9),
           title: Row(
@@ -101,7 +97,7 @@ class _MyHomePageState extends State<AdminAppBarWithDrawer> {
                   title: Text(
                     'SAFA SAHAR',
                     style: TextStyle(
-                        color: Color.fromRGBO(0, 62, 31, 2),
+                        color: const Color.fromRGBO(0, 62, 31, 2),
                         fontSize: 16.sp,
                         fontWeight: FontWeight.bold),
                   ),
@@ -205,7 +201,7 @@ class _MyHomePageState extends State<AdminAppBarWithDrawer> {
                   // Navigate to the login screen
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (context) => SignInPage()),
+                    MaterialPageRoute(builder: (context) => const SignInPage()),
                   );
                 },
               ),

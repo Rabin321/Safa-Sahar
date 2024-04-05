@@ -5,9 +5,7 @@ import 'package:finalyear/presentation/screens/admin_main/adminHomepage/adminHom
 import 'package:finalyear/utils/urls.dart';
 import 'package:finalyear/widgets/appBarWithDrawer/admin_appbarWithDrawer.dart';
 import 'package:finalyear/widgets/customBackButton.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:http/http.dart' as http;
@@ -54,7 +52,7 @@ class _PaymentReportState extends State<PaymentReport> {
                     onPressed: () {
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) {
-                        return AdminHomePage();
+                        return const AdminHomePage();
                       }));
                     },
                   )
@@ -71,12 +69,12 @@ class _PaymentReportState extends State<PaymentReport> {
                   ),
                 ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               FutureBuilder<List<dynamic>>(
                 future: _futurePaymentDetails,
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return CircularProgressIndicator();
+                    return const CircularProgressIndicator();
                   } else if (snapshot.hasError) {
                     return Text('Error: ${snapshot.error}');
                   } else {
@@ -99,7 +97,7 @@ Widget _buildDetailsBox(List<dynamic>? payementDetails) {
   }
 
   return Container(
-    padding: EdgeInsets.all(16),
+    padding: const EdgeInsets.all(16),
     decoration: BoxDecoration(
       color: const Color.fromRGBO(82, 183, 136, 0.5),
       borderRadius: BorderRadius.circular(10),

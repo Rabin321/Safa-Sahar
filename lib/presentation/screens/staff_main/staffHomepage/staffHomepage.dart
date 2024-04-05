@@ -1,7 +1,7 @@
-import 'package:finalyear/presentation/screens/admin_main/adminside/addDustbin/addDustbin.dart';
-import 'package:finalyear/presentation/screens/admin_main/adminside/addstaff/ui/addstaff.dart';
-import 'package:finalyear/presentation/screens/admin_main/adminside/adminNotification/adminNotification.dart';
+import 'package:finalyear/presentation/screens/staff_main/get_users_acc_ward.dart';
 import 'package:finalyear/presentation/screens/staff_main/staffHomepage/staff_dashboard.dart';
+import 'package:finalyear/presentation/screens/staff_main/staff_bulk_req/staff_bulk_req.dart';
+import 'package:finalyear/presentation/screens/staff_main/staff_profile/staff_profile.dart';
 import 'package:flutter/material.dart';
 
 class StaffHomePage extends StatefulWidget {
@@ -22,10 +22,10 @@ class _StaffHomePageState extends State<StaffHomePage> {
 
   List<Widget> _children(BuildContext context) {
     return [
-      StaffDashboard(wardno: widget.wardno),
-      const AdminAddDustbin(),
-      const AdminAddStaff(),
-      const AdminNotificationPage(),
+      const StaffDashboard(),
+      const StaffBulkRequest(),
+      const StaffGetUsers(),
+      const StaffProfile(),
     ];
   }
 
@@ -57,24 +57,24 @@ class _StaffHomePageState extends State<StaffHomePage> {
           ),
           BottomNavigationBarItem(
             icon: Icon(
-              Icons.delete_outline,
+              Icons.send,
               size: 30,
             ),
-            label: "Dustbin",
+            label: "Bulk Request",
           ),
           BottomNavigationBarItem(
             icon: Icon(
               Icons.people,
               size: 30,
             ),
-            label: "People",
+            label: "Registered Users",
           ),
           BottomNavigationBarItem(
             icon: Icon(
-              Icons.notifications,
+              Icons.person,
               size: 30,
             ),
-            label: "Notifications",
+            label: "Profile",
           ),
         ]);
   }

@@ -1,8 +1,6 @@
-import 'dart:convert';
 
 import 'package:finalyear/components/constants.dart';
 import 'package:finalyear/presentation/screens/admin_main/adminHomepage/adminHomepage.dart';
-import 'package:finalyear/presentation/screens/user_main/userHomepage/userHomepage.dart';
 import 'package:finalyear/widgets/appBarWithDrawer/user_appbarWithDrawer.dart';
 import 'package:finalyear/widgets/customBackButton.dart';
 import 'package:flutter/material.dart';
@@ -81,11 +79,11 @@ class _AdminProfileState extends State<AdminProfile> {
               ),
               Padding(
                 padding: EdgeInsets.only(top: 20.h),
-                child: Row(
+                child: const Row(
                   children: [Text("Basic Details")],
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                   height: 10), // Add space between "Basic Details" and the box
               _buildDetailsBox(),
             ],
@@ -98,7 +96,7 @@ class _AdminProfileState extends State<AdminProfile> {
   Widget _buildDetailsBox() {
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.all(10),
+      padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
         color: const Color.fromRGBO(82, 183, 136, 0.5),
         borderRadius: BorderRadius.circular(10),

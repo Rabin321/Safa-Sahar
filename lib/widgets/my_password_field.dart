@@ -64,14 +64,14 @@ import '../components/constants.dart';
 
 class MyPasswordField extends StatelessWidget {
   const MyPasswordField({
-    Key? key,
+    super.key,
     required this.isPasswordVisible,
     required this.onTap,
     this.validator,
     required this.formKey,
     required this.controller,
     String? errorText,
-  }) : super(key: key);
+  });
 
   final TextEditingController controller;
   final bool isPasswordVisible;

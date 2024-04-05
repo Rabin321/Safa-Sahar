@@ -18,12 +18,12 @@ Widget buildActiveUsersWidget(String activeUsersText, int totalUsers) {
           children: [
             Text(activeUsersText,
                 style: kBodyText.copyWith(
-                  color: Color(0xFF003E1F),
+                  color: const Color(0xFF003E1F),
                   fontWeight: FontWeight.w500,
                 )),
             Text("TOTAL: $totalUsers",
                 style: kBodyText.copyWith(
-                  color: Color(0xFF003E1F),
+                  color: const Color(0xFF003E1F),
                   fontWeight: FontWeight.w500,
                 ))
           ],

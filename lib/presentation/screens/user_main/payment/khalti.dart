@@ -109,7 +109,6 @@
 import 'dart:convert';
 
 import 'package:finalyear/utils/urls.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:http/http.dart' as http;
@@ -120,8 +119,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class KhaltiPaymentPage extends StatefulWidget {
   final String amountDescription;
 
-  const KhaltiPaymentPage({Key? key, required this.amountDescription})
-      : super(key: key);
+  const KhaltiPaymentPage({super.key, required this.amountDescription});
 
   @override
   State<KhaltiPaymentPage> createState() => _KhaltiPaymentPageState();
@@ -186,7 +184,7 @@ class _KhaltiPaymentPageState extends State<KhaltiPaymentPage> {
                   side: const BorderSide(color: Colors.black)),
               height: 45.h,
               color: const Color(0xFF56328c),
-              child: Text(
+              child: const Text(
                 'Pay With Khalti',
                 style: TextStyle(color: Colors.white, fontSize: 20),
               ),

@@ -1,6 +1,5 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'dart:convert';
 
 import 'package:finalyear/components/constants.dart';
 import 'package:finalyear/presentation/screens/admin_main/adminside/addstaff/ui/staffform.dart';
@@ -8,12 +7,9 @@ import 'package:finalyear/presentation/screens/user_main/payment/khalti.dart';
 import 'package:finalyear/presentation/screens/user_main/userHomepage/userHomepage.dart';
 
 import 'package:finalyear/widgets/appBarWithDrawer/user_appbarWithDrawer.dart';
-import 'package:finalyear/widgets/customBackButton.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:khalti_flutter/khalti_flutter.dart';
 
 class PaymentScreen extends StatefulWidget {
   const PaymentScreen({super.key});
@@ -47,6 +43,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
     super.dispose();
   }
 
+  @override
   Widget build(BuildContext context) {
     //double screenHeight = MediaQuery.of(context).size.height;
     return WillPopScope(
@@ -60,7 +57,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
       child: UserAppBarWithDrawer(
         title: 'USER',
         body: SingleChildScrollView(
-          physics: AlwaysScrollableScrollPhysics(),
+          physics: const AlwaysScrollableScrollPhysics(),
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 15.h),
             child: Column(
@@ -69,18 +66,18 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 Row(
                   children: [
                     IconButton(
-                      icon: Icon(Icons.arrow_back, color: Colors.black),
+                      icon: const Icon(Icons.arrow_back, color: Colors.black),
                       onPressed: () {
                         Navigator.pushReplacement(context,
                             MaterialPageRoute(builder: (context) {
-                          return UserHomePage();
+                          return const UserHomePage();
                         }));
                       },
                     )
                   ],
                 ),
                 Padding(
-                  padding: EdgeInsets.only(top: 10.0, bottom: 16.0),
+                  padding: const EdgeInsets.only(top: 10.0, bottom: 16.0),
                   child: Align(
                     alignment: Alignment.center,
                     child: Text(
@@ -129,10 +126,10 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   ),
                 ),
                 // Payment method selection
-                Column(
+                const Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Row(
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Padding(
@@ -175,7 +172,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                             );
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
+                              const SnackBar(
                                 content: Text(
                                     'Please select a package before proceeding.'),
                               ),

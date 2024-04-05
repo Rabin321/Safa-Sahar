@@ -1,20 +1,20 @@
 
 import 'package:finalyear/components/constants.dart';
-import 'package:finalyear/presentation/screens/user_main/userHomepage/userHomepage.dart';
+import 'package:finalyear/presentation/screens/staff_main/staffHomepage/staffHomepage.dart';
 import 'package:finalyear/widgets/appBarWithDrawer/user_appbarWithDrawer.dart';
 import 'package:finalyear/widgets/customBackButton.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class UserProfile extends StatefulWidget {
-  const UserProfile({super.key});
+class StaffProfile extends StatefulWidget {
+  const StaffProfile({super.key});
 
   @override
-  State<UserProfile> createState() => _UserProfileState();
+  State<StaffProfile> createState() => _StaffProfileState();
 }
 
-class _UserProfileState extends State<UserProfile> {
+class _StaffProfileState extends State<StaffProfile> {
   String name = '';
   String email = '';
   String phone = '';
@@ -39,7 +39,7 @@ class _UserProfileState extends State<UserProfile> {
   @override
   Widget build(BuildContext context) {
     return UserAppBarWithDrawer(
-      title: 'USER',
+      title: 'STAFF',
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 6.h),
@@ -52,7 +52,7 @@ class _UserProfileState extends State<UserProfile> {
                     onPressed: () {
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) {
-                        return const UserHomePage();
+                        return const StaffHomePage();
                       }));
                     },
                   )

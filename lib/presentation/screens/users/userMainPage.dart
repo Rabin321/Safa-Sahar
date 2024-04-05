@@ -3,20 +3,13 @@
 import 'dart:convert';
 
 import 'package:finalyear/components/constants.dart';
-import 'package:finalyear/domain/addStaff/addStaffModel/addStaffModel.dart';
-import 'package:finalyear/domain/addStaff/addStaffRepository/addStaffRepository.dart';
-import 'package:finalyear/presentation/screens/admin_main/adminside/addstaff/ui/staffform.dart';
 import 'package:finalyear/presentation/screens/signup/widgets/methods.dart';
 import 'package:finalyear/utils/urls.dart';
-import 'package:finalyear/widgets/appBarWithDrawer/admin_appbarWithDrawer.dart';
 import 'package:finalyear/widgets/appBarWithDrawer/user_appbarWithDrawer.dart';
 import 'package:finalyear/widgets/my_text_field.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:motion_toast/motion_toast.dart';
 
 import 'package:http/http.dart' as http;
 
@@ -64,31 +57,31 @@ class _UserMainPageState extends State<UserMainPage> {
       pickUpTimeListAdd.clear(); //yo herna parchha
 
       final response = await http
-          .get(Uri.parse(baseUrl + getWastepickupTimeByWard + '?wardno=$ward'));
+          .get(Uri.parse('$baseUrl$getWastepickupTimeByWard?wardno=$ward'));
       if (response.statusCode == 200) {
         print("pickuptime res");
         final data = jsonDecode(response.body);
         // Extract staff members' names, locations, and emails
         final List<dynamic> pickTimeList = data['data'];
 
-        pickTimeList.forEach((pickUpTime) {
+        for (var pickUpTime in pickTimeList) {
           final int id = pickUpTime['id'];
-          final String pickup_time = pickUpTime['pickup_time'];
+          final String pickupTime = pickUpTime['pickup_time'];
           final String? location = pickUpTime['location'];
           final String? street = pickUpTime['street'];
           final String? message = pickUpTime['message'];
 
           print(
-              "pickup_time: $pickup_time, location: $location, street: $street, message: $message");
+              "pickup_time: $pickupTime, location: $location, street: $street, message: $message");
           // Add staff details to the staff list
           pickUpTimeListAdd.add({
             'id': id.toString(),
-            'pickup_time': pickup_time,
+            'pickup_time': pickupTime,
             'location': location!,
             'street': street!,
             'message': message!,
           });
-        });
+        }
         setState(() {}); // Notify that the state has changed
       } else {
         // ignore: use_build_context_synchronously
@@ -122,6 +115,7 @@ class _UserMainPageState extends State<UserMainPage> {
     }
   }
 
+  @override
   Widget build(BuildContext context) {
     //double screenHeight = MediaQuery.of(context).size.height;
     return WillPopScope(
@@ -132,7 +126,7 @@ class _UserMainPageState extends State<UserMainPage> {
           key: _refreshIndicatorKey,
           onRefresh: _refreshStaffMembers,
           child: SingleChildScrollView(
-            physics: AlwaysScrollableScrollPhysics(),
+            physics: const AlwaysScrollableScrollPhysics(),
             child: Form(
               key: formKey,
               child: Column(
@@ -198,7 +192,7 @@ class _UserMainPageState extends State<UserMainPage> {
                                       fetchTimeByWard(
                                           int.parse(filterWardController.text));
                                     },
-                                    child: Text("Filter"),
+                                    child: const Text("Filter"),
                                   ),
                                 ),
                               ],
@@ -231,7 +225,7 @@ class _UserMainPageState extends State<UserMainPage> {
                                 children: [
                                   Row(
                                     children: [
-                                      Icon(Icons.access_time), // Clock Icon
+                                      const Icon(Icons.access_time), // Clock Icon
                                       SizedBox(width: 10.w),
                                       Text(
                                         pickUpTime['pickup_time']!,
@@ -242,13 +236,13 @@ class _UserMainPageState extends State<UserMainPage> {
                                   SizedBox(height: 10.h),
                                   Row(
                                     children: [
-                                      Icon(Icons.location_on),
+                                      const Icon(Icons.location_on),
                                       SizedBox(width: 10.w),
                                       Text(
                                         pickUpTime['street']!,
                                         style: TextStyle(fontSize: 16.sp),
                                       ),
-                                      Text(","),
+                                      const Text(","),
                                       SizedBox(width: 8.w),
                                       Text(
                                         pickUpTime['location']!,
@@ -259,7 +253,7 @@ class _UserMainPageState extends State<UserMainPage> {
                                   SizedBox(height: 10.h),
                                   Row(
                                     children: [
-                                      Icon(Icons.message),
+                                      const Icon(Icons.message),
                                       SizedBox(width: 10.w),
                                       Flexible(
                                         child: Text(

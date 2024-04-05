@@ -1,8 +1,3 @@
-import 'package:finalyear/presentation/screens/admin_main/adminside/addDustbin/addDustbin.dart';
-import 'package:finalyear/presentation/screens/admin_main/adminside/addstaff/ui/addstaff.dart';
-import 'package:finalyear/presentation/screens/admin_main/adminside/adminNotification/adminNotification.dart';
-import 'package:finalyear/presentation/screens/admin_main/adminside/admindashboard/ui/admindashboard.dart';
-import 'package:finalyear/presentation/screens/profile/my_profile.dart';
 import 'package:finalyear/presentation/screens/user_main/payment/payment_screen.dart';
 import 'package:finalyear/presentation/screens/user_main/user_awarness/user_awareness.dart';
 import 'package:finalyear/presentation/screens/users/userMainPage.dart';

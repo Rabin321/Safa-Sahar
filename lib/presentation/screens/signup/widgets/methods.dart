@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 
 import 'package:http/http.dart' as http;
 
-void wardno(BuildContext context, TextEditingController _wardnoController) {
+void wardno(BuildContext context, TextEditingController wardnoController) {
   showDialog(
     context: context,
     builder: (BuildContext context) {
@@ -22,7 +22,7 @@ void wardno(BuildContext context, TextEditingController _wardnoController) {
                 title: Text('$wardNo'),
                 onTap: () {
                   // Set the selected ward number to the text field's controller
-                  _wardnoController.text = ' $wardNo';
+                  wardnoController.text = ' $wardNo';
                   // Navigator.of(context).pop(); // Close the dialog
                   Navigator.of(context, rootNavigator: true).pop();
                 },

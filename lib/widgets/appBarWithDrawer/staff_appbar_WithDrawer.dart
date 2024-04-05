@@ -1,26 +1,26 @@
+import 'package:finalyear/presentation/screens/admin_main/adminside/adminProfile.dart';
 import 'package:finalyear/presentation/screens/login/signin_page.dart';
-import 'package:finalyear/presentation/screens/profile/my_profile.dart';
-import 'package:finalyear/presentation/screens/user_main/payment/payment_screen.dart';
-import 'package:finalyear/presentation/screens/users/userReport.dart';
-import 'package:finalyear/presentation/screens/users/user_aboutuspage.dart';
+import 'package:finalyear/presentation/screens/staff_main/get_users_acc_ward.dart';
+import 'package:finalyear/presentation/screens/staff_main/staff_get_user_report.dart/staff_get_user_report.dart';
+import 'package:finalyear/presentation/screens/staff_main/staff_profile/staff_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class UserAppBarWithDrawer extends StatefulWidget {
+class StaffAppBarWithDrawer extends StatefulWidget {
   final String title;
   final Widget body;
-  const UserAppBarWithDrawer({
+  const StaffAppBarWithDrawer({
     super.key,
     required this.title,
     required this.body,
   });
 
   @override
-  State<UserAppBarWithDrawer> createState() => _MyHomePageState();
+  State<StaffAppBarWithDrawer> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<UserAppBarWithDrawer> {
+class _MyHomePageState extends State<StaffAppBarWithDrawer> {
   final listTextStyle = const TextStyle(
     color: Colors.black,
     fontWeight: FontWeight.w500,
@@ -64,7 +64,7 @@ class _MyHomePageState extends State<UserAppBarWithDrawer> {
                     onTap: () => Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const UserProfile()),
+                          builder: (context) => const AdminProfile()),
                     ),
                     child: CircleAvatar(
                       backgroundColor: Colors.transparent,
@@ -110,48 +110,56 @@ class _MyHomePageState extends State<UserAppBarWithDrawer> {
               ),
               ListTile(
                 textColor: Colors.white,
-                leading: const Icon(Icons.payment),
+                leading: const Icon(Icons.people),
                 title: Text(
-                  'Payment',
-                  style: listTextStyle,
-                ),
-                onTap: () async {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => const PaymentScreen()),
-                  );
-                },
-              ),
-              const Divider(
-                color: Colors.green,
-              ),
-              ListTile(
-                textColor: Colors.white,
-                leading: const Icon(Icons.file_copy_rounded),
-                title: Text(
-                  'Report',
-                  style: listTextStyle,
-                ),
-                onTap: () async {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => const UserReportPage()),
-                  );
-                },
-              ),
-              const Divider(
-                color: Colors.green,
-              ),
-              ListTile(
-                textColor: Colors.white,
-                leading: const Icon(Icons.info),
-                title: Text(
-                  'About Us',
+                  'Registered Users',
                   style: listTextStyle,
                 ),
                 onTap: () {
-                  Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: ((context) => const AboutUs())));
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const StaffGetUsers()),
+                  );
+                  // Handle Home Click
+                },
+              ),
+              const Divider(
+                color: Colors.green,
+              ),
+              ListTile(
+                textColor: Colors.white,
+                leading: const Icon(Icons.report),
+                title: Text(
+                  "User's Report",
+                  style: listTextStyle,
+                ),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const StaffGetUserReport()),
+                  );
+                  // Handle Home Click
+                },
+              ),
+              const Divider(
+                color: Colors.green,
+              ),
+              ListTile(
+                textColor: Colors.white,
+                leading: const Icon(Icons.person),
+                title: Text(
+                  'Profile',
+                  style: listTextStyle,
+                ),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const StaffProfile()),
+                  );
+                  // Handle Home Click
                 },
               ),
               const Divider(
@@ -161,10 +169,11 @@ class _MyHomePageState extends State<UserAppBarWithDrawer> {
                 textColor: Colors.white,
                 leading: const Icon(Icons.logout),
                 title: Text(
-                  'Log out',
+                  'Logout',
                   style: listTextStyle,
                 ),
                 onTap: () async {
+                  // Clear user session (remove token from shared_preferences)
                   SharedPreferences prefs =
                       await SharedPreferences.getInstance();
                   await prefs.remove('token');

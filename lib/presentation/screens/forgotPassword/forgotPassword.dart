@@ -1,5 +1,3 @@
-import 'package:dio/dio.dart';
-import 'package:dio/dio.dart';
 import 'package:finalyear/components/constants.dart';
 import 'package:finalyear/domain/signin/signinApi/signinRepository/login_repository.dart';
 import 'package:finalyear/presentation/screens/login/signin_page.dart';
@@ -7,12 +5,11 @@ import 'package:finalyear/widgets/inputField.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:http/http.dart' as http;
 
 import 'package:motion_toast/motion_toast.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
-  const ForgotPasswordScreen({Key? key}) : super(key: key);
+  const ForgotPasswordScreen({super.key});
 
   @override
   State<ForgotPasswordScreen> createState() => _ForgotPasswordScreenState();
@@ -41,7 +38,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
       if (isForgot) {
         Navigator.pushReplacement(context,
             MaterialPageRoute(builder: (context) {
-          return SignInPage();
+          return const SignInPage();
         }));
       } else {
         MotionToast.error(
@@ -158,7 +155,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 SizedBox(
                   height: 20.h,
                 ),
-                Text("Did you forgot your password?", style: subhead),
+                const Text("Did you forgot your password?", style: subhead),
                 SizedBox(
                   height: 20.h,
                 ),

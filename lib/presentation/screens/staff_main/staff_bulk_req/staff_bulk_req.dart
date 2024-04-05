@@ -20,14 +20,14 @@ import 'package:http/http.dart' as http;
 
 import 'package:shared_preferences/shared_preferences.dart';
 
-class UserReportPage extends StatefulWidget {
-  const UserReportPage({super.key});
+class StaffBulkRequest extends StatefulWidget {
+  const StaffBulkRequest({super.key});
 
   @override
-  State<UserReportPage> createState() => _UserReportPageState();
+  State<StaffBulkRequest> createState() => _StaffBulkRequestState();
 }
 
-class _UserReportPageState extends State<UserReportPage> {
+class _StaffBulkRequestState extends State<StaffBulkRequest> {
   TextEditingController locationController = TextEditingController();
   TextEditingController filterLocationController = TextEditingController();
 
@@ -107,8 +107,6 @@ class _UserReportPageState extends State<UserReportPage> {
 
   Future<void> submitReport() async {
     if (formKey.currentState!.validate()) {
-      // Form is validated, proceed with report submission
-
       if (filterWardController.text.isNotEmpty &&
           filterLocationController.text.isNotEmpty &&
           reportdetailsController.text.isNotEmpty) {
@@ -178,7 +176,7 @@ class _UserReportPageState extends State<UserReportPage> {
         return true; // Return true to allow the back navigation
       },
       child: UserAppBarWithDrawer(
-        title: 'USER',
+        title: 'STAFF',
         body: RefreshIndicator(
           key: _refreshIndicatorKey,
           onRefresh: () async {},
@@ -189,25 +187,25 @@ class _UserReportPageState extends State<UserReportPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Row(
-                    children: [
-                      IconButton(
-                        icon: const Icon(Icons.arrow_back, color: Colors.black),
-                        onPressed: () {
-                          Navigator.pushReplacement(context,
-                              MaterialPageRoute(builder: (context) {
-                            return const UserHomePage();
-                          }));
-                        },
-                      )
-                    ],
-                  ),
+                  // Row(
+                  //   children: [
+                  //     IconButton(
+                  //       icon: Icon(Icons.arrow_back, color: Colors.black),
+                  //       onPressed: () {
+                  //         Navigator.pushReplacement(context,
+                  //             MaterialPageRoute(builder: (context) {
+                  //           return StaffHomePage();
+                  //         }));
+                  //       },
+                  //     )
+                  //   ],
+                  // ),
                   Padding(
                     padding: EdgeInsets.only(top: 10.h, bottom: 16.h),
                     child: Align(
                       alignment: Alignment.center,
                       child: Text(
-                        "Report",
+                        "Staff Bulk Request",
                         style: kBodyText2.copyWith(
                           color: const Color(0xFF365307),
                           letterSpacing: 1,
@@ -292,7 +290,7 @@ class _UserReportPageState extends State<UserReportPage> {
                           child: const Row(
                             children: [
                               Text(
-                                "Report Details",
+                                "Request",
                                 style: subhead,
                               ),
                             ],
@@ -416,7 +414,7 @@ class _UserReportPageState extends State<UserReportPage> {
                         ),
 
                         CustomAddButton(
-                            name: "Submit Report",
+                            name: "Make a request",
                             onPressed: () {
                               FocusScope.of(context).unfocus();
                               if (formKey.currentState!.validate()) {

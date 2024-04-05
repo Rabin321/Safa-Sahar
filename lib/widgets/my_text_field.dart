@@ -76,7 +76,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 // }
 class MyTextField extends StatefulWidget {
   const MyTextField({
-    Key? key,
+    super.key,
     required this.hintText,
     required this.inputType,
     this.controller,
@@ -86,7 +86,7 @@ class MyTextField extends StatefulWidget {
     this.onDropdownPressed,
     required this.isEditable,
     required this.onChanged,
-  }) : super(key: key);
+  });
 
   final String hintText;
   final TextInputType inputType;

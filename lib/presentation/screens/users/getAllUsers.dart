@@ -2,13 +2,10 @@ import 'dart:convert';
 
 import 'package:finalyear/components/constants.dart';
 import 'package:finalyear/presentation/screens/admin_main/adminHomepage/adminHomepage.dart';
-import 'package:finalyear/presentation/screens/user_main/userHomepage/userHomepage.dart';
 import 'package:finalyear/utils/urls.dart';
 import 'package:finalyear/widgets/appBarWithDrawer/admin_appbarWithDrawer.dart';
 import 'package:finalyear/widgets/customBackButton.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:http/http.dart' as http;
@@ -71,12 +68,12 @@ class _GetAllUsersState extends State<GetAllUsers> {
                   ),
                 ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               FutureBuilder<List<dynamic>>(
                 future: _futureUsers,
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return CircularProgressIndicator();
+                    return const CircularProgressIndicator();
                   } else if (snapshot.hasError) {
                     return Text('Error: ${snapshot.error}');
                   } else {
@@ -94,7 +91,7 @@ class _GetAllUsersState extends State<GetAllUsers> {
 
 Widget _buildDetailsBox(List<dynamic>? users) {
   return Container(
-    padding: EdgeInsets.all(16),
+    padding: const EdgeInsets.all(16),
     decoration: BoxDecoration(
       color: const Color.fromRGBO(82, 183, 136, 0.5),
       borderRadius: BorderRadius.circular(10),
@@ -107,7 +104,7 @@ Widget _buildDetailsBox(List<dynamic>? users) {
         columnSpacing: 16,
         dataRowColor:
             MaterialStateColor.resolveWith((states) => Colors.green[100]!),
-        columns: [
+        columns: const [
           DataColumn(
             label: Text(
               'Name',
@@ -140,15 +137,15 @@ Widget _buildDetailsBox(List<dynamic>? users) {
         rows: users?.map((user) {
               return DataRow(cells: [
                 DataCell(Text(user['name'] ?? '',
-                    style: TextStyle(color: Colors.black))),
+                    style: const TextStyle(color: Colors.black))),
                 DataCell(Text(user['email'] ?? '',
-                    style: TextStyle(color: Colors.black))),
+                    style: const TextStyle(color: Colors.black))),
                 DataCell(Text(user['role'] ?? '',
-                    style: TextStyle(color: Colors.black))),
+                    style: const TextStyle(color: Colors.black))),
                 DataCell(
                   Text(
                     user['is_Verified'] == 1 ? 'Yes' : 'No',
-                    style: TextStyle(color: Colors.black),
+                    style: const TextStyle(color: Colors.black),
                   ),
                 ),
               ]);

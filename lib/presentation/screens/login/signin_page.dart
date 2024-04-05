@@ -46,20 +46,34 @@ class _SignInPageState extends State<SignInPage> {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
 
     String? token = sharedPreferences.getString('token');
+    String? role = sharedPreferences.getString('role'); // Fetching role
+
     print("Auth login token is $token");
 
     if (token != null && token.isNotEmpty) {
-      _navigateToScreen(true);
+      _navigateToScreen(role); // Pass role to determine navigation
     }
   }
 
-  _navigateToScreen(bool isLogin) {
-    if (isLogin) {
-      Navigator.push(
+  _navigateToScreen(String? role) {
+    if (role == "staff") {
+      Navigator.pushReplacement(
           context,
           MaterialPageRoute(
               builder: (context) =>
-                  const AdminHomePage())); //change garnu parxa
+                  const StaffHomePage())); // Navigate to StaffHomePage
+    } else if (role == "admin") {
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (context) =>
+                  const AdminHomePage())); // Navigate to AdminHomePage
+    } else if (role == "user") {
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (context) =>
+                  const UserHomePage())); // Navigate to UserHomePage
     } else {
       MotionToast.error(
           animationDuration: const Duration(milliseconds: 200),
@@ -104,13 +118,12 @@ class _SignInPageState extends State<SignInPage> {
       bool isLogin = loginResult['success'] == true;
       bool isStaff = loginResult['is_Staff'] == true;
       bool isAdmin = loginResult['is_Admin'] == true;
-      
 
       String? responseRole = loginResult['role'];
       print("signin responseRole is $responseRole");
-              SharedPreferences prefs = await SharedPreferences.getInstance();
+      SharedPreferences prefs = await SharedPreferences.getInstance();
 
-int? wardno = prefs.getInt('wardno');
+      int? wardno = prefs.getInt('wardno');
       print("Signin ward no is $wardno");
 
       if (isLogin) {

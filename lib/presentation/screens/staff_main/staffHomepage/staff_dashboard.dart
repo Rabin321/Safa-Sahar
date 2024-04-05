@@ -1,10 +1,9 @@
 import 'dart:convert';
 
 import 'package:finalyear/components/constants.dart';
-import 'package:finalyear/presentation/screens/admin_main/adminside/admindashboard/widgets/activeuser_widget.dart';
 import 'package:finalyear/presentation/screens/admin_main/adminside/admindashboard/widgets/dustbinnumber.dart';
 import 'package:finalyear/utils/urls.dart';
-import 'package:finalyear/widgets/appBarWithDrawer/admin_appbarWithDrawer.dart';
+import 'package:finalyear/widgets/appBarWithDrawer/staff_appbar_WithDrawer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:responsive_grid_list/responsive_grid_list.dart';
@@ -14,8 +13,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class StaffDashboard extends StatefulWidget {
-  final int? wardno;
-  const StaffDashboard({super.key, this.wardno});
+  // final int? wardno;
+  const StaffDashboard({super.key});
 
   @override
   State<StaffDashboard> createState() => _StaffDashboardState();
@@ -32,13 +31,26 @@ class _StaffDashboardState extends State<StaffDashboard> {
   int? fullDustbin = 0;
   int? halfDustbin = 0;
   int? emptyDustbin = 0;
-  int? damagedDustbin = 0;
+  int? damageDustbin = 0;
+
+  int wardno = 0;
+
+  Future<void> getStaffData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      wardno = prefs.getInt('wardno') ?? 0;
+    });
+  }
+
   @override
   void initState() {
     super.initState();
     fetchDustbinData();
     fetchDustbinStats();
-    fetchUserByWard(widget.wardno!);
+    // fetchUserByWard(widget.wardno!);
+    getStaffData().then((_) {
+      fetchUserByWard(wardno); // Corrected: parse wardno to int
+    });
   }
 
   Future<void> fetchDustbinStats() async {
@@ -51,10 +63,10 @@ class _StaffDashboardState extends State<StaffDashboard> {
           fullDustbin = data['data']['Full Dustbin'];
           halfDustbin = data['data']['Half Dustbin'];
           emptyDustbin = data['data']['Empty Dustbin'];
-          damagedDustbin = data['data']['Damaged Dustbin'];
+          damageDustbin = data['data']['Damaged Dustbin'];
 
           print(
-              "Full Dustbin staff: $fullDustbin, Half Dustbin staf: $halfDustbin, Empty Dustbin: $emptyDustbin, Damaged Dustbin: $damagedDustbin");
+              "Full Dustbin staff: $fullDustbin, Half Dustbin staf: $halfDustbin, Empty Dustbin: $emptyDustbin, Damaged Dustbin: $damageDustbin");
         });
       } else {
         print('Failed to fetch dustbin stats: ${response.statusCode}');
@@ -93,13 +105,13 @@ class _StaffDashboardState extends State<StaffDashboard> {
       userList.clear();
 
       final response = await http
-          .get(Uri.parse(baseUrl + getUserByWard + '?wardno=$wardno'));
+          .get(Uri.parse('$baseUrl$getUserByWard?wardno=$wardno'));
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         // Extract staff members' names, locations, and emails
         final List<dynamic> userMembers = data['users'];
 
-        userMembers.forEach((users) {
+        for (var users in userMembers) {
           final int id = users['id'];
           final String name = users['name'];
           final String? location = users['location'];
@@ -119,7 +131,7 @@ class _StaffDashboardState extends State<StaffDashboard> {
             'wardno': wardno.toString(),
             'phone': phone.toString(),
           });
-        });
+        }
         setState(() {});
       } else {
         // ignore: use_build_context_synchronously
@@ -141,7 +153,7 @@ class _StaffDashboardState extends State<StaffDashboard> {
     // return AdminAppBarWithDrawer(
     return WillPopScope(
       onWillPop: () async => false,
-      child: AdminAppBarWithDrawer(
+      child: StaffAppBarWithDrawer(
         title: 'STAFF',
         body: SingleChildScrollView(
           child: Column(
@@ -168,7 +180,7 @@ class _StaffDashboardState extends State<StaffDashboard> {
                   child: SizedBox(
                       height: 180.h,
                       child: buildChart(
-                          fullDustbin!, emptyDustbin!, damagedDustbin!)),
+                          fullDustbin!, emptyDustbin!, damageDustbin!)),
                 ),
               ),
               Padding(
@@ -200,7 +212,7 @@ class _StaffDashboardState extends State<StaffDashboard> {
                         builddustbinbox(
                             title: 'Damage Dustbin',
                             onPressed: () {},
-                            count: damagedDustbin.toString()),
+                            count: damageDustbin.toString()),
                       ]),
                 ),
               ),
@@ -297,7 +309,7 @@ dynamic getColumnData() {
   return columnData;
 }
 
-Widget buildChart(int fullDustbin, int emptyDustbin, int damagedDustbin) {
+Widget buildChart(int fullDustbin, int emptyDustbin, int damageDustbin) {
   return SizedBox(
     child: SfCartesianChart(
       title: const ChartTitle(
@@ -328,7 +340,7 @@ Widget buildChart(int fullDustbin, int emptyDustbin, int damagedDustbin) {
         // Damaged Dustbin Series
         ColumnSeries<DustbinData, String>(
           dataSource: [
-            DustbinData('Damaged Dustbin', damagedDustbin, 0, 0),
+            DustbinData('Damaged Dustbin', damageDustbin, 0, 0),
           ],
           xValueMapper: (DustbinData dustbin, _) => dustbin.year,
           yValueMapper: (DustbinData dustbin, _) => dustbin.y,
@@ -356,12 +368,12 @@ Widget buildActiveUsersWidgetStaffScreen(
           children: [
             Text(activeUsersText,
                 style: kBodyText.copyWith(
-                  color: Color(0xFF003E1F),
+                  color: const Color(0xFF003E1F),
                   fontWeight: FontWeight.w500,
                 )),
             Text("TOTAL: $totalUsers",
                 style: kBodyText.copyWith(
-                  color: Color(0xFF003E1F),
+                  color: const Color(0xFF003E1F),
                   fontWeight: FontWeight.w500,
                 ))
           ],

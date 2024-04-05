@@ -12,14 +12,13 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:motion_toast/motion_toast.dart';
-import 'package:intl/intl.dart';
 
 import 'package:http/http.dart' as http;
 
 import 'package:nepali_date_picker/nepali_date_picker.dart';
 
 class AdminNotificationPage extends StatefulWidget {
-  const AdminNotificationPage({Key? key}) : super(key: key);
+  const AdminNotificationPage({super.key});
 
   @override
   State<AdminNotificationPage> createState() => _AdminNotificationPageState();
@@ -36,7 +35,7 @@ class _AdminNotificationPageState extends State<AdminNotificationPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   List<Map<String, String>> wastePickuplist =
-      []; // Store staff details acc to ward
+      []; 
 
   NepaliDateTime? _selectedDate;
 
@@ -85,13 +84,13 @@ class _AdminNotificationPageState extends State<AdminNotificationPage> {
       wastePickuplist.clear(); //yo herna parchha
 
       final response = await http
-          .get(Uri.parse(baseUrl + getWastepickupTimeByWard + '?wardno=$ward'));
+          .get(Uri.parse('$baseUrl$getWastepickupTimeByWard?wardno=$ward'));
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         // Extract staff members' names, locations, and emails
         final List<dynamic> wastedata = data['data'];
 
-        wastedata.forEach((waste) {
+        for (var waste in wastedata) {
           final int id = waste['id'];
           final int wardno = waste['wardno'];
           final String? location = waste['location'];
@@ -113,7 +112,7 @@ class _AdminNotificationPageState extends State<AdminNotificationPage> {
             'pickup_time': formattedPickUp ?? '',
             'message': message ?? '',
           });
-        });
+        }
 
         setState(() {}); // Notify that the state has changed
       } else {
@@ -146,7 +145,7 @@ class _AdminNotificationPageState extends State<AdminNotificationPage> {
     try {
       final response = await http.patch(
         // Uri.parse('http://192.168.1.74:5000/api/edit-staff?id=$id'),
-        Uri.parse(baseUrl + editWastepickupTime + '?id=$id'),
+        Uri.parse('$baseUrl$editWastepickupTime?id=$id'),
         body: {
           'location': _locationController.text,
           'wardno': _wardnoController.text,
@@ -178,7 +177,7 @@ class _AdminNotificationPageState extends State<AdminNotificationPage> {
   void deleteWasteTime(String id) async {
     try {
       final response = await http
-          .delete(Uri.parse(baseUrl + deleteWastepickupTime + '?id=$id'));
+          .delete(Uri.parse('$baseUrl$deleteWastepickupTime?id=$id'));
 
       if (response.statusCode == 200) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -264,7 +263,7 @@ class _AdminNotificationPageState extends State<AdminNotificationPage> {
                                     fetchWastebyWard(
                                         int.parse(_filterWardController.text));
                                   },
-                                  child: Text("Filter"),
+                                  child: const Text("Filter"),
                                 ),
                               ),
                             ],
@@ -276,7 +275,7 @@ class _AdminNotificationPageState extends State<AdminNotificationPage> {
                       // ),
                       Padding(
                         padding: EdgeInsets.only(top: 10.h, bottom: 10.h),
-                        child: Row(
+                        child: const Row(
                           children: [
                             Text(
                               "Schedule Details",
@@ -305,7 +304,7 @@ class _AdminNotificationPageState extends State<AdminNotificationPage> {
                                       headingRowColor:
                                           MaterialStateColor.resolveWith(
                                         (states) =>
-                                            Color.fromRGBO(82, 183, 136, 0.5),
+                                            const Color.fromRGBO(82, 183, 136, 0.5),
                                       ),
                                       columnSpacing: 4.w,
                                       columns: const [
@@ -377,7 +376,7 @@ class _AdminNotificationPageState extends State<AdminNotificationPage> {
                                                                       controller:
                                                                           _streetController,
                                                                       decoration:
-                                                                          InputDecoration(
+                                                                          const InputDecoration(
                                                                               labelText: 'New Street'),
                                                                     ),
                                                                     // Text(
@@ -457,7 +456,7 @@ class _AdminNotificationPageState extends State<AdminNotificationPage> {
                                                                             context)
                                                                         .pop();
                                                                   },
-                                                                  child: Text(
+                                                                  child: const Text(
                                                                       'Save'),
                                                                 ),
                                                                 TextButton(
@@ -585,7 +584,7 @@ class _AdminNotificationPageState extends State<AdminNotificationPage> {
                                 ),
                               ),
                               Padding(
-                                padding: EdgeInsets.only(top: 8.0),
+                                padding: const EdgeInsets.only(top: 8.0),
                                 child: TextFormField(
                                   readOnly: true,
                                   controller: TextEditingController(

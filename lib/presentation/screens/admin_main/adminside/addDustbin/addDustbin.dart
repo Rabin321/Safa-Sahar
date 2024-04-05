@@ -3,8 +3,6 @@
 import 'dart:convert';
 
 import 'package:finalyear/components/constants.dart';
-import 'package:finalyear/domain/addStaff/addStaffModel/addStaffModel.dart';
-import 'package:finalyear/domain/addStaff/addStaffRepository/addStaffRepository.dart';
 import 'package:finalyear/presentation/screens/admin_main/adminside/addDustbin/addDustbinModel/addDustbinModel.dart';
 import 'package:finalyear/presentation/screens/admin_main/adminside/addDustbin/addDustbinRepository/addDustbinRepository.dart';
 import 'package:finalyear/presentation/screens/admin_main/adminside/addstaff/ui/staffform.dart';
@@ -155,32 +153,32 @@ class _AdminAddDustbinState extends State<AdminAddDustbin> {
           // Uri.parse(
           // 'http://192.168.1.74:5000/api/get-filter-dustbin/?wardno=$ward'));
 
-          Uri.parse(baseUrl + getDustbinByWard + '?wardno=$ward'));
+          Uri.parse('$baseUrl$getDustbinByWard?wardno=$ward'));
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         final List<dynamic> dustbinData = data['data'];
 
-        dustbinData.forEach((dustbin) {
+        for (var dustbin in dustbinData) {
           final int id = dustbin['id'];
           final String? location = dustbin['location'];
           final int? wardno = dustbin['wardno'];
-          final int? fill_percentage = dustbin['fill_percentage'];
-          final int? assigned_staff = dustbin['assigned_staff'];
-          final String? dustbin_type = dustbin['location'];
+          final int? fillPercentage = dustbin['fill_percentage'];
+          final int? assignedStaff = dustbin['assigned_staff'];
+          final String? dustbinType = dustbin['location'];
 
           print(
-              "dustbin id: $id, location: $location, wardno: $wardno, fill_percentage: $fill_percentage, assigned_staff: $assigned_staff, dustbin_type: $dustbin_type");
+              "dustbin id: $id, location: $location, wardno: $wardno, fill_percentage: $fillPercentage, assigned_staff: $assignedStaff, dustbin_type: $dustbinType");
           // Add staff details to the staff list
           dustbinList.add({
             'id': id.toString(),
             'location': location!,
             'wardno': wardno.toString(),
-            'fill_percentage': fill_percentage.toString(),
-            'assigned_staff': assigned_staff.toString(),
-            'dustbin_type': dustbin_type!,
+            'fill_percentage': fillPercentage.toString(),
+            'assigned_staff': assignedStaff.toString(),
+            'dustbin_type': dustbinType!,
           });
-        });
+        }
         setState(() {}); // Notify that the state has changed
       } else {
         // ignore: use_build_context_synchronously
@@ -210,7 +208,7 @@ class _AdminAddDustbinState extends State<AdminAddDustbin> {
   Future<void> editDustbin({required int id}) async {
     try {
       final response = await http.patch(
-        Uri.parse(baseUrl + editDustbinUrl + '?id=$id'),
+        Uri.parse('$baseUrl$editDustbinUrl?id=$id'),
         body: {
           'location': locationController.text,
         },
@@ -239,7 +237,7 @@ class _AdminAddDustbinState extends State<AdminAddDustbin> {
   void deleteDustbin(String id) async {
     try {
       final response =
-          await http.delete(Uri.parse(baseUrl + deleteDustbinUrl + '?id=$id'));
+          await http.delete(Uri.parse('$baseUrl$deleteDustbinUrl?id=$id'));
 
       if (response.statusCode == 200) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -317,6 +315,7 @@ class _AdminAddDustbinState extends State<AdminAddDustbin> {
     }
   }
 
+  @override
   Widget build(BuildContext context) {
     //double screenHeight = MediaQuery.of(context).size.height;
     return WillPopScope(
@@ -327,7 +326,7 @@ class _AdminAddDustbinState extends State<AdminAddDustbin> {
           key: _refreshIndicatorKey,
           onRefresh: _refreshStaffMembers,
           child: SingleChildScrollView(
-            physics: AlwaysScrollableScrollPhysics(),
+            physics: const AlwaysScrollableScrollPhysics(),
             child: Form(
               key: formKey,
               child: Column(
@@ -391,7 +390,7 @@ class _AdminAddDustbinState extends State<AdminAddDustbin> {
                                         fetchDustbinByWard(int.parse(
                                             filterWardController.text));
                                       },
-                                      child: Text("Filter")),
+                                      child: const Text("Filter")),
                                 )
                               ],
                             ),
@@ -429,7 +428,7 @@ class _AdminAddDustbinState extends State<AdminAddDustbin> {
                                         headingRowColor:
                                             MaterialStateColor.resolveWith(
                                           (states) =>
-                                              Color.fromRGBO(82, 183, 136, 0.5),
+                                              const Color.fromRGBO(82, 183, 136, 0.5),
                                         ),
                                         columnSpacing: 4.w,
                                         columns: const [

@@ -80,7 +80,7 @@ import 'package:http/http.dart' as http;
 // }
 
 class MapViewPage extends StatefulWidget {
-  const MapViewPage({Key? key}) : super(key: key);
+  const MapViewPage({super.key});
 
   @override
   State<MapViewPage> createState() => _MapViewPageState();
@@ -120,7 +120,7 @@ class _MapViewPageState extends State<MapViewPage> {
     }
   }
 
-  int _selectedIndex = 0;
+  final int _selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -136,7 +136,7 @@ class _MapViewPageState extends State<MapViewPage> {
                    onPressed: () {
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) {
-                        return AdminHomePage();
+                        return const AdminHomePage();
                       }));
                     },
 
@@ -209,11 +209,11 @@ class _MapViewPageState extends State<MapViewPage> {
 class DefaultCustomBottomNavBar extends StatefulWidget {
   final int selectedIndex;
   final Function(int) onItemTapped;
-  DefaultCustomBottomNavBar({
-    Key? key,
+  const DefaultCustomBottomNavBar({
+    super.key,
     required this.selectedIndex,
     required this.onItemTapped,
-  }) : super(key: key);
+  });
 
   @override
   State<DefaultCustomBottomNavBar> createState() =>

@@ -1,5 +1,4 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'dart:convert';
 
 part 'addDustbinModel.freezed.dart';
 part 'addDustbinModel.g.dart';

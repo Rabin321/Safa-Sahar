@@ -166,14 +166,14 @@ class _AdminAddStaffState extends State<AdminAddStaff> {
       staffList.clear(); //yo herna parchha
 
       final response =
-          await http.get(Uri.parse(baseUrl + getStaffByWard + '?wardno=$ward'));
+          await http.get(Uri.parse('$baseUrl$getStaffByWard?wardno=$ward'));
       if (response.statusCode == 200) {
         print("staffbyward res");
         final data = jsonDecode(response.body);
         // Extract staff members' names, locations, and emails
         final List<dynamic> staffMembers = data['staffMembers'];
 
-        staffMembers.forEach((staff) {
+        for (var staff in staffMembers) {
           final int id = staff['id'];
           final String name = staff['name'];
           final String? location = staff['location'];
@@ -191,7 +191,7 @@ class _AdminAddStaffState extends State<AdminAddStaff> {
             'Ward': wardno.toString(),
             'Phone': phone.toString(),
           });
-        });
+        }
         setState(() {}); // Notify that the state has changed
       } else {
         // ignore: use_build_context_synchronously
@@ -215,7 +215,7 @@ class _AdminAddStaffState extends State<AdminAddStaff> {
   Future<void> editStaff({required int id}) async {
     try {
       final response = await http.patch(
-        Uri.parse(baseUrl + editStaffUrl + '?id=$id'),
+        Uri.parse('$baseUrl$editStaffUrl?id=$id'),
         body: {
           'name': nameController.text,
           'email': emailController.text,
@@ -252,7 +252,7 @@ class _AdminAddStaffState extends State<AdminAddStaff> {
       final response = await http.delete(
           // Uri.parse('http://192.168.1.74:5000/api/delete-staff/?id=$id'),
 
-          Uri.parse(baseUrl + deleteStaffUrl + '?id=$id'));
+          Uri.parse('$baseUrl$deleteStaffUrl?id=$id'));
 
       if (response.statusCode == 200) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -284,6 +284,7 @@ class _AdminAddStaffState extends State<AdminAddStaff> {
     }
   }
 
+  @override
   Widget build(BuildContext context) {
     //double screenHeight = MediaQuery.of(context).size.height;
     return WillPopScope(
@@ -294,7 +295,7 @@ class _AdminAddStaffState extends State<AdminAddStaff> {
           key: _refreshIndicatorKey,
           onRefresh: _refreshStaffMembers,
           child: SingleChildScrollView(
-            physics: AlwaysScrollableScrollPhysics(),
+            physics: const AlwaysScrollableScrollPhysics(),
             child: Form(
               key: formKey,
               child: Column(
@@ -358,7 +359,7 @@ class _AdminAddStaffState extends State<AdminAddStaff> {
                                         fetchStaffByWard(int.parse(
                                             filterWardController.text));
                                       },
-                                      child: Text("Filter")),
+                                      child: const Text("Filter")),
                                 )
                               ],
                             ),
@@ -396,7 +397,7 @@ class _AdminAddStaffState extends State<AdminAddStaff> {
                                         headingRowColor:
                                             MaterialStateColor.resolveWith(
                                           (states) =>
-                                              Color.fromRGBO(82, 183, 136, 0.5),
+                                              const Color.fromRGBO(82, 183, 136, 0.5),
                                         ),
                                         columnSpacing: 4.w,
                                         columns: const [
@@ -469,7 +470,7 @@ class _AdminAddStaffState extends State<AdminAddStaff> {
                                                                         controller:
                                                                             locationController,
                                                                         decoration:
-                                                                            InputDecoration(labelText: 'New Location'),
+                                                                            const InputDecoration(labelText: 'New Location'),
                                                                       ),
                                                                       Text(
                                                                           'Ward: ${staff['Ward']}'),
@@ -477,7 +478,7 @@ class _AdminAddStaffState extends State<AdminAddStaff> {
                                                                         controller:
                                                                             wardnoController,
                                                                         decoration:
-                                                                            InputDecoration(labelText: 'New Ward'),
+                                                                            const InputDecoration(labelText: 'New Ward'),
                                                                       ),
                                                                       Text(
                                                                           'Phone: ${staff['Phone']}'),
@@ -485,7 +486,7 @@ class _AdminAddStaffState extends State<AdminAddStaff> {
                                                                         controller:
                                                                             numberController,
                                                                         decoration:
-                                                                            InputDecoration(labelText: 'New Phone'),
+                                                                            const InputDecoration(labelText: 'New Phone'),
                                                                       ),
                                                                     ],
                                                                   ),
@@ -514,7 +515,7 @@ class _AdminAddStaffState extends State<AdminAddStaff> {
                                                                       numberController
                                                                           .clear();
                                                                     },
-                                                                    child: Text(
+                                                                    child: const Text(
                                                                         'Save'),
                                                                   ),
                                                                   TextButton(
@@ -761,7 +762,7 @@ class Validator {
 }
 
 String? _validatePassword(String? password) {
-  final minLength = 8;
+  const minLength = 8;
   final passwordRegex = RegExp(
       r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#$%^&*()_+}{":;\?/>.<,]).{8,}$');
 

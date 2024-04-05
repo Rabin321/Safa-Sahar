@@ -11,7 +11,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../widgets/widget.dart';
 import '../../../components/constants.dart';
 
-import 'package:http/http.dart' as http;
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -48,6 +47,7 @@ class _SignUpState extends State<SignUp> {
   @override
   void initState() {
     super.initState();
+
     // verifyEmail("token");
   }
 
@@ -158,15 +158,14 @@ class _SignUpState extends State<SignUp> {
                                   validator: (name) => name!.isEmpty
                                       ? 'Please enter your location'
                                       : null,
-                                  isEditable: true,
+                                  isEditable: false,
                                   onChanged: (value) {},
                                 ),
                                 MyTextField(
                                   hintText: 'House No',
                                   showDropdownIcon: true,
                                   onDropdownPressed: () {
-                                    houseno(context,
-                                        _housenoController); 
+                                    houseno(context, _housenoController);
                                   },
                                   controller: _housenoController,
                                   inputType: TextInputType.text,
@@ -241,7 +240,7 @@ class _SignUpState extends State<SignUp> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => SignInPage()),
+                                        builder: (context) => const SignInPage()),
                                   );
                                 },
                             ),
@@ -258,7 +257,15 @@ class _SignUpState extends State<SignUp> {
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
                             // Validation succeeded, proceed with registration
+
                             _registerUser();
+
+                            _emailController.clear();
+                            _passwordController.clear();
+                            _locationController.clear();
+                            _fullNameController.clear();
+                            _housenoController.clear();
+                            _wardnoController.clear();
                           } else {
                             print("Validation error");
                             // Validation failed, do not proceed

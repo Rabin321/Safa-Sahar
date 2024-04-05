@@ -22,6 +22,7 @@ class _UserAwarenessState extends State<UserAwareness> {
     super.initState();
   }
 
+  @override
   Widget build(BuildContext context) {
     //double screenHeight = MediaQuery.of(context).size.height;
     return WillPopScope(
@@ -29,7 +30,7 @@ class _UserAwarenessState extends State<UserAwareness> {
       child: UserAppBarWithDrawer(
         title: 'USER',
         body: SingleChildScrollView(
-          physics: AlwaysScrollableScrollPhysics(),
+          physics: const AlwaysScrollableScrollPhysics(),
           child: Padding(
             padding: EdgeInsets.symmetric(vertical: 15.h, horizontal: 15.h),
             child: Column(
