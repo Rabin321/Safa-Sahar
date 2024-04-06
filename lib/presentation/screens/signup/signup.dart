@@ -11,7 +11,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../widgets/widget.dart';
 import '../../../components/constants.dart';
 
-
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
 
@@ -33,6 +32,8 @@ class _SignUpState extends State<SignUp> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
+  final TextEditingController _phoneController = TextEditingController();
+
   @override
   void dispose() {
     _fullNameController.dispose();
@@ -41,6 +42,7 @@ class _SignUpState extends State<SignUp> {
     _wardnoController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
+    _phoneController.dispose();
     super.dispose();
   }
 
@@ -53,11 +55,14 @@ class _SignUpState extends State<SignUp> {
 
   _registerUser() async {
     try {
+      _formKey.currentState!.validate();
+
       UserRepository userRepository = UserRepository();
       bool isRegister = await userRepository.register(SignUpModel(
         name: _fullNameController.text,
         email: _emailController.text,
         password: _passwordController.text,
+        phone: _phoneController.text,
         location: _locationController.text,
         houseno: int.parse(_housenoController.text),
         wardno: int.parse(_wardnoController.text),
@@ -201,11 +206,33 @@ class _SignUpState extends State<SignUp> {
                                   isEditable: true,
                                   onChanged: (value) {},
                                 ),
+
+                                MyTextField(
+                                  hintText: 'Phone',
+                                  controller: _phoneController,
+                                  inputType: TextInputType.phone,
+                                  validator: _validatePhoneNumber,
+                                  formKey: _formKey,
+                                  isEditable: true,
+                                  onChanged: (value) {},
+                                ),
+                                // MyPasswordField(
+                                //   formKey: _formKey,
+                                //   validator: (name) => name!.isEmpty
+                                //       ? 'Please enter your password'
+                                //       : null,
+                                //   controller: _passwordController,
+                                //   isPasswordVisible: passwordVisibility,
+                                //   onTap: () {
+                                //     setState(() {
+                                //       passwordVisibility = !passwordVisibility;
+                                //     });
+                                //   },
+                                // )
+
                                 MyPasswordField(
                                   formKey: _formKey,
-                                  validator: (name) => name!.isEmpty
-                                      ? 'Please enter your password'
-                                      : null,
+                                  validator: _validatePassword,
                                   controller: _passwordController,
                                   isPasswordVisible: passwordVisibility,
                                   onTap: () {
@@ -240,7 +267,8 @@ class _SignUpState extends State<SignUp> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => const SignInPage()),
+                                        builder: (context) =>
+                                            const SignInPage()),
                                   );
                                 },
                             ),
@@ -266,6 +294,7 @@ class _SignUpState extends State<SignUp> {
                             _fullNameController.clear();
                             _housenoController.clear();
                             _wardnoController.clear();
+                            _phoneController.clear();
                           } else {
                             print("Validation error");
                             // Validation failed, do not proceed
@@ -291,6 +320,48 @@ class _SignUpState extends State<SignUp> {
     if (!isEmailValid) {
       return 'Please enter a valid email';
     }
+    return null;
+  }
+
+  String? _validatePhoneNumber(String? phoneNumber) {
+    if (phoneNumber == null || phoneNumber.isEmpty) {
+      return 'Please enter a phone number';
+    }
+
+    String sanitizedPhoneNumber = phoneNumber.replaceAll(RegExp(r'\D'), '');
+
+    if (sanitizedPhoneNumber.length != 10) {
+      return 'Phone number must be 10 digits long';
+    }
+
+    return null;
+  }
+
+  String? _validatePassword(String? password) {
+    if (password == null || password.isEmpty) {
+      return 'Please enter a password';
+    }
+
+    if (password.length < 8) {
+      return 'Password must be at least 8 characters long';
+    }
+
+    if (!password.contains(RegExp(r'[A-Z]'))) {
+      return 'Password must contain at least one uppercase letter';
+    }
+
+    if (!password.contains(RegExp(r'[a-z]'))) {
+      return 'Password must contain at least one lowercase letter';
+    }
+
+    if (!password.contains(RegExp(r'[0-9]'))) {
+      return 'Password must contain at least one digit';
+    }
+
+    if (!password.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]'))) {
+      return 'Password must contain at least one special character';
+    }
+
     return null;
   }
 }

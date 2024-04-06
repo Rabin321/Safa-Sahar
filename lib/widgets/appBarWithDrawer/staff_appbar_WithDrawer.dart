@@ -64,7 +64,7 @@ class _MyHomePageState extends State<StaffAppBarWithDrawer> {
                     onTap: () => Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const AdminProfile()),
+                          builder: (context) => const StaffProfile()),
                     ),
                     child: CircleAvatar(
                       backgroundColor: Colors.transparent,

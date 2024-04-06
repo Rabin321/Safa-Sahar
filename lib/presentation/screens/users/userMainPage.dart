@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 
 class UserMainPage extends StatefulWidget {
   const UserMainPage({super.key});
@@ -66,7 +67,10 @@ class _UserMainPageState extends State<UserMainPage> {
 
         for (var pickUpTime in pickTimeList) {
           final int id = pickUpTime['id'];
+          // final String pickupTime = pickUpTime['pickup_time'];
           final String pickupTime = pickUpTime['pickup_time'];
+          final formattedPickupTime =
+              DateFormat('hh:mm:ss a').format(DateTime.parse(pickupTime));
           final String? location = pickUpTime['location'];
           final String? street = pickUpTime['street'];
           final String? message = pickUpTime['message'];
@@ -76,7 +80,7 @@ class _UserMainPageState extends State<UserMainPage> {
           // Add staff details to the staff list
           pickUpTimeListAdd.add({
             'id': id.toString(),
-            'pickup_time': pickupTime,
+            'pickup_time': formattedPickupTime,
             'location': location!,
             'street': street!,
             'message': message!,
@@ -225,7 +229,8 @@ class _UserMainPageState extends State<UserMainPage> {
                                 children: [
                                   Row(
                                     children: [
-                                      const Icon(Icons.access_time), // Clock Icon
+                                      const Icon(
+                                          Icons.access_time), // Clock Icon
                                       SizedBox(width: 10.w),
                                       Text(
                                         pickUpTime['pickup_time']!,

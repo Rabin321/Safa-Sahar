@@ -72,6 +72,19 @@ class _UserAwarenessState extends State<UserAwareness> {
                   "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed condimentum ultricies felis, et blandit nisi fermentum in.",
                   style: TextStyle(fontSize: 16.sp),
                 ),
+
+                Text(
+                  "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed condimentum ultricies felis, et blandit nisi fermentum in.",
+                  style: TextStyle(fontSize: 16.sp),
+                ),
+                Text(
+                  "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed condimentum ultricies felis, et blandit nisi fermentum in.",
+                  style: TextStyle(fontSize: 16.sp),
+                ),
+                Text(
+                  "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed condimentum ultricies felis, et blandit nisi fermentum in.",
+                  style: TextStyle(fontSize: 16.sp),
+                ),
               ],
             ),
           ),

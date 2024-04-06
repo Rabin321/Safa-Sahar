@@ -47,8 +47,8 @@ class _StaffGetUserReportState extends State<StaffGetUserReport> {
     try {
       userReportslist.clear(); //yo herna parchha
 
-      final response = await http
-          .get(Uri.parse('$baseUrl$getReportAccWard?wardno=$wardno'));
+      final response =
+          await http.get(Uri.parse('$baseUrl$getReportAccWard?wardno=$wardno'));
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         // Extract staff members' names, locations, and emails
@@ -154,9 +154,11 @@ Widget _buildDetailsBox(List<dynamic>? userDetailsOK) {
   }
 
   return Container(
-    padding: const EdgeInsets.all(16),
+    // padding: const EdgeInsets.all(16),
     decoration: BoxDecoration(
-      color: const Color.fromRGBO(82, 183, 136, 0.5),
+      border: Border.all(color: const Color.fromRGBO(82, 183, 136, 0.5)),
+
+      // color: const Color.fromRGBO(82, 183, 136, 0.5),
       borderRadius: BorderRadius.circular(10),
     ),
     child: SingleChildScrollView(
@@ -196,8 +198,6 @@ Widget _buildDetailsBox(List<dynamic>? userDetailsOK) {
                   TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
             ),
           ),
-
-         
         ],
         rows: userDetailsOK?.map((usersOk) {
               return DataRow(cells: [

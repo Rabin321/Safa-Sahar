@@ -23,6 +23,7 @@ mixin _$SignUpModel {
   String get name => throw _privateConstructorUsedError;
   String get email => throw _privateConstructorUsedError;
   String get password => throw _privateConstructorUsedError;
+  String get phone => throw _privateConstructorUsedError;
   int get houseno => throw _privateConstructorUsedError;
   int get wardno => throw _privateConstructorUsedError;
   String get location => throw _privateConstructorUsedError;
@@ -44,6 +45,7 @@ abstract class $SignUpModelCopyWith<$Res> {
       {String name,
       String email,
       String password,
+      String phone,
       int houseno,
       int wardno,
       String location,
@@ -66,6 +68,7 @@ class _$SignUpModelCopyWithImpl<$Res, $Val extends SignUpModel>
     Object? name = null,
     Object? email = null,
     Object? password = null,
+    Object? phone = null,
     Object? houseno = null,
     Object? wardno = null,
     Object? location = null,
@@ -83,6 +86,10 @@ class _$SignUpModelCopyWithImpl<$Res, $Val extends SignUpModel>
       password: null == password
           ? _value.password
           : password // ignore: cast_nullable_to_non_nullable
+              as String,
+      phone: null == phone
+          ? _value.phone
+          : phone // ignore: cast_nullable_to_non_nullable
               as String,
       houseno: null == houseno
           ? _value.houseno
@@ -116,6 +123,7 @@ abstract class _$$SignUpModelImplCopyWith<$Res>
       {String name,
       String email,
       String password,
+      String phone,
       int houseno,
       int wardno,
       String location,
@@ -136,6 +144,7 @@ class __$$SignUpModelImplCopyWithImpl<$Res>
     Object? name = null,
     Object? email = null,
     Object? password = null,
+    Object? phone = null,
     Object? houseno = null,
     Object? wardno = null,
     Object? location = null,
@@ -153,6 +162,10 @@ class __$$SignUpModelImplCopyWithImpl<$Res>
       password: null == password
           ? _value.password
           : password // ignore: cast_nullable_to_non_nullable
+              as String,
+      phone: null == phone
+          ? _value.phone
+          : phone // ignore: cast_nullable_to_non_nullable
               as String,
       houseno: null == houseno
           ? _value.houseno
@@ -181,6 +194,7 @@ class _$SignUpModelImpl implements _SignUpModel {
       {required this.name,
       required this.email,
       required this.password,
+      required this.phone,
       required this.houseno,
       required this.wardno,
       required this.location,
@@ -196,6 +210,8 @@ class _$SignUpModelImpl implements _SignUpModel {
   @override
   final String password;
   @override
+  final String phone;
+  @override
   final int houseno;
   @override
   final int wardno;
@@ -206,7 +222,7 @@ class _$SignUpModelImpl implements _SignUpModel {
 
   @override
   String toString() {
-    return 'SignUpModel(name: $name, email: $email, password: $password, houseno: $houseno, wardno: $wardno, location: $location, role: $role)';
+    return 'SignUpModel(name: $name, email: $email, password: $password, phone: $phone, houseno: $houseno, wardno: $wardno, location: $location, role: $role)';
   }
 
   @override
@@ -218,6 +234,7 @@ class _$SignUpModelImpl implements _SignUpModel {
             (identical(other.email, email) || other.email == email) &&
             (identical(other.password, password) ||
                 other.password == password) &&
+            (identical(other.phone, phone) || other.phone == phone) &&
             (identical(other.houseno, houseno) || other.houseno == houseno) &&
             (identical(other.wardno, wardno) || other.wardno == wardno) &&
             (identical(other.location, location) ||
@@ -227,8 +244,8 @@ class _$SignUpModelImpl implements _SignUpModel {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, name, email, password, houseno, wardno, location, role);
+  int get hashCode => Object.hash(runtimeType, name, email, password, phone,
+      houseno, wardno, location, role);
 
   @JsonKey(ignore: true)
   @override
@@ -249,6 +266,7 @@ abstract class _SignUpModel implements SignUpModel {
       {required final String name,
       required final String email,
       required final String password,
+      required final String phone,
       required final int houseno,
       required final int wardno,
       required final String location,
@@ -263,6 +281,8 @@ abstract class _SignUpModel implements SignUpModel {
   String get email;
   @override
   String get password;
+  @override
+  String get phone;
   @override
   int get houseno;
   @override

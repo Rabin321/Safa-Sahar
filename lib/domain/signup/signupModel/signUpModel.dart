@@ -19,6 +19,7 @@ class SignUpModel with _$SignUpModel {
     required String name,
     required String email,
     required String password,
+    required String phone,
     required int houseno,
     required int wardno,
     required String location,
