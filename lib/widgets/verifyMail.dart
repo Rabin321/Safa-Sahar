@@ -115,8 +115,8 @@ class _VerifyMailState extends State<VerifyMail> {
   Future<void> verifyEmail() async {
     String? registeredVerifyToken = widget.registeredVerifyToken;
 
-    final response = await http.get(
-        Uri.parse('$baseUrl${verifyMailUrl}token=$registeredVerifyToken'));
+    final response = await http
+        .get(Uri.parse('$baseUrl${verifyMailUrl}token=$registeredVerifyToken'));
 
     if (response.statusCode == 200) {
       final Map<String, dynamic> data = json.decode(response.body);
@@ -141,9 +141,9 @@ class _VerifyMailState extends State<VerifyMail> {
       onWillPop: () async {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const SignUp()),
+          MaterialPageRoute(builder: (context) => const SignInPage()),
         );
-        return true; // Return true to allow the back navigation
+        return true;
       },
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -154,7 +154,7 @@ class _VerifyMailState extends State<VerifyMail> {
             onPressed: () {
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => const SignUp()),
+                MaterialPageRoute(builder: (context) => const SignInPage()),
               );
             },
           ),

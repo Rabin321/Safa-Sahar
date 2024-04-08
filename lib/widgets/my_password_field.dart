@@ -68,15 +68,15 @@ class MyPasswordField extends StatelessWidget {
     required this.isPasswordVisible,
     required this.onTap,
     this.validator,
-    required this.formKey,
+    // required this.formKey,
     required this.controller,
     String? errorText,
   });
 
   final TextEditingController controller;
   final bool isPasswordVisible;
-  final String? Function(String?)? validator;
-  final GlobalKey<FormState> formKey;
+  final FormFieldValidator<String>? validator;
+  // final GlobalKey<FormState> formKey;
 
   final VoidCallback onTap;
 

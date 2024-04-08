@@ -2,8 +2,8 @@ import 'dart:convert';
 
 import 'package:finalyear/components/constants.dart';
 import 'package:finalyear/presentation/screens/admin_main/adminside/addstaff/ui/staffform.dart';
-import 'package:finalyear/presentation/screens/admin_main/adminside/adminNotification/wastepickup/wastepickup.dart';
-import 'package:finalyear/presentation/screens/admin_main/adminside/adminNotification/wastepickupRepository/wastepickupRepository.dart';
+import 'package:finalyear/presentation/screens/admin_main/adminside/pickup/wastepickup/wastepickup.dart';
+import 'package:finalyear/presentation/screens/admin_main/adminside/pickup/wastepickupRepository/wastepickupRepository.dart';
 import 'package:finalyear/presentation/screens/signup/widgets/methods.dart';
 import 'package:finalyear/utils/urls.dart';
 import 'package:finalyear/widgets/appBarWithDrawer/admin_appbarWithDrawer.dart';
@@ -11,20 +11,21 @@ import 'package:finalyear/widgets/my_text_field.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 import 'package:motion_toast/motion_toast.dart';
 
 import 'package:http/http.dart' as http;
 
 import 'package:nepali_date_picker/nepali_date_picker.dart';
 
-class AdminNotificationPage extends StatefulWidget {
-  const AdminNotificationPage({super.key});
+class AdminAddPIckUpTime extends StatefulWidget {
+  const AdminAddPIckUpTime({super.key});
 
   @override
-  State<AdminNotificationPage> createState() => _AdminNotificationPageState();
+  State<AdminAddPIckUpTime> createState() => _AdminAddPIckUpTimeState();
 }
 
-class _AdminNotificationPageState extends State<AdminNotificationPage> {
+class _AdminAddPIckUpTimeState extends State<AdminAddPIckUpTime> {
   final TextEditingController _messageController = TextEditingController();
   final TextEditingController _locationController = TextEditingController();
   final TextEditingController _wardnoController = TextEditingController();
@@ -34,8 +35,7 @@ class _AdminNotificationPageState extends State<AdminNotificationPage> {
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  List<Map<String, String>> wastePickuplist =
-      []; 
+  List<Map<String, String>> wastePickuplist = [];
 
   NepaliDateTime? _selectedDate;
 
@@ -99,19 +99,35 @@ class _AdminNotificationPageState extends State<AdminNotificationPage> {
 
           final String? message = waste['message'];
 
-          String? formattedPickUp = pickupTimeString!.split('.')[0];
+          DateTime pickupTime = DateTime.parse(pickupTimeString!);
 
-          print(
-              "Waste pickup time: $pickupTimeString , Wardno: $wardno, Location: $location, Street: $street, Message: $message");
-          // Add staff details to the staff list
+          // Format the date and time
+          String formattedDateTime =
+              "${pickupTime.year}-${pickupTime.month}-${pickupTime.day} (${pickupTime.hour}:${pickupTime.minute})";
+
+          print(formattedDateTime); // or use it as needed
+
+// Add staff details to the staff list
           wastePickuplist.add({
             'id': id.toString(),
             'wardno': wardno.toString(),
             'location': location ?? '',
             'street': street ?? '',
-            'pickup_time': formattedPickUp ?? '',
+            'pickup_time': formattedDateTime,
             'message': message ?? '',
           });
+
+          // print(
+          //     "Waste pickup time: $pickupTimeString , Wardno: $wardno, Location: $location, Street: $street, Message: $message");
+          // // Add staff details to the staff list
+          // wastePickuplist.add({
+          //   'id': id.toString(),
+          //   'wardno': wardno.toString(),
+          //   'location': location ?? '',
+          //   'street': street ?? '',
+          //   'pickup_time': localDateTime ?? '',
+          //   'message': message ?? '',
+          // });
         }
 
         setState(() {}); // Notify that the state has changed
@@ -176,8 +192,8 @@ class _AdminNotificationPageState extends State<AdminNotificationPage> {
 
   void deleteWasteTime(String id) async {
     try {
-      final response = await http
-          .delete(Uri.parse('$baseUrl$deleteWastepickupTime?id=$id'));
+      final response =
+          await http.delete(Uri.parse('$baseUrl$deleteWastepickupTime?id=$id'));
 
       if (response.statusCode == 200) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -284,221 +300,232 @@ class _AdminNotificationPageState extends State<AdminNotificationPage> {
                           ],
                         ),
                       ),
-                      Padding(
-                        padding: EdgeInsets.all(2.h),
-                        child: SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Column(
-                            children: [
-                              Container(
-                                decoration: BoxDecoration(
-                                  border: Border.all(color: Colors.grey),
-                                  borderRadius: BorderRadius.circular(8.r),
-                                ),
-                                height: 150.h,
-                                // width: 320.w,
-                                child: Scrollbar(
-                                  child: SingleChildScrollView(
-                                    scrollDirection: Axis.vertical,
-                                    child: DataTable(
-                                      headingRowColor:
-                                          MaterialStateColor.resolveWith(
-                                        (states) =>
-                                            const Color.fromRGBO(82, 183, 136, 0.5),
+
+                      wastePickuplist.isEmpty
+                          ? Center(
+                              child: Text(
+                                'No pickup time added yet',
+                                style: TextStyle(fontSize: 16.sp),
+                              ),
+                            )
+                          : Padding(
+                              padding: EdgeInsets.all(2.h),
+                              child: SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Column(
+                                  children: [
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        border: Border.all(color: Colors.grey),
+                                        borderRadius:
+                                            BorderRadius.circular(8.r),
                                       ),
-                                      columnSpacing: 4.w,
-                                      columns: const [
-                                        // DataColumn(label: Text('Id')),
-                                        DataColumn(label: Text('Location')),
-                                        DataColumn(label: Text('Ward')),
-                                        DataColumn(label: Text('Street')),
-                                        DataColumn(label: Text('Pickup time')),
-                                        DataColumn(label: Text('Actions')),
-                                      ],
-                                      rows: wastePickuplist
-                                          .map(
-                                            (waste) => DataRow(cells: [
-                                              // DataCell(
-                                              // Text(waste['id'] ?? '')),
-                                              DataCell(Text(
-                                                  waste['location'] ?? '')),
-                                              DataCell(
-                                                  Text(waste['wardno'] ?? '')),
-                                              DataCell(
-                                                  Text(waste['street'] ?? '')),
-                                              DataCell(Text(
-                                                  waste['pickup_time'] ?? '')),
+                                      height: 150.h,
+                                      // width: 320.w,
+                                      child: Scrollbar(
+                                        child: SingleChildScrollView(
+                                          scrollDirection: Axis.vertical,
+                                          child: DataTable(
+                                            headingRowColor:
+                                                MaterialStateColor.resolveWith(
+                                              (states) => const Color.fromRGBO(
+                                                  82, 183, 136, 0.5),
+                                            ),
+                                            columnSpacing: 4.w,
+                                            columns: const [
+                                              // DataColumn(label: Text('Id')),
+                                              DataColumn(
+                                                  label: Text('Location')),
+                                              DataColumn(label: Text('Ward')),
+                                              DataColumn(label: Text('Street')),
+                                              DataColumn(
+                                                  label: Text('Pickup time')),
+                                              DataColumn(
+                                                  label: Text('Actions')),
+                                            ],
+                                            rows: wastePickuplist
+                                                .map(
+                                                  (waste) => DataRow(cells: [
+                                                    // DataCell(
+                                                    // Text(waste['id'] ?? '')),
+                                                    DataCell(Text(
+                                                        waste['location'] ??
+                                                            '')),
+                                                    DataCell(Text(
+                                                        waste['wardno'] ?? '')),
+                                                    DataCell(Text(
+                                                        waste['street'] ?? '')),
+                                                    DataCell(Text(
+                                                        waste['pickup_time'] ??
+                                                            '')),
 
-                                              DataCell(
-                                                Row(
-                                                  children: [
-                                                    IconButton(
-                                                      icon: const Icon(
-                                                        Icons.edit,
-                                                        color: Colors.green,
+                                                    DataCell(
+                                                      Row(
+                                                        children: [
+                                                          IconButton(
+                                                            icon: const Icon(
+                                                              Icons.edit,
+                                                              color:
+                                                                  Colors.green,
+                                                            ),
+                                                            onPressed: () {
+                                                              showDialog(
+                                                                context:
+                                                                    context,
+                                                                builder:
+                                                                    (BuildContext
+                                                                        context) {
+                                                                  return AlertDialog(
+                                                                    title: const Text(
+                                                                        'Edit'),
+                                                                    content:
+                                                                        SingleChildScrollView(
+                                                                      child:
+                                                                          Column(
+                                                                        crossAxisAlignment:
+                                                                            CrossAxisAlignment.start,
+                                                                        children: [
+                                                                          Text(
+                                                                              'Location: ${waste['location']}'),
+                                                                          TextFormField(
+                                                                            controller:
+                                                                                _locationController,
+                                                                            decoration:
+                                                                                const InputDecoration(labelText: 'New Location'),
+                                                                          ),
+                                                                          Text(
+                                                                              'Ward no: ${waste['wardno']}'),
+                                                                          TextFormField(
+                                                                            controller:
+                                                                                _wardnoController,
+                                                                            decoration:
+                                                                                const InputDecoration(labelText: 'New Ward no'),
+                                                                          ),
+                                                                          Text(
+                                                                              'Street: ${waste['street']}'),
+                                                                          TextFormField(
+                                                                            controller:
+                                                                                _streetController,
+                                                                            decoration:
+                                                                                const InputDecoration(labelText: 'New Street'),
+                                                                          ),
+                                                                          // Text(
+                                                                          //     'Pickup Time: ${waste['pickup_time']}'),
+                                                                          // TextFormField(
+                                                                          //   readOnly:
+                                                                          //       true,
+                                                                          //   controller:
+                                                                          //       TextEditingController(
+                                                                          //     text: _selectedDate !=
+                                                                          //             null
+                                                                          //         ? NepaliDateFormat("yyyy-MM-dd HH:mm").format(_selectedDate!)
+                                                                          //         : '',
+                                                                          //   ),
+                                                                          //   decoration:
+                                                                          //       InputDecoration(
+                                                                          //     hintText:
+                                                                          //         'Pick up date and time...',
+                                                                          //     suffixIcon:
+                                                                          //         IconButton(
+                                                                          //       onPressed:
+                                                                          //           () async {
+                                                                          //         final NepaliDateTime?
+                                                                          //             picked =
+                                                                          //             await showMaterialDatePicker(
+                                                                          //           context: context,
+                                                                          //           initialDate: _selectedDate ?? NepaliDateTime.now(),
+                                                                          //           firstDate: NepaliDateTime(2000),
+                                                                          //           lastDate: NepaliDateTime(2090),
+                                                                          //           initialDatePickerMode: DatePickerMode.day,
+                                                                          //         );
+
+                                                                          //         if (picked != null &&
+                                                                          //             picked != _selectedDate) {
+                                                                          //           final TimeOfDay? selectedTime = await showTimePicker(
+                                                                          //             context: context,
+                                                                          //             initialTime: TimeOfDay.fromDateTime(
+                                                                          //               _selectedDate ?? DateTime.now(),
+                                                                          //             ),
+                                                                          //           );
+
+                                                                          //           if (selectedTime != null) {
+                                                                          //             setState(() {
+                                                                          //               _selectedDate = NepaliDateTime(
+                                                                          //                 picked.year,
+                                                                          //                 picked.month,
+                                                                          //                 picked.day,
+                                                                          //                 selectedTime.hour,
+                                                                          //                 selectedTime.minute,
+                                                                          //               );
+
+                                                                          //               print("Selected date: $_selectedDate, ${_selectedDate!.toIso8601String()}, ${_selectedDate!.toDateTime()}, ${_selectedDate!.format("yyyy-MM-dd HH:mm")}");
+                                                                          //             });
+                                                                          //           }
+                                                                          //         }
+                                                                          //       },
+                                                                          //       icon:
+                                                                          //           Icon(Icons.calendar_today),
+                                                                          //     ),
+                                                                          //   ),
+                                                                          // ),
+                                                                        ],
+                                                                      ),
+                                                                    ),
+                                                                    actions: [
+                                                                      ElevatedButton(
+                                                                        onPressed:
+                                                                            () {
+                                                                          editWasteTime(
+                                                                            id: int.parse(waste['id']!),
+                                                                            // id: staff[
+                                                                            //     'Id']!
+                                                                          );
+                                                                          Navigator.of(context)
+                                                                              .pop();
+                                                                        },
+                                                                        child: const Text(
+                                                                            'Save'),
+                                                                      ),
+                                                                      TextButton(
+                                                                        onPressed:
+                                                                            () {
+                                                                          Navigator.of(context)
+                                                                              .pop();
+                                                                        },
+                                                                        child: const Text(
+                                                                            'Cancel'),
+                                                                      ),
+                                                                    ],
+                                                                  );
+                                                                },
+                                                              );
+                                                            },
+                                                          ),
+                                                          IconButton(
+                                                            icon: Icon(
+                                                              Icons.delete,
+                                                              color: Colors
+                                                                  .red[600],
+                                                            ),
+                                                            onPressed: () {
+                                                              deleteWasteTime(
+                                                                  waste['id']!);
+                                                            },
+                                                          ),
+                                                        ],
                                                       ),
-                                                      onPressed: () {
-                                                        showDialog(
-                                                          context: context,
-                                                          builder: (BuildContext
-                                                              context) {
-                                                            return AlertDialog(
-                                                              title: const Text(
-                                                                  'Edit'),
-                                                              content:
-                                                                  SingleChildScrollView(
-                                                                child: Column(
-                                                                  crossAxisAlignment:
-                                                                      CrossAxisAlignment
-                                                                          .start,
-                                                                  children: [
-                                                                    Text(
-                                                                        'Location: ${waste['location']}'),
-                                                                    TextFormField(
-                                                                      controller:
-                                                                          _locationController,
-                                                                      decoration:
-                                                                          const InputDecoration(
-                                                                              labelText: 'New Location'),
-                                                                    ),
-                                                                    Text(
-                                                                        'Ward no: ${waste['wardno']}'),
-                                                                    TextFormField(
-                                                                      controller:
-                                                                          _wardnoController,
-                                                                      decoration:
-                                                                          const InputDecoration(
-                                                                              labelText: 'New Ward no'),
-                                                                    ),
-                                                                    Text(
-                                                                        'Street: ${waste['street']}'),
-                                                                    TextFormField(
-                                                                      controller:
-                                                                          _streetController,
-                                                                      decoration:
-                                                                          const InputDecoration(
-                                                                              labelText: 'New Street'),
-                                                                    ),
-                                                                    // Text(
-                                                                    //     'Pickup Time: ${waste['pickup_time']}'),
-                                                                    // TextFormField(
-                                                                    //   readOnly:
-                                                                    //       true,
-                                                                    //   controller:
-                                                                    //       TextEditingController(
-                                                                    //     text: _selectedDate !=
-                                                                    //             null
-                                                                    //         ? NepaliDateFormat("yyyy-MM-dd HH:mm").format(_selectedDate!)
-                                                                    //         : '',
-                                                                    //   ),
-                                                                    //   decoration:
-                                                                    //       InputDecoration(
-                                                                    //     hintText:
-                                                                    //         'Pick up date and time...',
-                                                                    //     suffixIcon:
-                                                                    //         IconButton(
-                                                                    //       onPressed:
-                                                                    //           () async {
-                                                                    //         final NepaliDateTime?
-                                                                    //             picked =
-                                                                    //             await showMaterialDatePicker(
-                                                                    //           context: context,
-                                                                    //           initialDate: _selectedDate ?? NepaliDateTime.now(),
-                                                                    //           firstDate: NepaliDateTime(2000),
-                                                                    //           lastDate: NepaliDateTime(2090),
-                                                                    //           initialDatePickerMode: DatePickerMode.day,
-                                                                    //         );
-
-                                                                    //         if (picked != null &&
-                                                                    //             picked != _selectedDate) {
-                                                                    //           final TimeOfDay? selectedTime = await showTimePicker(
-                                                                    //             context: context,
-                                                                    //             initialTime: TimeOfDay.fromDateTime(
-                                                                    //               _selectedDate ?? DateTime.now(),
-                                                                    //             ),
-                                                                    //           );
-
-                                                                    //           if (selectedTime != null) {
-                                                                    //             setState(() {
-                                                                    //               _selectedDate = NepaliDateTime(
-                                                                    //                 picked.year,
-                                                                    //                 picked.month,
-                                                                    //                 picked.day,
-                                                                    //                 selectedTime.hour,
-                                                                    //                 selectedTime.minute,
-                                                                    //               );
-
-                                                                    //               print("Selected date: $_selectedDate, ${_selectedDate!.toIso8601String()}, ${_selectedDate!.toDateTime()}, ${_selectedDate!.format("yyyy-MM-dd HH:mm")}");
-                                                                    //             });
-                                                                    //           }
-                                                                    //         }
-                                                                    //       },
-                                                                    //       icon:
-                                                                    //           Icon(Icons.calendar_today),
-                                                                    //     ),
-                                                                    //   ),
-                                                                    // ),
-                                                                  ],
-                                                                ),
-                                                              ),
-                                                              actions: [
-                                                                ElevatedButton(
-                                                                  onPressed:
-                                                                      () {
-                                                                    editWasteTime(
-                                                                      id: int.parse(
-                                                                          waste[
-                                                                              'id']!),
-                                                                      // id: staff[
-                                                                      //     'Id']!
-                                                                    );
-                                                                    Navigator.of(
-                                                                            context)
-                                                                        .pop();
-                                                                  },
-                                                                  child: const Text(
-                                                                      'Save'),
-                                                                ),
-                                                                TextButton(
-                                                                  onPressed:
-                                                                      () {
-                                                                    Navigator.of(
-                                                                            context)
-                                                                        .pop();
-                                                                  },
-                                                                  child: const Text(
-                                                                      'Cancel'),
-                                                                ),
-                                                              ],
-                                                            );
-                                                          },
-                                                        );
-                                                      },
                                                     ),
-                                                    IconButton(
-                                                      icon: Icon(
-                                                        Icons.delete,
-                                                        color: Colors.red[600],
-                                                      ),
-                                                      onPressed: () {
-                                                        deleteWasteTime(
-                                                            waste['id']!);
-                                                      },
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ]),
-                                          )
-                                          .toList(),
+                                                  ]),
+                                                )
+                                                .toList(),
+                                          ),
+                                        ),
+                                      ),
                                     ),
-                                  ),
+                                  ],
                                 ),
                               ),
-                            ],
-                          ),
-                        ),
-                      ),
+                            ),
 
                       Padding(
                         padding: EdgeInsets.only(top: 10.h, bottom: 10.h),
@@ -589,8 +616,11 @@ class _AdminNotificationPageState extends State<AdminNotificationPage> {
                                   readOnly: true,
                                   controller: TextEditingController(
                                     text: _selectedDate != null
-                                        ? NepaliDateFormat("yyyy-MM-dd HH:mm")
-                                            .format(_selectedDate!)
+                                        ? DateFormat("yyyy-MM-dd HH:mm:ss")
+                                            .format(
+                                            _selectedDate!
+                                                .toDateTime(), // Convert NepaliDateTime to DateTime
+                                          )
                                         : '',
                                   ),
                                   decoration: kTextFieldDecoration.copyWith(
@@ -628,9 +658,6 @@ class _AdminNotificationPageState extends State<AdminNotificationPage> {
                                                 selectedTime.hour,
                                                 selectedTime.minute,
                                               );
-
-                                              print(
-                                                  "Selected date: $_selectedDate, ${_selectedDate!.toIso8601String()}, ${_selectedDate!.toDateTime()}, ${_selectedDate!.format("yyyy-MM-dd HH:mm")}");
                                             });
                                           }
                                         }

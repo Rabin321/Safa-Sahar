@@ -108,6 +108,7 @@
 
 import 'dart:convert';
 
+import 'package:finalyear/presentation/screens/user_main/userHomepage/userHomepage.dart';
 import 'package:finalyear/utils/urls.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -215,6 +216,11 @@ class _KhaltiPaymentPageState extends State<KhaltiPaymentPage> {
                     // Call backend API to create payment record
                     await createPaymentRecord(
                         transactionToken, amount, mobileNo);
+
+                    await Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const UserHomePage()));
                   },
                   onFailure: (fa) {
                     amountController.clear();

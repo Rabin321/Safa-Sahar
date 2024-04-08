@@ -84,15 +84,94 @@ class _SignInPageState extends State<SignInPage> {
     }
   }
 
+  // _loginUser() async {
+  //   // SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+
+  //   // String? token = sharedPreferences.getString('token');
+  //   // print("Auth login token is $token");
+  //   try {
+  //     print("emailcont is ${_emailController.text}");
+  //     print("passcont is ${_passwordController.text}");
+
+  //     // Validate email and password fields
+  //     if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
+  //       // Show error message if email or password is empty
+  //       MotionToast.error(
+  //         height: 50.h,
+  //         animationDuration: const Duration(milliseconds: 300),
+  //         description: const Text("Please provide both email and password."),
+  //       ).show(context);
+  //       return; // Exit the function if validation fails
+  //     }
+
+  //     // Attempt to log in using provided credentials
+  //     // Attempt to log in using provided credentials
+  //     LoginRepository loginRepository = LoginRepository();
+  //     Map<String, dynamic> loginResult = await loginRepository.login(LoginModel(
+  //       email: _emailController.text,
+  //       password: _passwordController.text,
+  //       // token: token!,
+  //     ));
+  //     print("Login Result: $loginResult");
+
+  //     // Extract login result
+  //     bool isLogin = loginResult['success'] == true;
+  //     bool isStaff = loginResult['is_Staff'] == true;
+  //     bool isAdmin = loginResult['is_Admin'] == true;
+
+  //     String? responseRole = loginResult['role'];
+  //     print("signin responseRole is $responseRole");
+  //     SharedPreferences prefs = await SharedPreferences.getInstance();
+
+  //     int? wardno = prefs.getInt('wardno');
+  //     print("Signin ward no is $wardno");
+
+  //     if (isLogin) {
+  //       if (isStaff || responseRole == "staff") {
+  //         Navigator.pushReplacement(
+  //           context,
+  //           MaterialPageRoute(
+  //               builder: (context) =>
+
+  //                   //  const AdminHomePage()),
+  //                   StaffHomePage(
+  //                     wardno: wardno,
+  //                   )),
+  //         );
+  //       } else if (isAdmin || responseRole == "admin") {
+  //         Navigator.pushReplacement(
+  //           context,
+  //           MaterialPageRoute(builder: (context) => const AdminHomePage()),
+  //         );
+  //       } else {
+  //         Navigator.pushReplacement(
+  //           context,
+  //           MaterialPageRoute(builder: (context) => const UserHomePage()),
+  //           // const AdminHomePage()),
+  //         );
+  //       }
+  //     } else {
+  //       // If login fails, display an appropriate error message
+  //       MotionToast.error(
+  //         height: 50.h,
+  //         animationDuration: const Duration(milliseconds: 300),
+  //         description: const Text("Invalid email or password."),
+  //       ).show(context);
+  //     }
+  //   } catch (e) {
+  //     // Handle any unexpected errors that occur during the login process
+  //     print("Error during login: $e");
+  //     MotionToast.error(
+  //       height: 50.h,
+  //       animationDuration: const Duration(milliseconds: 300),
+  //       description:
+  //           const Text("An unexpected error occurred. Please try again later."),
+  //     ).show(context);
+  //   }
+  // }
+
   _loginUser() async {
-    // SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-
-    // String? token = sharedPreferences.getString('token');
-    // print("Auth login token is $token");
     try {
-      print("emailcont is ${_emailController.text}");
-      print("passcont is ${_passwordController.text}");
-
       // Validate email and password fields
       if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
         // Show error message if email or password is empty
@@ -105,19 +184,29 @@ class _SignInPageState extends State<SignInPage> {
       }
 
       // Attempt to log in using provided credentials
-      // Attempt to log in using provided credentials
       LoginRepository loginRepository = LoginRepository();
       Map<String, dynamic> loginResult = await loginRepository.login(LoginModel(
         email: _emailController.text,
         password: _passwordController.text,
-        // token: token!,
       ));
-      print("Login Result: $loginResult");
+
+      // Check if login was successful
+      bool isSuccess = loginResult['success'] == true;
+      if (!isSuccess) {
+        // If login fails, display an appropriate error message
+        MotionToast.error(
+          height: 50.h,
+          animationDuration: const Duration(milliseconds: 300),
+          description: const Text("Invalid email or password."),
+        ).show(context);
+        return;
+      }
 
       // Extract login result
       bool isLogin = loginResult['success'] == true;
       bool isStaff = loginResult['is_Staff'] == true;
       bool isAdmin = loginResult['is_Admin'] == true;
+      bool isVerified = loginResult['is_Verified'] == true;
 
       String? responseRole = loginResult['role'];
       print("signin responseRole is $responseRole");
@@ -126,6 +215,18 @@ class _SignInPageState extends State<SignInPage> {
       int? wardno = prefs.getInt('wardno');
       print("Signin ward no is $wardno");
 
+      if (!isVerified) {
+        // If user is not verified, show toast and return
+        MotionToast.error(
+          height: 50.h,
+          animationDuration: const Duration(milliseconds: 300),
+          description: const Text("User is not verified."),
+        ).show(context);
+        return;
+      }
+
+      // If login is successful and user is verified, proceed with navigation
+      // Extract user role
       if (isLogin) {
         if (isStaff || responseRole == "staff") {
           Navigator.pushReplacement(
@@ -150,13 +251,6 @@ class _SignInPageState extends State<SignInPage> {
             // const AdminHomePage()),
           );
         }
-      } else {
-        // If login fails, display an appropriate error message
-        MotionToast.error(
-          height: 50.h,
-          animationDuration: const Duration(milliseconds: 300),
-          description: const Text("Invalid email or password."),
-        ).show(context);
       }
     } catch (e) {
       // Handle any unexpected errors that occur during the login process
@@ -212,7 +306,7 @@ class _SignInPageState extends State<SignInPage> {
                       ),
                       // const SizedBox(height: 20),
                       MyPasswordField(
-                        formKey: _formKey,
+                        // formKey: _formKey,
                         controller: _passwordController,
                         isPasswordVisible: isPasswordVisible,
                         onTap: () {

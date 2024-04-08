@@ -408,170 +408,187 @@ class _AdminAddDustbinState extends State<AdminAddDustbin> {
                             ],
                           ),
                         ),
-                        Padding(
-                          padding: EdgeInsets.all(2.h),
-                          child: SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: Column(
-                              children: [
-                                Container(
-                                  decoration: BoxDecoration(
-                                    border: Border.all(color: Colors.grey),
-                                    borderRadius: BorderRadius.circular(8.r),
-                                  ),
-                                  height: 150.h,
-                                  // width: 320.w,
-                                  child: Scrollbar(
-                                    child: SingleChildScrollView(
-                                      scrollDirection: Axis.vertical,
-                                      child: DataTable(
-                                        headingRowColor:
-                                            MaterialStateColor.resolveWith(
-                                          (states) =>
-                                              const Color.fromRGBO(82, 183, 136, 0.5),
+
+                        dustbinList.isEmpty
+                            ? Center(
+                                child: Text(
+                                  'No Dustbins available',
+                                  style: TextStyle(fontSize: 16.sp),
+                                ),
+                              )
+                            : Padding(
+                                padding: EdgeInsets.all(2.h),
+                                child: SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          border:
+                                              Border.all(color: Colors.grey),
+                                          borderRadius:
+                                              BorderRadius.circular(8.r),
                                         ),
-                                        columnSpacing: 4.w,
-                                        columns: const [
-                                          DataColumn(label: Text('Dustbin Id')),
-                                          DataColumn(label: Text('Location')),
-                                          DataColumn(
-                                              label: Text('Fill Precentage')),
-                                          // DataColumn(
-                                          //     label: Text('Assigned Staff')),
-                                          DataColumn(label: Text('Action')),
-                                        ],
-                                        rows: dustbinList.map((dustbin) {
-                                          // Find the staff with the same ID as assigned_staff from the staffList
-                                          var assignedStaff =
-                                              staffList.firstWhere(
-                                            (staff) =>
-                                                staff.id ==
-                                                dustbin['assigned_staff'],
-
-                                            // If no matching staff member found, display "Unknown"
-                                            orElse: () => StaffMember(
-                                              id: 0,
-                                              name: 'Unknown',
-                                            ),
-                                          );
-
-                                          return DataRow(cells: [
-                                            DataCell(Text(dustbin['id'] ?? '')),
-                                            DataCell(Text(
-                                                dustbin['location'] ?? '')),
-                                            DataCell(Text(
-                                                dustbin['fill_percentage'] ??
-                                                    '')),
-                                            // DataCell(Text(assignedStaff[
-                                            //     'name'])
-                                            // DataCell(Text(
-                                            //   assignedStaff['name'],
-                                            // )),
-
-                                            // ), // Display the assigned staff's name
-                                            DataCell(
-                                              Row(
-                                                children: [
-                                                  IconButton(
-                                                    icon: const Icon(
-                                                      Icons.edit,
-                                                      color: Colors.green,
-                                                    ),
-                                                    onPressed: () {
-                                                      showDialog(
-                                                        context: context,
-                                                        builder: (BuildContext
-                                                            context) {
-                                                          return AlertDialog(
-                                                            title: const Text(
-                                                                'Edit Dustbin'),
-                                                            content:
-                                                                SingleChildScrollView(
-                                                              child: Column(
-                                                                crossAxisAlignment:
-                                                                    CrossAxisAlignment
-                                                                        .start,
-                                                                children: [
-                                                                  Text(
-                                                                      'Location: ${dustbin['location']}'),
-                                                                  TextFormField(
-                                                                    controller:
-                                                                        locationController,
-                                                                    decoration: const InputDecoration(
-                                                                        labelText:
-                                                                            'New location'),
-                                                                  ),
-                                                                  Text(
-                                                                      'Assigned Staff: ${assignedStaff.name}'),
-                                                                  TextFormField(
-                                                                    controller:
-                                                                        assignedStaffController,
-                                                                    // Use a separate controller for assigned staff
-                                                                    decoration: const InputDecoration(
-                                                                        labelText:
-                                                                            'New Assigned Staff'),
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                            ),
-                                                            actions: [
-                                                              ElevatedButton(
-                                                                onPressed: () {
-                                                                  editDustbin(
-                                                                    id: int.parse(
-                                                                        dustbin[
-                                                                            'id']!),
-                                                                  );
-                                                                  Navigator.of(
-                                                                          context)
-                                                                      .pop();
-                                                                  locationController
-                                                                      .clear();
-                                                                  assignedStaffController
-                                                                      .clear();
-                                                                },
-                                                                child:
-                                                                    const Text(
-                                                                        'Save'),
-                                                              ),
-                                                              TextButton(
-                                                                onPressed: () {
-                                                                  Navigator.of(
-                                                                          context)
-                                                                      .pop();
-                                                                },
-                                                                child: const Text(
-                                                                    'Cancel'),
-                                                              ),
-                                                            ],
-                                                          );
-                                                        },
-                                                      );
-                                                    },
-                                                  ),
-                                                  IconButton(
-                                                    icon: Icon(
-                                                      Icons.delete,
-                                                      color: Colors.red[600],
-                                                    ),
-                                                    onPressed: () {
-                                                      deleteDustbin(
-                                                          dustbin['id']!);
-                                                    },
-                                                  ),
-                                                ],
+                                        height: 150.h,
+                                        // width: 320.w,
+                                        child: Scrollbar(
+                                          child: SingleChildScrollView(
+                                            scrollDirection: Axis.vertical,
+                                            child: DataTable(
+                                              headingRowColor:
+                                                  MaterialStateColor
+                                                      .resolveWith(
+                                                (states) =>
+                                                    const Color.fromRGBO(
+                                                        82, 183, 136, 0.5),
                                               ),
+                                              columnSpacing: 4.w,
+                                              columns: const [
+                                                DataColumn(
+                                                    label: Text('Dustbin Id')),
+                                                DataColumn(
+                                                    label: Text('Location')),
+                                                DataColumn(
+                                                    label: Text(
+                                                        'Fill Precentage')),
+                                                // DataColumn(
+                                                //     label: Text('Assigned Staff')),
+                                                DataColumn(
+                                                    label: Text('Action')),
+                                              ],
+                                              rows: dustbinList.map((dustbin) {
+                                                // Find the staff with the same ID as assigned_staff from the staffList
+                                                var assignedStaff =
+                                                    staffList.firstWhere(
+                                                  (staff) =>
+                                                      staff.id ==
+                                                      dustbin['assigned_staff'],
+
+                                                  // If no matching staff member found, display "Unknown"
+                                                  orElse: () => StaffMember(
+                                                    id: 0,
+                                                    name: 'Unknown',
+                                                  ),
+                                                );
+
+                                                return DataRow(cells: [
+                                                  DataCell(Text(
+                                                      dustbin['id'] ?? '')),
+                                                  DataCell(Text(
+                                                      dustbin['location'] ??
+                                                          '')),
+                                                  DataCell(Text(dustbin[
+                                                          'fill_percentage'] ??
+                                                      '')),
+                                                  // DataCell(Text(assignedStaff[
+                                                  //     'name'])
+                                                  // DataCell(Text(
+                                                  //   assignedStaff['name'],
+                                                  // )),
+
+                                                  // ), // Display the assigned staff's name
+                                                  DataCell(
+                                                    Row(
+                                                      children: [
+                                                        IconButton(
+                                                          icon: const Icon(
+                                                            Icons.edit,
+                                                            color: Colors.green,
+                                                          ),
+                                                          onPressed: () {
+                                                            showDialog(
+                                                              context: context,
+                                                              builder:
+                                                                  (BuildContext
+                                                                      context) {
+                                                                return AlertDialog(
+                                                                  title: const Text(
+                                                                      'Edit Dustbin'),
+                                                                  content:
+                                                                      SingleChildScrollView(
+                                                                    child:
+                                                                        Column(
+                                                                      crossAxisAlignment:
+                                                                          CrossAxisAlignment
+                                                                              .start,
+                                                                      children: [
+                                                                        Text(
+                                                                            'Location: ${dustbin['location']}'),
+                                                                        TextFormField(
+                                                                          controller:
+                                                                              locationController,
+                                                                          decoration:
+                                                                              const InputDecoration(labelText: 'New location'),
+                                                                        ),
+                                                                        Text(
+                                                                            'Assigned Staff: ${assignedStaff.name}'),
+                                                                        TextFormField(
+                                                                          controller:
+                                                                              assignedStaffController,
+                                                                          // Use a separate controller for assigned staff
+                                                                          decoration:
+                                                                              const InputDecoration(labelText: 'New Assigned Staff'),
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                  ),
+                                                                  actions: [
+                                                                    ElevatedButton(
+                                                                      onPressed:
+                                                                          () {
+                                                                        editDustbin(
+                                                                          id: int.parse(
+                                                                              dustbin['id']!),
+                                                                        );
+                                                                        Navigator.of(context)
+                                                                            .pop();
+                                                                        locationController
+                                                                            .clear();
+                                                                        assignedStaffController
+                                                                            .clear();
+                                                                      },
+                                                                      child: const Text(
+                                                                          'Save'),
+                                                                    ),
+                                                                    TextButton(
+                                                                      onPressed:
+                                                                          () {
+                                                                        Navigator.of(context)
+                                                                            .pop();
+                                                                      },
+                                                                      child: const Text(
+                                                                          'Cancel'),
+                                                                    ),
+                                                                  ],
+                                                                );
+                                                              },
+                                                            );
+                                                          },
+                                                        ),
+                                                        IconButton(
+                                                          icon: Icon(
+                                                            Icons.delete,
+                                                            color:
+                                                                Colors.red[600],
+                                                          ),
+                                                          onPressed: () {
+                                                            deleteDustbin(
+                                                                dustbin['id']!);
+                                                          },
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ]);
+                                              }).toList(),
                                             ),
-                                          ]);
-                                        }).toList(),
+                                          ),
+                                        ),
                                       ),
-                                    ),
+                                    ],
                                   ),
                                 ),
-                              ],
-                            ),
-                          ),
-                        ),
+                              ),
                       ],
                     ),
                   ),
@@ -591,20 +608,26 @@ class _AdminAddDustbinState extends State<AdminAddDustbin> {
 
                         Padding(
                           padding: EdgeInsets.only(top: 8.h),
-                          child: TextFormField(
+                          child: MyTextField(
+                            hintText: 'Location',
                             controller: locationController,
-                            decoration: kTextFieldDecoration.copyWith(
-                              hintText: 'Location...',
-                              hintStyle: kBodyText,
-                            ),
-                            validator: (value) => value!.isEmpty
-                                ? 'Please enter a location'
-                                : null,
+                            inputType: TextInputType.text,
+                            onDropdownPressed: () {
+                              location(context,
+                                  locationController); // Call the _wardno method
+                            },
+                            // formKey: _formKey,
+                            showDropdownIcon: true,
+                            // validator: (name) => name!.isEmpty
+                            //     ? 'Please enter your location'
+                            //     : null,
+                            isEditable: false,
+                            onChanged: (value) {},
                           ),
                         ),
 
                         Padding(
-                          padding: EdgeInsets.only(top: 8.h),
+                          padding: EdgeInsets.only(top: 0.h),
                           child: MyTextField(
                             hintText: 'Ward no...',
                             controller: wardnoController,
@@ -674,11 +697,9 @@ class _AdminAddDustbinState extends State<AdminAddDustbin> {
                         // ),
 
                         Padding(
-                          padding: EdgeInsets.only(top: 1.h),
+                          padding: EdgeInsets.only(top: 7.h),
                           child: Container(
-                            constraints: BoxConstraints(
-                                maxHeight: 40
-                                    .h), // Set maximum height for the dropdown
+                            constraints: BoxConstraints(maxHeight: 40.h),
                             child: DropdownButtonFormField<StaffMember>(
                               value: selectedStaff,
                               items: staffList.map((staff) {

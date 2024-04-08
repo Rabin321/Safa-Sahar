@@ -118,7 +118,8 @@ class _MyHomePageState extends State<UserAppBarWithDrawer> {
                 onTap: () async {
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (context) => const PaymentScreen()),
+                    MaterialPageRoute(
+                        builder: (context) => const PaymentScreen()),
                   );
                 },
               ),
@@ -135,7 +136,8 @@ class _MyHomePageState extends State<UserAppBarWithDrawer> {
                 onTap: () async {
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (context) => const UserReportPage()),
+                    MaterialPageRoute(
+                        builder: (context) => const UserReportPage()),
                   );
                 },
               ),
@@ -150,8 +152,10 @@ class _MyHomePageState extends State<UserAppBarWithDrawer> {
                   style: listTextStyle,
                 ),
                 onTap: () {
-                  Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: ((context) => const AboutUs())));
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: ((context) => const AboutUs())));
                 },
               ),
               const Divider(
@@ -168,6 +172,18 @@ class _MyHomePageState extends State<UserAppBarWithDrawer> {
                   SharedPreferences prefs =
                       await SharedPreferences.getInstance();
                   await prefs.remove('token');
+                  await prefs.remove('user_token');
+
+                  await prefs.remove('email');
+                  await prefs.remove('name');
+                  await prefs.remove('user');
+                  await prefs.remove('user_id');
+                  await prefs.remove('user_name');
+                  await prefs.remove('user_email');
+                  await prefs.remove('location');
+                  await prefs.remove('phone');
+                  await prefs.remove('wardno');
+
                   print("token removed");
 
                   // Navigate to the login screen

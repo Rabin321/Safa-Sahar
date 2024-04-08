@@ -14,14 +14,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
-class UserMainPage extends StatefulWidget {
-  const UserMainPage({super.key});
+class UserWastePickup extends StatefulWidget {
+  const UserWastePickup({super.key});
 
   @override
-  State<UserMainPage> createState() => _UserMainPageState();
+  State<UserWastePickup> createState() => _UserWastePickupState();
 }
 
-class _UserMainPageState extends State<UserMainPage> {
+class _UserWastePickupState extends State<UserWastePickup> {
   // List<AddStaff> addstaff = []; // Define addstaff list here
 
   TextEditingController locationController = TextEditingController();
@@ -215,64 +215,76 @@ class _UserMainPageState extends State<UserMainPage> {
                           ),
                         ),
                         // ListView container starts here
-                        Column(
-                          children: pickUpTimeListAdd.map((pickUpTime) {
-                            return Container(
-                              margin: EdgeInsets.symmetric(vertical: 10.h),
-                              padding: EdgeInsets.all(20.h),
-                              decoration: BoxDecoration(
-                                color: const Color.fromRGBO(82, 183, 136, 0.5),
-                                borderRadius: BorderRadius.circular(12.r),
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    children: [
-                                      const Icon(
-                                          Icons.access_time), // Clock Icon
-                                      SizedBox(width: 10.w),
-                                      Text(
-                                        pickUpTime['pickup_time']!,
-                                        style: TextStyle(fontSize: 16.sp),
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(height: 10.h),
-                                  Row(
-                                    children: [
-                                      const Icon(Icons.location_on),
-                                      SizedBox(width: 10.w),
-                                      Text(
-                                        pickUpTime['street']!,
-                                        style: TextStyle(fontSize: 16.sp),
-                                      ),
-                                      const Text(","),
-                                      SizedBox(width: 8.w),
-                                      Text(
-                                        pickUpTime['location']!,
-                                        style: TextStyle(fontSize: 16.sp),
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(height: 10.h),
-                                  Row(
-                                    children: [
-                                      const Icon(Icons.message),
-                                      SizedBox(width: 10.w),
-                                      Flexible(
-                                        child: Text(
-                                          pickUpTime['message']!,
-                                          style: TextStyle(fontSize: 16.sp),
+
+                        pickUpTimeListAdd.isEmpty
+                            ? Center(
+                                child: Text(
+                                  'No pickup times available',
+                                  style: TextStyle(fontSize: 16.sp),
+                                ),
+                              )
+                            : Column(
+                                children: pickUpTimeListAdd.map((pickUpTime) {
+                                  return Container(
+                                    margin:
+                                        EdgeInsets.symmetric(vertical: 10.h),
+                                    padding: EdgeInsets.all(20.h),
+                                    decoration: BoxDecoration(
+                                      color: const Color.fromRGBO(
+                                          82, 183, 136, 0.5),
+                                      borderRadius: BorderRadius.circular(12.r),
+                                    ),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            const Icon(Icons
+                                                .access_time), // Clock Icon
+                                            SizedBox(width: 10.w),
+                                            Text(
+                                              pickUpTime['pickup_time']!,
+                                              style: TextStyle(fontSize: 16.sp),
+                                            ),
+                                          ],
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
+                                        SizedBox(height: 10.h),
+                                        Row(
+                                          children: [
+                                            const Icon(Icons.location_on),
+                                            SizedBox(width: 10.w),
+                                            Text(
+                                              pickUpTime['street']!,
+                                              style: TextStyle(fontSize: 16.sp),
+                                            ),
+                                            const Text(","),
+                                            SizedBox(width: 8.w),
+                                            Text(
+                                              pickUpTime['location']!,
+                                              style: TextStyle(fontSize: 16.sp),
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(height: 10.h),
+                                        Row(
+                                          children: [
+                                            const Icon(Icons.message),
+                                            SizedBox(width: 10.w),
+                                            Flexible(
+                                              child: Text(
+                                                pickUpTime['message']!,
+                                                style:
+                                                    TextStyle(fontSize: 16.sp),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                }).toList(),
                               ),
-                            );
-                          }).toList(),
-                        ),
 
                         // ListView container ends here
                       ],

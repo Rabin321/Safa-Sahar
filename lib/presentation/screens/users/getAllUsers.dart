@@ -95,6 +95,7 @@ Widget _buildDetailsBox(List<dynamic>? users) {
     decoration: BoxDecoration(
       color: const Color.fromRGBO(82, 183, 136, 0.5),
       borderRadius: BorderRadius.circular(10),
+      // border: Border.all(color: const Color.fromRGBO(82, 183, 136, 0.5)),
     ),
     child: SingleChildScrollView(
       scrollDirection: Axis.horizontal,

@@ -5,7 +5,7 @@ import 'package:finalyear/googlemapapi/googlemap.dart';
 import 'package:finalyear/presentation/screens/admin_main/adminHomepage/adminHomepage.dart';
 import 'package:finalyear/presentation/screens/admin_main/adminside/addDustbin/addDustbin.dart';
 import 'package:finalyear/presentation/screens/admin_main/adminside/addstaff/ui/addstaff.dart';
-import 'package:finalyear/presentation/screens/admin_main/adminside/adminNotification/adminNotification.dart';
+import 'package:finalyear/presentation/screens/admin_main/adminside/pickup/adminAddPikupTime.dart';
 import 'package:finalyear/presentation/screens/admin_main/adminside/admindashboard/ui/admindashboard.dart';
 import 'package:finalyear/presentation/screens/admin_main/adminside/admindashboard/widgets/dustbinnumber.dart';
 import 'package:finalyear/utils/urls.dart';
@@ -131,16 +131,17 @@ class _MapViewPageState extends State<MapViewPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-               Row(
-                children: [CustomBackIcon(
-                   onPressed: () {
+              Row(
+                children: [
+                  CustomBackIcon(
+                    onPressed: () {
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) {
                         return const AdminHomePage();
                       }));
                     },
-
-                )],
+                  )
+                ],
               ),
               Align(
                 alignment: Alignment.center,
@@ -185,7 +186,9 @@ class _MapViewPageState extends State<MapViewPage> {
                           onPressed: () {},
                           count: emptyDustbin.toString()),
                       builddustbinbox(
-                          title: 'Damage Dustbin', onPressed: () {}),
+                          title: 'Damage Dustbin',
+                          onPressed: () {},
+                          count: damagedDustbin.toString()),
                     ],
                   ),
                 ),
@@ -234,7 +237,7 @@ class _DefaultCustomBottomNavBarState extends State<DefaultCustomBottomNavBar> {
     const AdminDashboard(),
     const AdminAddDustbin(),
     const AdminAddStaff(),
-    const AdminNotificationPage(),
+    const AdminAddPIckUpTime(),
   ];
 
   @override

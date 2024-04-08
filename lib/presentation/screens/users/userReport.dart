@@ -420,14 +420,6 @@ class _UserReportPageState extends State<UserReportPage> {
                             onPressed: () {
                               FocusScope.of(context).unfocus();
                               if (formKey.currentState!.validate()) {
-                                if (wardnoController.text.isEmpty ||
-                                    reportdetailsController.text.isEmpty) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                        content:
-                                            Text('Please fill all fields')),
-                                  );
-                                }
                                 submitReport();
                                 wardnoController.clear();
                                 reportdetailsController.clear();

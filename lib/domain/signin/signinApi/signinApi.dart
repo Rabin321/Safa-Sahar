@@ -146,6 +146,7 @@ class LoginApi {
           // Access the values for 'is_Staff' and 'is_Admin' directly
           loginResult['is_Staff'] = data['is_Staff'] == 1 ? true : false;
           loginResult['is_Admin'] = data['is_Admin'] == 1 ? true : false;
+          loginResult['is_Verified'] = data['is_Verified'] == 1 ? true : false;
 
 // Check if 'role' key exists in the 'data' map
           if (data.containsKey('role')) {

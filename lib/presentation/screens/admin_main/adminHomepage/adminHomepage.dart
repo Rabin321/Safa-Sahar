@@ -1,6 +1,6 @@
 import 'package:finalyear/presentation/screens/admin_main/adminside/addDustbin/addDustbin.dart';
 import 'package:finalyear/presentation/screens/admin_main/adminside/addstaff/ui/addstaff.dart';
-import 'package:finalyear/presentation/screens/admin_main/adminside/adminNotification/adminNotification.dart';
+import 'package:finalyear/presentation/screens/admin_main/adminside/pickup/adminAddPikupTime.dart';
 import 'package:finalyear/presentation/screens/admin_main/adminside/admindashboard/ui/admindashboard.dart';
 import 'package:flutter/material.dart';
 
@@ -24,7 +24,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
     const AdminDashboard(),
     const AdminAddDustbin(),
     const AdminAddStaff(),
-    const AdminNotificationPage(),
+    const AdminAddPIckUpTime(),
   ];
 
   @override
@@ -34,7 +34,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
       child: Scaffold(
         body: _children[_selectedIndex],
         bottomNavigationBar: CustomBottomNavBar(),
-      ),  
+      ),
     );
   }
 
@@ -72,7 +72,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
               Icons.notifications,
               size: 30,
             ),
-            label: "Notifications",
+            label: "Add Pickup time",
           ),
         ]);
   }

@@ -76,7 +76,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 // }
 class MyTextField extends StatefulWidget {
   const MyTextField({
-    super.key,
+    Key? key,
     required this.hintText,
     required this.inputType,
     this.controller,
@@ -86,12 +86,12 @@ class MyTextField extends StatefulWidget {
     this.onDropdownPressed,
     required this.isEditable,
     required this.onChanged,
-  });
+  }) : super(key: key);
 
   final String hintText;
   final TextInputType inputType;
   final TextEditingController? controller;
-  final String? Function(String?)? validator;
+  final FormFieldValidator<String>? validator;
   final GlobalKey<FormState>? formKey;
   final bool showDropdownIcon;
   final VoidCallback? onDropdownPressed;
@@ -103,32 +103,6 @@ class MyTextField extends StatefulWidget {
 }
 
 class _MyTextFieldState extends State<MyTextField> {
-  String? _errorText;
-
-  @override
-  void didUpdateWidget(covariant MyTextField oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    // Validate the text field whenever the widget updates
-    if (widget.validator != null) {
-      setState(() {
-        _errorText = widget.validator!(widget.controller!.text);
-      });
-    }
-  }
-
-  void resetError() {
-    setState(() {
-      _errorText = null;
-    });
-  }
-
-  String? validate() {
-    setState(() {
-      _errorText = widget.validator!(widget.controller!.text);
-    });
-    return _errorText;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -139,7 +113,8 @@ class _MyTextFieldState extends State<MyTextField> {
           TextFormField(
             controller: widget.controller,
             keyboardType: widget.inputType,
-            autovalidateMode: AutovalidateMode.onUserInteraction,
+            autovalidateMode: AutovalidateMode
+                .onUserInteraction, // Set auto-validation mode here
             textInputAction: TextInputAction.next,
             readOnly: !widget.isEditable,
             onChanged: widget.onChanged,
@@ -169,8 +144,8 @@ class _MyTextFieldState extends State<MyTextField> {
                       onPressed: widget.onDropdownPressed,
                     )
                   : null,
-              errorText: _errorText,
             ),
+            validator: widget.validator,
           ),
         ],
       ),

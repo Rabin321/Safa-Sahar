@@ -1,5 +1,5 @@
 import 'package:finalyear/domain/signup/http_services.dart';
-import 'package:finalyear/presentation/screens/admin_main/adminside/adminNotification/wastepickup/wastepickup.dart';
+import 'package:finalyear/presentation/screens/admin_main/adminside/pickup/wastepickup/wastepickup.dart';
 import 'package:finalyear/utils/urls.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:dio/dio.dart';

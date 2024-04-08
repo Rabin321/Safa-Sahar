@@ -177,6 +177,18 @@ class _MyHomePageState extends State<StaffAppBarWithDrawer> {
                   SharedPreferences prefs =
                       await SharedPreferences.getInstance();
                   await prefs.remove('token');
+                  await prefs.remove('token');
+                  await prefs.remove('user_token');
+
+                  await prefs.remove('email');
+                  await prefs.remove('name');
+                  await prefs.remove('user');
+                  await prefs.remove('user_id');
+                  await prefs.remove('user_name');
+                  await prefs.remove('user_email');
+                  await prefs.remove('location');
+                  await prefs.remove('phone');
+                  await prefs.remove('wardno');
                   print("token removed");
 
                   // Navigate to the login screen

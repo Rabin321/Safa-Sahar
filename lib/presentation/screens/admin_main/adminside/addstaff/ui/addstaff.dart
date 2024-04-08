@@ -377,188 +377,184 @@ class _AdminAddStaffState extends State<AdminAddStaff> {
                             ],
                           ),
                         ),
-                        Padding(
-                          padding: EdgeInsets.all(2.h),
-                          child: SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: Column(
-                              children: [
-                                Container(
-                                  decoration: BoxDecoration(
-                                    border: Border.all(color: Colors.grey),
-                                    borderRadius: BorderRadius.circular(8.r),
-                                  ),
-                                  height: 150.h,
-                                  // width: 320.w,
-                                  child: Scrollbar(
-                                    child: SingleChildScrollView(
-                                      scrollDirection: Axis.vertical,
-                                      child: DataTable(
-                                        headingRowColor:
-                                            MaterialStateColor.resolveWith(
-                                          (states) =>
-                                              const Color.fromRGBO(82, 183, 136, 0.5),
+                        staffList.isEmpty
+                            ? Center(
+                                child: Text(
+                                  'No Staffs available',
+                                  style: TextStyle(fontSize: 16.sp),
+                                ),
+                              )
+                            : Padding(
+                                padding: EdgeInsets.all(2.h),
+                                child: SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          border:
+                                              Border.all(color: Colors.grey),
+                                          borderRadius:
+                                              BorderRadius.circular(8.r),
                                         ),
-                                        columnSpacing: 4.w,
-                                        columns: const [
-                                          DataColumn(label: Text('Id')),
-                                          DataColumn(label: Text('Name')),
-                                          DataColumn(label: Text('Location')),
-                                          DataColumn(label: Text('Email')),
-                                          DataColumn(label: Text('Ward')),
-                                          DataColumn(label: Text('Phone')),
-                                          DataColumn(label: Text('Actions')),
-                                        ],
-                                        rows: staffList
-                                            .map(
-                                              (staff) => DataRow(cells: [
-                                                DataCell(
-                                                    Text(staff['Id'] ?? '')),
-                                                DataCell(
-                                                    Text(staff['Name'] ?? '')),
-                                                DataCell(Text(
-                                                    staff['Location'] ?? '')),
-                                                DataCell(
-                                                    Text(staff['Email'] ?? '')),
-                                                DataCell(
-                                                    Text(staff['Ward'] ?? '')),
-                                                DataCell(
-                                                    Text(staff['Phone'] ?? '')),
-                                                DataCell(
-                                                  Row(
-                                                    children: [
-                                                      IconButton(
-                                                        icon: const Icon(
-                                                          Icons.edit,
-                                                          color: Colors.green,
+                                        height: 150.h,
+                                        // width: 320.w,
+                                        child: Scrollbar(
+                                          child: SingleChildScrollView(
+                                            scrollDirection: Axis.vertical,
+                                            child: DataTable(
+                                              headingRowColor:
+                                                  MaterialStateColor
+                                                      .resolveWith(
+                                                (states) =>
+                                                    const Color.fromRGBO(
+                                                        82, 183, 136, 0.5),
+                                              ),
+                                              columnSpacing: 4.w,
+                                              columns: const [
+                                                DataColumn(label: Text('Id')),
+                                                DataColumn(label: Text('Name')),
+                                                DataColumn(
+                                                    label: Text('Location')),
+                                                DataColumn(
+                                                    label: Text('Email')),
+                                                DataColumn(label: Text('Ward')),
+                                                DataColumn(
+                                                    label: Text('Phone')),
+                                                DataColumn(
+                                                    label: Text('Actions')),
+                                              ],
+                                              rows: staffList
+                                                  .map(
+                                                    (staff) => DataRow(cells: [
+                                                      DataCell(Text(
+                                                          staff['Id'] ?? '')),
+                                                      DataCell(Text(
+                                                          staff['Name'] ?? '')),
+                                                      DataCell(Text(
+                                                          staff['Location'] ??
+                                                              '')),
+                                                      DataCell(Text(
+                                                          staff['Email'] ??
+                                                              '')),
+                                                      DataCell(Text(
+                                                          staff['Ward'] ?? '')),
+                                                      DataCell(Text(
+                                                          staff['Phone'] ??
+                                                              '')),
+                                                      DataCell(
+                                                        Row(
+                                                          children: [
+                                                            IconButton(
+                                                              icon: const Icon(
+                                                                Icons.edit,
+                                                                color: Colors
+                                                                    .green,
+                                                              ),
+                                                              onPressed: () {
+                                                                showDialog(
+                                                                  context:
+                                                                      context,
+                                                                  builder:
+                                                                      (BuildContext
+                                                                          context) {
+                                                                    return AlertDialog(
+                                                                      title: const Text(
+                                                                          'Edit Staff'),
+                                                                      content:
+                                                                          SingleChildScrollView(
+                                                                        child:
+                                                                            Column(
+                                                                          crossAxisAlignment:
+                                                                              CrossAxisAlignment.start,
+                                                                          children: [
+                                                                            Text('Name: ${staff['Name']}'),
+                                                                            TextFormField(
+                                                                              controller: nameController,
+                                                                              decoration: const InputDecoration(labelText: 'New Name'),
+                                                                            ),
+                                                                            Text('Email: ${staff['Email']}'),
+                                                                            TextFormField(
+                                                                              controller: emailController,
+                                                                              decoration: const InputDecoration(labelText: 'New Email'),
+                                                                            ),
+                                                                            Text('Location: ${staff['Location']}'),
+                                                                            TextFormField(
+                                                                              controller: locationController,
+                                                                              decoration: const InputDecoration(labelText: 'New Location'),
+                                                                            ),
+                                                                            Text('Ward: ${staff['Ward']}'),
+                                                                            TextFormField(
+                                                                              controller: wardnoController,
+                                                                              decoration: const InputDecoration(labelText: 'New Ward'),
+                                                                            ),
+                                                                            Text('Phone: ${staff['Phone']}'),
+                                                                            TextFormField(
+                                                                              controller: numberController,
+                                                                              decoration: const InputDecoration(labelText: 'New Phone'),
+                                                                            ),
+                                                                          ],
+                                                                        ),
+                                                                      ),
+                                                                      actions: [
+                                                                        ElevatedButton(
+                                                                          onPressed:
+                                                                              () {
+                                                                            editStaff(
+                                                                              id: int.parse(staff['Id']!),
+                                                                              // id: staff[
+                                                                              //     'Id']!
+                                                                            );
+                                                                            Navigator.of(context).pop();
+                                                                            nameController.clear();
+                                                                            emailController.clear();
+                                                                            locationController.clear();
+                                                                            wardnoController.clear();
+                                                                            numberController.clear();
+                                                                          },
+                                                                          child:
+                                                                              const Text('Save'),
+                                                                        ),
+                                                                        TextButton(
+                                                                          onPressed:
+                                                                              () {
+                                                                            Navigator.of(context).pop();
+                                                                          },
+                                                                          child:
+                                                                              const Text('Cancel'),
+                                                                        ),
+                                                                      ],
+                                                                    );
+                                                                  },
+                                                                );
+                                                              },
+                                                            ),
+                                                            IconButton(
+                                                              icon: Icon(
+                                                                Icons.delete,
+                                                                color: Colors
+                                                                    .red[600],
+                                                              ),
+                                                              onPressed: () {
+                                                                deleteStaff(
+                                                                    staff[
+                                                                        'Id']!);
+                                                              },
+                                                            ),
+                                                          ],
                                                         ),
-                                                        onPressed: () {
-                                                          showDialog(
-                                                            context: context,
-                                                            builder:
-                                                                (BuildContext
-                                                                    context) {
-                                                              return AlertDialog(
-                                                                title: const Text(
-                                                                    'Edit Staff'),
-                                                                content:
-                                                                    SingleChildScrollView(
-                                                                  child: Column(
-                                                                    crossAxisAlignment:
-                                                                        CrossAxisAlignment
-                                                                            .start,
-                                                                    children: [
-                                                                      Text(
-                                                                          'Name: ${staff['Name']}'),
-                                                                      TextFormField(
-                                                                        controller:
-                                                                            nameController,
-                                                                        decoration:
-                                                                            const InputDecoration(labelText: 'New Name'),
-                                                                      ),
-                                                                      Text(
-                                                                          'Email: ${staff['Email']}'),
-                                                                      TextFormField(
-                                                                        controller:
-                                                                            emailController,
-                                                                        decoration:
-                                                                            const InputDecoration(labelText: 'New Email'),
-                                                                      ),
-                                                                      Text(
-                                                                          'Location: ${staff['Location']}'),
-                                                                      TextFormField(
-                                                                        controller:
-                                                                            locationController,
-                                                                        decoration:
-                                                                            const InputDecoration(labelText: 'New Location'),
-                                                                      ),
-                                                                      Text(
-                                                                          'Ward: ${staff['Ward']}'),
-                                                                      TextFormField(
-                                                                        controller:
-                                                                            wardnoController,
-                                                                        decoration:
-                                                                            const InputDecoration(labelText: 'New Ward'),
-                                                                      ),
-                                                                      Text(
-                                                                          'Phone: ${staff['Phone']}'),
-                                                                      TextFormField(
-                                                                        controller:
-                                                                            numberController,
-                                                                        decoration:
-                                                                            const InputDecoration(labelText: 'New Phone'),
-                                                                      ),
-                                                                    ],
-                                                                  ),
-                                                                ),
-                                                                actions: [
-                                                                  ElevatedButton(
-                                                                    onPressed:
-                                                                        () {
-                                                                      editStaff(
-                                                                        id: int.parse(
-                                                                            staff['Id']!),
-                                                                        // id: staff[
-                                                                        //     'Id']!
-                                                                      );
-                                                                      Navigator.of(
-                                                                              context)
-                                                                          .pop();
-                                                                      nameController
-                                                                          .clear();
-                                                                      emailController
-                                                                          .clear();
-                                                                      locationController
-                                                                          .clear();
-                                                                      wardnoController
-                                                                          .clear();
-                                                                      numberController
-                                                                          .clear();
-                                                                    },
-                                                                    child: const Text(
-                                                                        'Save'),
-                                                                  ),
-                                                                  TextButton(
-                                                                    onPressed:
-                                                                        () {
-                                                                      Navigator.of(
-                                                                              context)
-                                                                          .pop();
-                                                                    },
-                                                                    child: const Text(
-                                                                        'Cancel'),
-                                                                  ),
-                                                                ],
-                                                              );
-                                                            },
-                                                          );
-                                                        },
                                                       ),
-                                                      IconButton(
-                                                        icon: Icon(
-                                                          Icons.delete,
-                                                          color:
-                                                              Colors.red[600],
-                                                        ),
-                                                        onPressed: () {
-                                                          deleteStaff(
-                                                              staff['Id']!);
-                                                        },
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ]),
-                                            )
-                                            .toList(),
+                                                    ]),
+                                                  )
+                                                  .toList(),
+                                            ),
+                                          ),
+                                        ),
                                       ),
-                                    ),
+                                    ],
                                   ),
                                 ),
-                              ],
-                            ),
-                          ),
-                        ),
+                              ),
                       ],
                     ),
                   ),

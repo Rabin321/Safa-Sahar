@@ -49,45 +49,79 @@ class _SignUpState extends State<SignUp> {
   @override
   void initState() {
     super.initState();
-
+    _clearSharedPreferences();
     // verifyEmail("token");
+  }
+
+  Future<void> _clearSharedPreferences() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove('token');
+    await prefs.remove('user_token');
+    await prefs.remove('email');
+    await prefs.remove('name');
+    await prefs.remove('user');
+    await prefs.remove('user_id');
+    await prefs.remove('user_name');
+    await prefs.remove('user_email');
+    await prefs.remove('location');
+    await prefs.remove('phone');
+    await prefs.remove('wardno');
   }
 
   _registerUser() async {
     try {
-      _formKey.currentState!.validate();
+      // _formKey.currentState!.validate();
 
-      UserRepository userRepository = UserRepository();
-      bool isRegister = await userRepository.register(SignUpModel(
-        name: _fullNameController.text,
-        email: _emailController.text,
-        password: _passwordController.text,
-        phone: _phoneController.text,
-        location: _locationController.text,
-        houseno: int.parse(_housenoController.text),
-        wardno: int.parse(_wardnoController.text),
-        role: "user",
-      ));
-
-      if (isRegister) {
-        // Store the token locally
-        // Retrieve the token from shared_preferences
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-        String? token = prefs.getString('token');
-        Navigator.push(
-          context,
-          // MaterialPageRoute(builder: (context) => const SignInPage()));
-          MaterialPageRoute(
-              builder: (context) => VerifyMail(registeredVerifyToken: token!)),
-        );
-
-        // AuthController.login();
-      } else {
+      if (_fullNameController.text.isEmpty ||
+          _emailController.text.isEmpty ||
+          _passwordController.text.isEmpty ||
+          _phoneController.text.isEmpty ||
+          _locationController.text.isEmpty ||
+          _housenoController.text.isEmpty ||
+          _wardnoController.text.isEmpty) {
+        // Show error message if email or password is empty
         MotionToast.error(
-                height: 50.h,
-                animationDuration: const Duration(milliseconds: 200),
-                description: const Text("Something went wrong"))
-            .show(context);
+          height: 50.h,
+          animationDuration: const Duration(milliseconds: 300),
+          description: const Text("All the fields are mandatory"),
+        ).show(context);
+        return; // Exit the function if validation fails
+      }
+
+      if (_formKey.currentState!.validate()) {
+        UserRepository userRepository = UserRepository();
+        bool isRegister = await userRepository.register(SignUpModel(
+          name: _fullNameController.text,
+          email: _emailController.text,
+          password: _passwordController.text,
+          phone: _phoneController.text,
+          location: _locationController.text,
+          houseno: int.parse(_housenoController.text),
+          wardno: int.parse(_wardnoController.text),
+          role: "user",
+        ));
+
+        if (isRegister) {
+          // Store the token locally
+          // Retrieve the token from shared_preferences
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          String? token = prefs.getString('token');
+          Navigator.push(
+            context,
+            // MaterialPageRoute(builder: (context) => const SignInPage()));
+            MaterialPageRoute(
+                builder: (context) =>
+                    VerifyMail(registeredVerifyToken: token!)),
+          );
+
+          // AuthController.login();
+        } else {
+          MotionToast.error(
+                  height: 50.h,
+                  animationDuration: const Duration(milliseconds: 200),
+                  description: const Text("Something went wrong"))
+              .show(context);
+        }
       }
     } catch (e) {
       MotionToast.error(
@@ -137,10 +171,12 @@ class _SignUpState extends State<SignUp> {
                           ),
                           Form(
                             key: _formKey,
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
                             child: Column(
                               children: [
                                 MyTextField(
-                                  formKey: _formKey,
+                                  // formKey: _formKey,
                                   hintText: 'Full Name',
                                   controller: _fullNameController,
                                   inputType: TextInputType.name,
@@ -158,7 +194,7 @@ class _SignUpState extends State<SignUp> {
                                     location(context,
                                         _locationController); // Call the _wardno method
                                   },
-                                  formKey: _formKey,
+                                  // formKey: _formKey,
                                   showDropdownIcon: true,
                                   validator: (name) => name!.isEmpty
                                       ? 'Please enter your location'
@@ -174,7 +210,7 @@ class _SignUpState extends State<SignUp> {
                                   },
                                   controller: _housenoController,
                                   inputType: TextInputType.text,
-                                  formKey: _formKey,
+                                  // formKey: _formKey,
                                   validator: (name) => name!.isEmpty
                                       ? 'Please enter your house no'
                                       : null,
@@ -190,7 +226,7 @@ class _SignUpState extends State<SignUp> {
                                   },
                                   controller: _wardnoController,
                                   inputType: TextInputType.text,
-                                  formKey: _formKey,
+                                  // formKey: _formKey,
                                   validator: (name) => name!.isEmpty
                                       ? 'Please enter your ward no'
                                       : null,
@@ -202,7 +238,7 @@ class _SignUpState extends State<SignUp> {
                                   controller: _emailController,
                                   inputType: TextInputType.emailAddress,
                                   validator: _validateEmail,
-                                  formKey: _formKey,
+                                  // formKey: _formKey,
                                   isEditable: true,
                                   onChanged: (value) {},
                                 ),
@@ -212,7 +248,7 @@ class _SignUpState extends State<SignUp> {
                                   controller: _phoneController,
                                   inputType: TextInputType.phone,
                                   validator: _validatePhoneNumber,
-                                  formKey: _formKey,
+                                  // formKey: _formKey,
                                   isEditable: true,
                                   onChanged: (value) {},
                                 ),
@@ -231,7 +267,7 @@ class _SignUpState extends State<SignUp> {
                                 // )
 
                                 MyPasswordField(
-                                  formKey: _formKey,
+                                  // formKey: _formKey,
                                   validator: _validatePassword,
                                   controller: _passwordController,
                                   isPasswordVisible: passwordVisibility,
@@ -240,6 +276,10 @@ class _SignUpState extends State<SignUp> {
                                       passwordVisibility = !passwordVisibility;
                                     });
                                   },
+                                ),
+
+                                SizedBox(
+                                  height: 10.h,
                                 )
                               ],
                             ),
@@ -283,23 +323,7 @@ class _SignUpState extends State<SignUp> {
                         bgColor: Colors.green,
                         textColor: Colors.black87,
                         onPressed: () {
-                          if (_formKey.currentState!.validate()) {
-                            // Validation succeeded, proceed with registration
-
-                            _registerUser();
-
-                            _emailController.clear();
-                            _passwordController.clear();
-                            _locationController.clear();
-                            _fullNameController.clear();
-                            _housenoController.clear();
-                            _wardnoController.clear();
-                            _phoneController.clear();
-                          } else {
-                            print("Validation error");
-                            // Validation failed, do not proceed
-                            // You can optionally display an error message to the user
-                          }
+                          _registerUser();
                         },
                       ),
                     )
@@ -328,9 +352,9 @@ class _SignUpState extends State<SignUp> {
       return 'Please enter a phone number';
     }
 
-    String sanitizedPhoneNumber = phoneNumber.replaceAll(RegExp(r'\D'), '');
+    // String sanitizedPhoneNumber = phoneNumber.replaceAll(RegExp(r'\D'), '');
 
-    if (sanitizedPhoneNumber.length != 10) {
+    if (phoneNumber.length != 10) {
       return 'Phone number must be 10 digits long';
     }
 

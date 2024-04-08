@@ -1,6 +1,6 @@
 import 'package:finalyear/presentation/screens/user_main/payment/payment_screen.dart';
 import 'package:finalyear/presentation/screens/user_main/user_awarness/user_awareness.dart';
-import 'package:finalyear/presentation/screens/users/userMainPage.dart';
+import 'package:finalyear/presentation/screens/users/wastePickup.dart';
 import 'package:finalyear/presentation/screens/users/userReport.dart';
 import 'package:flutter/material.dart';
 
@@ -25,7 +25,7 @@ class _UserHomePageState extends State<UserHomePage> {
     const UserReportPage(),
     const PaymentScreen(),
     // const UserProfile(),
-    const UserMainPage(),
+    const UserWastePickup(),
   ];
 
   @override
