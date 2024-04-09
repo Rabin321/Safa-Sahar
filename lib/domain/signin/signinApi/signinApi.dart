@@ -139,7 +139,7 @@ class LoginApi {
         print(
             'User details saved to SharedPreferences $userId, $userName, $userEmail, $location, $phone, $userToken');
 
-        if (responseData.containsKey('data')) {
+        if (responseData.containsKey('data')) { 
           // Access the value corresponding to the 'data' key
           Map<String, dynamic> data = responseData['data'];
 

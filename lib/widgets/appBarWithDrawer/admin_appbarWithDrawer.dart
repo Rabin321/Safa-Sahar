@@ -1,3 +1,4 @@
+import 'package:finalyear/presentation/screens/admin_main/adminside/Staff_and_users_Reports/staff_and_user_report.dart';
 import 'package:finalyear/presentation/screens/admin_main/adminside/adminProfile.dart';
 import 'package:finalyear/presentation/screens/admin_main/adminside/paymentReport/payment_report.dart';
 import 'package:finalyear/presentation/screens/hamdrawerpages/mapview/mapviewpage.dart';
@@ -120,6 +121,25 @@ class _MyHomePageState extends State<AdminAppBarWithDrawer> {
                     context,
                     MaterialPageRoute(
                         builder: (context) => const GetAllUsers()),
+                  );
+                  // Handle Home Click
+                },
+              ),
+              const Divider(
+                color: Colors.green,
+              ),
+              ListTile(
+                textColor: Colors.white,
+                leading: const Icon(Icons.people),
+                title: Text(
+                  'Reports',
+                  style: listTextStyle,
+                ),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const StaffAndUserReport()),
                   );
                   // Handle Home Click
                 },

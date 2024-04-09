@@ -30,5 +30,12 @@ const deleteWastepickupTime = '/delete-time';
 
 const createReport = '/create-report';
 const getReportAccWard = '/get-filter-report';
+const getReport = '/get-report';
+const deleteUserReport = '/delete-user-report';
+
+const createBulkRequest = '/create-bulk-request';
+const getBulkRequest = '/get-bulk-request';
+const  deleteBulkReportById = '/delete-bulk-request';
+
 const paymentCreate = '/payment';
 const getPaymentDetails = '/get-payment-details';

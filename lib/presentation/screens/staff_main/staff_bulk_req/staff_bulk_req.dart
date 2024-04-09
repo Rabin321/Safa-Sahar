@@ -113,19 +113,17 @@ class _StaffBulkRequestState extends State<StaffBulkRequest> {
         // Prepare report data
         String wardno = filterWardController.text;
         String location = filterLocationController.text;
-        String details = reportdetailsController.text;
+        String message = reportdetailsController.text;
 
         // Construct the request body
         var request = http.MultipartRequest(
           'POST',
-          Uri.parse(baseUrl + createReport), // Adjust the URL
+          Uri.parse(baseUrl + createBulkRequest), // Adjust the URL
         );
 
         request.fields['wardno'] = wardno;
         request.fields['location'] = location;
-        request.fields['details'] = details;
-        request.fields['name'] = name;
-        request.fields['email'] = email;
+        request.fields['message'] = message;
 
         // Attach images
         for (XFile image in selectedImages) {
@@ -418,14 +416,6 @@ class _StaffBulkRequestState extends State<StaffBulkRequest> {
                             onPressed: () {
                               FocusScope.of(context).unfocus();
                               if (formKey.currentState!.validate()) {
-                                if (wardnoController.text.isEmpty ||
-                                    reportdetailsController.text.isEmpty) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                        content:
-                                            Text('Please fill all fields')),
-                                  );
-                                }
                                 submitReport();
                                 wardnoController.clear();
                                 reportdetailsController.clear();
