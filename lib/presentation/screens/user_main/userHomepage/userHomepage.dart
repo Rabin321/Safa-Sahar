@@ -21,7 +21,7 @@ class _UserHomePageState extends State<UserHomePage> {
 
   //different pages to navigate
   final List<Widget> _children = [
-    const UserAwareness(),
+     UserAwareness(),
     const UserReportPage(),
     const PaymentScreen(),
     // const UserProfile(),
