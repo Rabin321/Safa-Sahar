@@ -22,9 +22,11 @@ class AdminDashboard extends StatefulWidget {
 class _AdminDashboardState extends State<AdminDashboard> {
   List<dynamic> staffList = []; // List to store staff data
   List<dynamic> dustbinList = [];
+  List<dynamic> userList = [];
 
   int? totalStaff = 0; // Declare totalStaff as a class member
   int? totalDustbin = 0;
+  int? totalUser = 0;
 
   int? fullDustbin = 0;
   int? halfDustbin = 0;
@@ -34,6 +36,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
   void initState() {
     super.initState();
     fetchStaffData();
+    fetchUserData();
     fetchDustbinData();
     fetchDustbinStats();
   }
@@ -75,6 +78,23 @@ class _AdminDashboardState extends State<AdminDashboard> {
       }
     } catch (error) {
       print('Error fetching staff data: $error');
+    }
+  }
+//get users
+
+  Future<void> fetchUserData() async {
+    try {
+      final response = await http.get(Uri.parse(baseUrl + getUser));
+      if (response.statusCode == 200) {
+        setState(() {
+          userList = jsonDecode(response.body)['data'];
+          totalUser = userList.length;
+        });
+      } else {
+        print('Failed to fetch user data: ${response.statusCode}');
+      }
+    } catch (error) {
+      print('Error fetching user data: $error');
     }
   }
 
@@ -174,7 +194,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
                 padding:
                     EdgeInsets.symmetric(horizontal: 16.w).copyWith(top: 5.h),
                 child: Container(
-                  height: 150.h,
+                  height: 200.h,
                   width: double.infinity,
                   decoration: BoxDecoration(
                     color: Colors.white,
@@ -193,7 +213,9 @@ class _AdminDashboardState extends State<AdminDashboard> {
                           ),
                         ],
                       ),
-                      buildActiveUsersWidget("ACTIVE USERS", totalStaff!),
+                      buildActiveUsersWidget("TOTAL USERS", totalUser!),
+
+                      buildActiveUsersWidget("ACTIVE STAFF", totalStaff!),
                       // const SizedBox(
                       //   height: 12,
                       // ),

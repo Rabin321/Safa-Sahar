@@ -1,4 +1,4 @@
-const baseUrl = 'http://192.168.1.74:5000/api';
+const baseUrl = 'http://192.168.1.75:5000/api';
 const registerUrl = '/register';
 
 const loginUrl = '/login';
@@ -35,7 +35,7 @@ const deleteUserReport = '/delete-user-report';
 
 const createBulkRequest = '/create-bulk-request';
 const getBulkRequest = '/get-bulk-request';
-const  deleteBulkReportById = '/delete-bulk-request';
+const deleteBulkReportById = '/delete-bulk-request';
 
 const paymentCreate = '/payment';
 const getPaymentDetails = '/get-payment-details';

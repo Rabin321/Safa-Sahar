@@ -452,7 +452,8 @@ class _AdminAddDustbinState extends State<AdminAddDustbin> {
                                                     label: Text(
                                                         'Fill Precentage')),
                                                 // DataColumn(
-                                                //     label: Text('Assigned Staff')),
+                                                //     label:
+                                                //         Text('Assigned Staff')),
                                                 DataColumn(
                                                     label: Text('Action')),
                                               ],
@@ -480,13 +481,9 @@ class _AdminAddDustbinState extends State<AdminAddDustbin> {
                                                   DataCell(Text(dustbin[
                                                           'fill_percentage'] ??
                                                       '')),
-                                                  // DataCell(Text(assignedStaff[
-                                                  //     'name'])
-                                                  // DataCell(Text(
-                                                  //   assignedStaff['name'],
-                                                  // )),
-
-                                                  // ), // Display the assigned staff's name
+                                                  // Display the assigned staff's name
+                                                  // DataCell(
+                                                  //     Text(assignedStaff.name)),
                                                   DataCell(
                                                     Row(
                                                       children: [
@@ -522,12 +519,60 @@ class _AdminAddDustbinState extends State<AdminAddDustbin> {
                                                                         ),
                                                                         Text(
                                                                             'Assigned Staff: ${assignedStaff.name}'),
-                                                                        TextFormField(
-                                                                          controller:
-                                                                              assignedStaffController,
-                                                                          // Use a separate controller for assigned staff
-                                                                          decoration:
-                                                                              const InputDecoration(labelText: 'New Assigned Staff'),
+                                                                        // TextFormField(
+                                                                        //   controller:
+                                                                        //       assignedStaffController,
+                                                                        //   // Use a separate controller for assigned staff
+                                                                        //   decoration:
+                                                                        //       const InputDecoration(labelText: 'New Assigned Staff'),
+                                                                        // ),
+                                                                        Padding(
+                                                                          padding:
+                                                                              EdgeInsets.only(top: 7.h),
+                                                                          child:
+                                                                              Container(
+                                                                            constraints:
+                                                                                BoxConstraints(maxHeight: 40.h),
+                                                                            child:
+                                                                                DropdownButtonFormField<StaffMember>(
+                                                                              value: selectedStaff,
+                                                                              items: staffList.map((staff) {
+                                                                                return DropdownMenuItem<StaffMember>(
+                                                                                  value: staff,
+                                                                                  child: SizedBox(
+                                                                                    height: 40.h,
+                                                                                    child: Center(child: Text(staff.name)),
+                                                                                  ),
+                                                                                );
+                                                                              }).toList(),
+                                                                              onChanged: (StaffMember? newValue) {
+                                                                                setState(() {
+                                                                                  selectedStaff = newValue;
+                                                                                });
+                                                                              },
+                                                                              decoration: InputDecoration(
+                                                                                fillColor: Colors.white,
+                                                                                filled: true,
+                                                                                contentPadding: EdgeInsets.all(12.h),
+                                                                                hintText: "Assigned Staff...",
+                                                                                hintStyle: kBodyText,
+                                                                                enabledBorder: OutlineInputBorder(
+                                                                                  borderSide: BorderSide(
+                                                                                    color: const Color.fromRGBO(82, 183, 136, 2),
+                                                                                    width: 1.5.w,
+                                                                                  ),
+                                                                                  borderRadius: BorderRadius.circular(12.r),
+                                                                                ),
+                                                                                focusedBorder: OutlineInputBorder(
+                                                                                  borderSide: BorderSide(
+                                                                                    color: const Color.fromRGBO(82, 183, 136, 2),
+                                                                                    width: 1.5.w,
+                                                                                  ),
+                                                                                  borderRadius: BorderRadius.circular(12.r),
+                                                                                ),
+                                                                              ),
+                                                                            ),
+                                                                          ),
                                                                         ),
                                                                       ],
                                                                     ),

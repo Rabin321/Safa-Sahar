@@ -26,6 +26,7 @@ class AdminAddStaff extends StatefulWidget {
 
 class _AdminAddStaffState extends State<AdminAddStaff> {
   // List<AddStaff> addstaff = []; // Define addstaff list here
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   TextEditingController locationController = TextEditingController();
   TextEditingController filterWardController = TextEditingController();
@@ -124,32 +125,50 @@ class _AdminAddStaffState extends State<AdminAddStaff> {
 
   _registerStaff() async {
     try {
-      // int wardNumber = int.parse(wardnoController.text);
-      // print("Parsed ward number: $wardNumber");
-      StaffRepository staffRepository = StaffRepository();
-      bool isRegister = await staffRepository.register(AddStaffModel(
-        name: nameController.text,
-        email: emailController.text,
-        password: passwordController.text,
-        phone: numberController.text,
-        location: locationController.text,
-        // houseno: 100, //test
-        // wardno: 3, //test
-        wardno: int.parse(wardnoController.text),
-        houseno: int.parse(housenoController.text),
+      if (nameController.text.isEmpty ||
+          emailController.text.isEmpty ||
+          passwordController.text.isEmpty ||
+          numberController.text.isEmpty ||
+          locationController.text.isEmpty ||
+          housenoController.text.isEmpty ||
+          wardnoController.text.isEmpty) {
+        // Show error message if email or password is empty
+        MotionToast.error(
+          height: 50.h,
+          animationDuration: const Duration(milliseconds: 300),
+          description: const Text("All the fields are mandatory"),
+        ).show(context);
+        return; // Exit the function if validation fails
+      }
 
-        isAdmin: 0,
-        isStaff: 1,
-      ));
+      if (_formKey.currentState!.validate()) {
+        // int wardNumber = int.parse(wardnoController.text);
+        // print("Parsed ward number: $wardNumber");
+        StaffRepository staffRepository = StaffRepository();
+        bool isRegister = await staffRepository.register(AddStaffModel(
+          name: nameController.text,
+          email: emailController.text,
+          password: passwordController.text,
+          phone: numberController.text,
+          location: locationController.text,
+          // houseno: 100, //test
+          // wardno: 3, //test
+          wardno: int.parse(wardnoController.text),
+          houseno: int.parse(housenoController.text),
 
-      if (isRegister) {
-        print("Staff addded successfully");
+          isAdmin: 0,
+          isStaff: 1,
+        ));
 
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Staff added successfully")),
-        ); // AuthController.login();
-      } else {
-        throw Exception("Registration failed");
+        if (isRegister) {
+          print("Staff addded successfully");
+
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Staff added successfully")),
+          ); // AuthController.login();
+        } else {
+          throw Exception("Registration failed");
+        }
       }
     } catch (e) {
       MotionToast.error(
@@ -558,177 +577,165 @@ class _AdminAddStaffState extends State<AdminAddStaff> {
                       ],
                     ),
                   ),
-                  Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 15.h, vertical: 10.h),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // const SizedBox(height: 20),
+                  Form(
+                    key: _formKey,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 15.h, vertical: 10.h),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // const SizedBox(height: 20),
 
-                        Padding(
-                          padding: EdgeInsets.symmetric(vertical: 5.h),
-                          child: const Text("Add staff to this ward",
-                              style: subhead),
-                        ),
-                        TextFormField(
-                          controller: nameController,
-                          decoration: kTextFieldDecoration.copyWith(
-                            hintText: 'Name...',
-                            hintStyle: kBodyText,
+                          Padding(
+                            padding: EdgeInsets.symmetric(vertical: 5.h),
+                            child: const Text("Add staff to this ward",
+                                style: subhead),
                           ),
-                          validator: (value) =>
-                              value!.isEmpty ? 'Please enter a name' : null,
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(top: 15.h),
-                          child: TextFormField(
-                            controller: emailController,
+                          TextFormField(
+                            controller: nameController,
                             decoration: kTextFieldDecoration.copyWith(
-                              hintText: 'Email...',
+                              hintText: 'Name...',
                               hintStyle: kBodyText,
                             ),
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return 'Please enter an email';
-                              } else if (!Validator.isValidEmail(value)) {
-                                return 'Please enter a valid email';
-                              }
-                              return null;
+                            validator: (value) =>
+                                value!.isEmpty ? 'Please enter a name' : null,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(top: 15.h),
+                            child: TextFormField(
+                                controller: emailController,
+                                decoration: kTextFieldDecoration.copyWith(
+                                  hintText: 'Email...',
+                                  hintStyle: kBodyText,
+                                ),
+                                validator: _validateEmail),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(top: 15.h, bottom: 7.h),
+                            child: TextFormField(
+                                controller: passwordController,
+                                decoration: kTextFieldDecoration.copyWith(
+                                  hintText: 'Password...',
+                                  hintStyle: kBodyText,
+                                ),
+                                validator: _validatePassword),
+                          ),
+
+                          MyTextField(
+                            hintText: 'Location...',
+                            controller: locationController,
+                            inputType: TextInputType.text,
+                            onDropdownPressed: () {
+                              location(context, locationController);
+                            },
+                            // formKey: formKeydrpdwn,
+                            showDropdownIcon: true,
+                            validator: (name) => name!.isEmpty
+                                ? 'Please select your location'
+                                : null,
+                            isEditable: false,
+                            onChanged: (value) {
+                              // Update locationController when location is selected
+                              locationController.text = value;
+                              print(
+                                  "locationController: ${locationController.text}");
                             },
                           ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(top: 15.h, bottom: 7.h),
-                          child: TextFormField(
-                              controller: passwordController,
-                              decoration: kTextFieldDecoration.copyWith(
-                                hintText: 'Password...',
-                                hintStyle: kBodyText,
+                          // Padding(
+                          //   padding: EdgeInsets.only(top: 8.h),
+                          //   child: TextFormField(
+                          //     controller: wardnoController,
+                          //     decoration: kTextFieldDecoration.copyWith(
+                          //       hintText: 'Ward Number...',
+                          //       hintStyle: kBodyText,
+                          //     ),
+                          //     validator: (value) => value!.isEmpty
+                          //         ? 'Please enter a ward number'
+                          //         : null,
+                          //   ),
+                          // ),
+
+                          MyTextField(
+                            hintText: 'Ward no...',
+                            controller: wardnoController,
+                            inputType: TextInputType.text,
+                            onDropdownPressed: () {
+                              wardno(context, wardnoController);
+                            },
+                            // formKey: formKeydrpdwn,
+                            showDropdownIcon: true,
+                            validator: (name) => name!.isEmpty
+                                ? 'Please select your ward'
+                                : null,
+                            isEditable: false,
+                            onChanged: (value) {
+                              // Update locationController when location is selected
+                              wardnoController.text = value;
+                              print("wardController: ${wardnoController.text}");
+                            },
+                          ),
+                          MyTextField(
+                            hintText: 'House no...',
+                            controller: housenoController,
+                            inputType: TextInputType.text,
+                            onDropdownPressed: () {
+                              houseno(context, housenoController);
+                            },
+                            // formKey: formKeydrpdwn,
+                            showDropdownIcon: true,
+                            validator: (name) => name!.isEmpty
+                                ? 'Please select your house no'
+                                : null,
+                            isEditable: false,
+                            onChanged: (value) {
+                              // Update locationController when location is selected
+                              housenoController.text = value;
+                              print(
+                                  "housenoController: ${housenoController.text}");
+                            },
+                          ),
+
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              // Text(
+                              //   'Number',
+                              //   style: kBodyText,
+                              // ),
+                              Padding(
+                                padding: EdgeInsets.only(top: 8.h),
+                                child: TextFormField(
+                                    controller: numberController,
+                                    keyboardType: TextInputType.number,
+                                    maxLength: 10,
+                                    decoration: kTextFieldDecoration.copyWith(
+                                        hintText: "Phone Number...",
+                                        hintStyle: kBodyText),
+                                    validator: _validatePhoneNumber),
                               ),
-                              validator: _validatePassword),
-                        ),
+                            ],
+                          ),
+                          CustomAddButton(
+                              name: "Add",
+                              onPressed: () {
+                                // FocusScope.of(context).unfocus();
 
-                        MyTextField(
-                          hintText: 'Location...',
-                          controller: locationController,
-                          inputType: TextInputType.text,
-                          onDropdownPressed: () {
-                            location(context, locationController);
-                          },
-                          // formKey: formKeydrpdwn,
-                          showDropdownIcon: true,
-                          validator: (name) => name!.isEmpty
-                              ? 'Please select your location'
-                              : null,
-                          isEditable: false,
-                          onChanged: (value) {
-                            // Update locationController when location is selected
-                            locationController.text = value;
-                            print(
-                                "locationController: ${locationController.text}");
-                          },
-                        ),
-                        // Padding(
-                        //   padding: EdgeInsets.only(top: 8.h),
-                        //   child: TextFormField(
-                        //     controller: wardnoController,
-                        //     decoration: kTextFieldDecoration.copyWith(
-                        //       hintText: 'Ward Number...',
-                        //       hintStyle: kBodyText,
-                        //     ),
-                        //     validator: (value) => value!.isEmpty
-                        //         ? 'Please enter a ward number'
-                        //         : null,
-                        //   ),
-                        // ),
-
-                        MyTextField(
-                          hintText: 'Ward no...',
-                          controller: wardnoController,
-                          inputType: TextInputType.text,
-                          onDropdownPressed: () {
-                            wardno(context, wardnoController);
-                          },
-                          // formKey: formKeydrpdwn,
-                          showDropdownIcon: true,
-                          validator: (name) =>
-                              name!.isEmpty ? 'Please select your ward' : null,
-                          isEditable: false,
-                          onChanged: (value) {
-                            // Update locationController when location is selected
-                            wardnoController.text = value;
-                            print("wardController: ${wardnoController.text}");
-                          },
-                        ),
-                        MyTextField(
-                          hintText: 'House no...',
-                          controller: housenoController,
-                          inputType: TextInputType.text,
-                          onDropdownPressed: () {
-                            houseno(context, housenoController);
-                          },
-                          // formKey: formKeydrpdwn,
-                          showDropdownIcon: true,
-                          validator: (name) => name!.isEmpty
-                              ? 'Please select your house no'
-                              : null,
-                          isEditable: false,
-                          onChanged: (value) {
-                            // Update locationController when location is selected
-                            housenoController.text = value;
-                            print(
-                                "housenoController: ${housenoController.text}");
-                          },
-                        ),
-
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            // Text(
-                            //   'Number',
-                            //   style: kBodyText,
-                            // ),
-                            Padding(
-                              padding: EdgeInsets.only(top: 8.h),
-                              child: TextFormField(
-                                controller: numberController,
-                                keyboardType: TextInputType.number,
-                                maxLength: 10,
-                                decoration: kTextFieldDecoration.copyWith(
-                                    hintText: "Phone Number...",
-                                    hintStyle: kBodyText),
-                                validator: (value) {
-                                  if (value!.isEmpty) {
-                                    return 'Please enter a phone number';
-                                  } else if (!Validator.isValidPhoneNumber(
-                                      value)) {
-                                    return 'Please enter a valid phone number';
-                                  }
-                                  return null;
-                                },
+                                // if (formKey.currentState!.validate()) {
+                                _registerStaff();
+                                // nameController.clear();
+                                // numberController.clear();
+                                // // locationController.clear();
+                                // // wardnoController.clear();
+                                // // housenoController.clear();
+                                // emailController.clear();
+                                // passwordController.clear();
+                              }
+                              // },
                               ),
-                            ),
-                          ],
-                        ),
-                        CustomAddButton(
-                          name: "Add",
-                          onPressed: () {
-                            FocusScope.of(context).unfocus();
-
-                            if (formKey.currentState!.validate()) {
-                              _registerStaff();
-                              nameController.clear();
-                              numberController.clear();
-                              // locationController.clear();
-                              // wardnoController.clear();
-                              // housenoController.clear();
-                              emailController.clear();
-                              passwordController.clear();
-                            }
-                          },
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   )
                 ],
@@ -757,21 +764,53 @@ class Validator {
   }
 }
 
-String? _validatePassword(String? password) {
-  const minLength = 8;
-  final passwordRegex = RegExp(
-      r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#$%^&*()_+}{":;\?/>.<,]).{8,}$');
+String? _validateEmail(String? email) {
+  RegExp emailRegex = RegExp(
+      r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$');
+  final isEmailValid = emailRegex.hasMatch(email ?? '');
+  if (!isEmailValid) {
+    return 'Please enter a valid email';
+  }
+  return null;
+}
 
+String? _validatePhoneNumber(String? phoneNumber) {
+  if (phoneNumber == null || phoneNumber.isEmpty) {
+    return 'Please enter a phone number';
+  }
+
+  // String sanitizedPhoneNumber = phoneNumber.replaceAll(RegExp(r'\D'), '');
+
+  if (phoneNumber.length != 10) {
+    return 'Phone number must be 10 digits long';
+  }
+
+  return null;
+}
+
+String? _validatePassword(String? password) {
   if (password == null || password.isEmpty) {
     return 'Please enter a password';
   }
 
-  if (password.length < minLength) {
-    return 'Password should be at least $minLength characters long';
+  if (password.length < 8) {
+    return 'Password must be at least 8 characters long';
   }
 
-  if (!passwordRegex.hasMatch(password)) {
-    return 'At least one symbol, one uppercase letter, and one digit';
+  if (!password.contains(RegExp(r'[A-Z]'))) {
+    return 'Password must contain at least one uppercase letter';
+  }
+
+  if (!password.contains(RegExp(r'[a-z]'))) {
+    return 'Password must contain at least one lowercase letter';
+  }
+
+  if (!password.contains(RegExp(r'[0-9]'))) {
+    return 'Password must contain at least one digit';
+  }
+
+  if (!password.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]'))) {
+    return 'Password must contain at least one special character';
   }
 
   return null;
