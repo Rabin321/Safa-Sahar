@@ -119,7 +119,7 @@ class _SignUpState extends State<SignUp> {
           MotionToast.error(
                   height: 50.h,
                   animationDuration: const Duration(milliseconds: 200),
-                  description: const Text("Something went wrong"))
+                  description: const Text("User already exists"))
               .show(context);
         }
       }

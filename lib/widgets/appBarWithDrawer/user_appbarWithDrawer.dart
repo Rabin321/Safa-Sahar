@@ -171,6 +171,7 @@ class _MyHomePageState extends State<UserAppBarWithDrawer> {
                 onTap: () async {
                   SharedPreferences prefs =
                       await SharedPreferences.getInstance();
+                  // token removed
                   await prefs.remove('token');
                   await prefs.remove('user_token');
 
