@@ -1,6 +1,8 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:finalyear/components/constants.dart';
 
@@ -105,63 +107,158 @@ class _UserReportPageState extends State<UserReportPage> {
     }
   }
 
+  // Future<void> submitReport() async {
+  //   debugPrint("submitted clicked");
+  //   // if (formKey.currentState!.validate()) {
+  //   // Form is validated, proceed with report submission
+
+  //   if (filterWardController.text.isEmpty &&
+  //       filterLocationController.text.isEmpty &&
+  //       reportdetailsController.text.isEmpty &&
+  //       selectedImages.isEmpty &&
+  //       pickedImage == null) {
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       const SnackBar(content: Text('Please fill all fields')),
+  //     );
+  //   }
+
+  //   ///
+  //   else if (filterWardController.text.isNotEmpty &&
+  //       filterLocationController.text.isNotEmpty &&
+  //       reportdetailsController.text.isNotEmpty) {
+  //     // Prepare report data
+  //     String wardno = filterWardController.text;
+  //     String location = filterLocationController.text;
+  //     String details = reportdetailsController.text;
+
+  //     // Construct the request body
+  //     var request = http.MultipartRequest(
+  //       'POST',
+  //       Uri.parse(baseUrl + createReport), // Adjust the URL
+  //     );
+
+  //     request.fields['wardno'] = wardno;
+  //     request.fields['location'] = location;
+  //     request.fields['details'] = details;
+  //     request.fields['name'] = name;
+  //     request.fields['email'] = email;
+
+  //     // Attach images
+  //     List<XFile> imagesCopy =
+  //         List.from(selectedImages); // Create a copy of selectedImages
+  //     for (XFile image in imagesCopy) {
+  //       var stream = http.ByteStream(await image.openRead());
+  //       var length = await image.length();
+
+  //       var multipartFile = http.MultipartFile(
+  //         'image',
+  //         stream,
+  //         length,
+  //         filename: image.path.split('/').last,
+  //       );
+
+  //       request.files.add(multipartFile);
+  //     }
+
+  //     // Send the request
+  //     var response = await request.send();
+
+  //     if (response.statusCode == 200) {
+  //       print('Report submitted successfully');
+  //       ScaffoldMessenger.of(context).showSnackBar(
+  //         const SnackBar(content: Text('Report submitted successfully')),
+  //       );
+  //     } else {
+  //       print('Failed to submit report');
+  //       ScaffoldMessenger.of(context).showSnackBar(
+  //         const SnackBar(content: Text('Failed to submit report')),
+  //       );
+  //     }
+  //   }
+  //   // }
+
+  //   else {
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       const SnackBar(content: Text('Please fill all fields')),
+  //     );
+  //   }
+  // }
+
+// AS A BLOB
+
   Future<void> submitReport() async {
-    if (formKey.currentState!.validate()) {
-      // Form is validated, proceed with report submission
+    debugPrint("submitted clicked");
 
-      if (filterWardController.text.isNotEmpty &&
-          filterLocationController.text.isNotEmpty &&
-          reportdetailsController.text.isNotEmpty) {
-        // Prepare report data
-        String wardno = filterWardController.text;
-        String location = filterLocationController.text;
-        String details = reportdetailsController.text;
-
-        // Construct the request body
-        var request = http.MultipartRequest(
-          'POST',
-          Uri.parse(baseUrl + createReport), // Adjust the URL
-        );
-
-        request.fields['wardno'] = wardno;
-        request.fields['location'] = location;
-        request.fields['details'] = details;
-        request.fields['name'] = name;
-        request.fields['email'] = email;
-
-        // Attach images
-        for (XFile image in selectedImages) {
-          var stream = http.ByteStream(image.openRead());
-          var length = await image.length();
-
-          var multipartFile = http.MultipartFile(
-            'image',
-            stream,
-            length,
-            filename: image.path.split('/').last,
-          );
-
-          request.files.add(multipartFile);
-        }
-
-        // Send the request
-        var response = await request.send();
-
-        if (response.statusCode == 200) {
-          print('Report submitted successfully');
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Report submitted successfully')),
-          );
-        } else {
-          print('Failed to submit report');
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Failed to submit report')),
-          );
-        }
-      }
-    } else {
+    // Check if all required fields are filled
+    if (filterWardController.text.isEmpty ||
+        filterLocationController.text.isEmpty ||
+        reportdetailsController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Please fill all fields')),
+      );
+      return;
+    }
+
+    String wardno = filterWardController.text;
+    String location = filterLocationController.text;
+    String details = reportdetailsController.text;
+
+    // Convert the image to bytes
+    Uint8List? imageData;
+    if (pickedImage != null) {
+      imageData = await pickedImage!.readAsBytes();
+    } else if (selectedImages.isNotEmpty) {
+      XFile image = selectedImages.first;
+      imageData = await image.readAsBytes();
+    }
+
+    debugPrint("Ward No: $wardno");
+    debugPrint("Location: $location");
+    debugPrint("Details: $details");
+    debugPrint("Image Data length: ${imageData?.length}");
+
+    // Encode the image data to base64
+    String base64Image =
+        base64Encode(imageData!); // Make sure imageData is not null
+
+    // Construct the request body
+    var request = http.MultipartRequest(
+      'POST',
+      Uri.parse(baseUrl + createReport), // Adjust the URL
+    );
+
+    // Add form fields to the request
+    request.fields['wardno'] = wardno;
+    request.fields['location'] = location;
+    request.fields['details'] = details;
+    request.fields['name'] = name;
+    request.fields['email'] = email;
+
+    // Add base64-encoded image data to the request
+    request.fields['imageData'] = base64Image;
+
+    try {
+      // Send the request
+      var response = await request.send();
+
+      // Check the response status
+      if (response.statusCode == 200) {
+        print('Report submitted successfully');
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Report submitted successfully')),
+        );
+      } else {
+        print('Failed to submit report: ${response.reasonPhrase}');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+              content:
+                  Text('Failed to submit report: ${response.reasonPhrase}')),
+        );
+      }
+    } catch (error) {
+      print('Failed to submit report: $error');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to submit report: $error')),
       );
     }
   }

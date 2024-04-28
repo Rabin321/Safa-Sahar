@@ -1,6 +1,6 @@
-
 import 'package:finalyear/components/constants.dart';
 import 'package:finalyear/presentation/screens/admin_main/adminHomepage/adminHomepage.dart';
+import 'package:finalyear/widgets/appBarWithDrawer/admin_appbarWithDrawer.dart';
 import 'package:finalyear/widgets/appBarWithDrawer/user_appbarWithDrawer.dart';
 import 'package:finalyear/widgets/customBackButton.dart';
 import 'package:flutter/material.dart';
@@ -38,7 +38,7 @@ class _AdminProfileState extends State<AdminProfile> {
 
   @override
   Widget build(BuildContext context) {
-    return UserAppBarWithDrawer(
+    return AdminAppBarWithDrawer(
       title: 'ADMIN',
       body: SingleChildScrollView(
         child: Padding(

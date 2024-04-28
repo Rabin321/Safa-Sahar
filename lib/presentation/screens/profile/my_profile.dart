@@ -1,4 +1,3 @@
-
 import 'package:finalyear/components/constants.dart';
 import 'package:finalyear/presentation/screens/user_main/userHomepage/userHomepage.dart';
 import 'package:finalyear/widgets/appBarWithDrawer/user_appbarWithDrawer.dart';
@@ -19,6 +18,7 @@ class _UserProfileState extends State<UserProfile> {
   String email = '';
   String phone = '';
   String location = '';
+  int wardno = 0;
   @override
   void initState() {
     super.initState();

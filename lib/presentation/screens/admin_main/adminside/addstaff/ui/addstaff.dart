@@ -166,8 +166,17 @@ class _AdminAddStaffState extends State<AdminAddStaff> {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text("Staff added successfully")),
           ); // AuthController.login();
-        } else {
-          throw Exception("Registration failed");
+        }
+        // else {
+        //   throw Exception("Registration failed");
+        // }
+
+        else {
+          MotionToast.error(
+                  height: 50.h,
+                  animationDuration: const Duration(milliseconds: 200),
+                  description: const Text("User already exists"))
+              .show(context);
         }
       }
     } catch (e) {
@@ -175,7 +184,7 @@ class _AdminAddStaffState extends State<AdminAddStaff> {
         height: 50.h,
         width: double.infinity,
         animationDuration: const Duration(milliseconds: 300),
-        description: const Text("Something went wrong"),
+        description: Text("Error:${e.toString()}"),
       ).show(context);
     }
   }
